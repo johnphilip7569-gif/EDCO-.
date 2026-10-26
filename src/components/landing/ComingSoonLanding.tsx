@@ -109,24 +109,6 @@ export default function ComingSoonLanding({ onBypassComingSoon, targetLaunchDate
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-blue-600/10 via-indigo-600/5 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/5 blur-3xl pointer-events-none" />
 
-      {/* Discrete Top-Right Admin Control */}
-      <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
-        {onBypassComingSoon && (
-          <button
-            onClick={onBypassComingSoon}
-            className="text-[11px] text-neutral-400 hover:text-white transition px-2.5 py-1 rounded-md bg-neutral-900/60 border border-neutral-800"
-            title="Preview full site (Admin only)"
-          >
-            Preview Full Site
-          </button>
-        )}
-        <Link
-          href="/auth/login"
-          className="text-[11px] font-medium text-neutral-400 hover:text-neutral-200 px-3 py-1.5 rounded-lg bg-neutral-900/40 hover:bg-neutral-800 border border-neutral-800/80 transition"
-        >
-          Admin Sign In
-        </Link>
-      </div>
 
       {/* Main Content */}
       <main className="relative z-10 max-w-4xl w-full mx-auto px-6 py-12 sm:py-16 text-center my-auto">

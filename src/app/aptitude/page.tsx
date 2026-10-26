@@ -58,7 +58,7 @@ export default function AptitudeStudioPage() {
     dismissWarning,
   } = useExamProctoring({
     maxViolations: 3,
-    onDisqualified: (reason) => {
+    onDisqualify: (reason: string) => {
       handleAutoSubmitDisqualified(reason);
     },
   });
@@ -519,7 +519,7 @@ export default function AptitudeStudioPage() {
 
                 {/* Secure Anti-OCR Canvas Rendering */}
                 <AntiOcrQuestionCanvas
-                  questionText={currentQ.question}
+                  text={currentQ.question}
                   category={currentQ.category}
                   fontSize={16}
                 />

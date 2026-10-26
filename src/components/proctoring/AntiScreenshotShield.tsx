@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ShieldAlert, EyeOff, Lock } from "lucide-react";
 
 interface AntiScreenshotShieldProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   watermarkLabel?: string;
   enabled?: boolean;
   onSecurityEvent?: (eventType: string, detail: string) => void;
