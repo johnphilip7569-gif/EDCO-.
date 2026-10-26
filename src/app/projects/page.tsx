@@ -136,20 +136,22 @@ export default function ProjectStudioPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-[#FFF8EE] text-[#1B1B2F] font-sans selection:bg-[#FFC93C] selection:text-[#1B1B2F] pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 space-y-6 sm:space-y-8 animate-in fade-in duration-200">
+      <div className="min-h-screen bg-[#F8F9FA] text-[#111827] font-sans pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 space-y-6 animate-in fade-in duration-200">
           
-          {/* 1. STUDIO HEADER */}
-          <section className="bg-white rounded-2xl border-2 border-[#1B1B2F] p-6 sm:p-8 shadow-[6px_6px_0px_#1B1B2F] flex flex-col md:flex-row md:items-center justify-between gap-5">
-            <div className="space-y-2 max-w-3xl">
-              <div className="flex items-center gap-2.5">
-                <StudioSticker text="Project Studio • Capstone Track" color="#8E6CEF" rotate={-1} />
-                <span className="text-xs text-[#1B1B2F]/60 font-mono font-bold">Real-World Engineering Challenges</span>
+          {/* 1. HEADER */}
+          <section className="bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div className="space-y-1.5 max-w-3xl">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                  Project Studio &bull; Capstone Track
+                </span>
+                <span className="text-xs text-[#6B7280] font-medium">Real-World Engineering Challenges</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1B1B2F] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#111827] tracking-tight">
                 Industry Problem Statements
               </h1>
-              <p className="text-xs sm:text-sm text-[#1B1B2F]/70 leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed">
                 Filter and inspect real-world production engineering briefs. Build verifiable proof-of-work capstones tailored to high-tier software engineering, AI, and distributed systems roles.
               </p>
             </div>
@@ -158,31 +160,31 @@ export default function ProjectStudioPage() {
               <button
                 type="button"
                 onClick={() => handleOpenMyra()}
-                className="bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white text-xs font-extrabold py-3 px-5 rounded-xl border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#1B1B2F] transition-all hover:translate-x-[1px] hover:translate-y-[1px] inline-flex items-center gap-2 cursor-pointer"
+                className="bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-xs transition-colors inline-flex items-center gap-2 cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-[#FFC93C]" />
+                <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>Recommend with Myra</span>
               </button>
             </div>
           </section>
 
           {/* 2. TOP SEARCH & FILTER BAR */}
-          <section className="bg-white rounded-2xl border-2 border-[#1B1B2F] p-5 sm:p-6 shadow-[6px_6px_0px_#1B1B2F] space-y-4">
+          <section className="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-xs space-y-4">
             
             {/* Primary Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 text-[#1B1B2F]/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search problem statements by keyword, technology, or scenario (e.g. Redis, RAG, Kafka, Rate Limiter, Matching Engine)..."
+                placeholder="Search problem statements by keyword, technology, or scenario (e.g. Redis, RAG, Kafka, Rate Limiter)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-9 py-3 text-xs sm:text-sm bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-xl focus:outline-none text-[#1B1B2F] placeholder:text-[#1B1B2F]/50 font-medium shadow-[2px_2px_0px_#1B1B2F] transition-colors"
+                className="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] text-[#111827] placeholder:text-[#9CA3AF] transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#1B1B2F]/60 hover:text-[#1B1B2F] p-1 cursor-pointer"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827] p-1 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -190,8 +192,8 @@ export default function ProjectStudioPage() {
             </div>
 
             {/* Quick Domain Pills & Sponsored Filter Toggle */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t-2 border-[#1B1B2F]/10">
-              <div className="flex flex-wrap items-center gap-2 overflow-x-auto py-1">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#F3F4F6]">
+              <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto py-1">
                 {ALL_DOMAINS.map((domain) => {
                   const isActive = selectedDomain === domain;
                   return (
@@ -199,10 +201,10 @@ export default function ProjectStudioPage() {
                       key={domain}
                       type="button"
                       onClick={() => setSelectedDomain(domain)}
-                      className={`text-xs font-bold px-3.5 py-1.5 rounded-xl border-2 border-[#1B1B2F] transition-all cursor-pointer ${
+                      className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                         isActive
-                          ? "bg-[#1B1B2F] text-white shadow-[2px_2px_0px_#FFC93C]"
-                          : "bg-[#FFF8EE] text-[#1B1B2F] hover:bg-white shadow-[2px_2px_0px_#1B1B2F] hover:translate-x-[1px] hover:translate-y-[1px]"
+                          ? "bg-[#111827] text-white border-[#111827] shadow-xs"
+                          : "bg-white text-[#4B5563] hover:bg-[#F3F4F6] border-[#E5E7EB]"
                       }`}
                     >
                       {domain}
@@ -214,15 +216,15 @@ export default function ProjectStudioPage() {
               <button
                 type="button"
                 onClick={() => setSponsorOnly(!sponsorOnly)}
-                className={`text-xs font-extrabold px-3.5 py-1.5 rounded-xl border-2 border-[#1B1B2F] transition-all inline-flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all inline-flex items-center gap-1.5 cursor-pointer shrink-0 ${
                   sponsorOnly
-                    ? "bg-[#FFC93C] text-[#1B1B2F] shadow-[3px_3px_0px_#1B1B2F]"
-                    : "bg-[#FFF8EE] text-[#1B1B2F] hover:bg-white shadow-[2px_2px_0px_#1B1B2F] hover:translate-x-[1px] hover:translate-y-[1px]"
+                    ? "bg-amber-50 text-amber-800 border-amber-200 shadow-xs"
+                    : "bg-white text-[#4B5563] hover:bg-[#F3F4F6] border-[#E5E7EB]"
                 }`}
               >
-                <Award className={`w-3.5 h-3.5 ${sponsorOnly ? "text-[#1B1B2F]" : "text-[#1B1B2F]/60"}`} />
+                <Award className={`w-3.5 h-3.5 ${sponsorOnly ? "text-amber-600" : "text-[#9CA3AF]"}`} />
                 <span>Sponsored Challenges Only</span>
-                {sponsorOnly && <Check className="w-3.5 h-3.5 text-[#1B1B2F]" />}
+                {sponsorOnly && <Check className="w-3.5 h-3.5 text-amber-600" />}
               </button>
             </div>
 
@@ -231,13 +233,13 @@ export default function ProjectStudioPage() {
               
               {/* Domain Filter */}
               <div>
-                <label className="text-[11px] font-mono font-bold text-[#1B1B2F]/60 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider block mb-1">
                   Domain / Category
                 </label>
                 <select
                   value={selectedDomain}
                   onChange={(e) => setSelectedDomain(e.target.value as any)}
-                  className="w-full px-3 py-2 text-xs bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-xl text-[#1B1B2F] font-bold shadow-[2px_2px_0px_#1B1B2F] focus:outline-none cursor-pointer"
+                  className="w-full px-3 py-2 text-xs bg-white border border-[#E5E7EB] rounded-xl text-[#111827] focus:outline-none focus:border-[#2563EB] cursor-pointer"
                 >
                   {ALL_DOMAINS.map((domain) => (
                     <option key={domain} value={domain}>
@@ -249,13 +251,13 @@ export default function ProjectStudioPage() {
 
               {/* Difficulty Filter */}
               <div>
-                <label className="text-[11px] font-mono font-bold text-[#1B1B2F]/60 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider block mb-1">
                   Difficulty Level
                 </label>
                 <select
                   value={selectedDifficulty}
                   onChange={(e) => setSelectedDifficulty(e.target.value as any)}
-                  className="w-full px-3 py-2 text-xs bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-xl text-[#1B1B2F] font-bold shadow-[2px_2px_0px_#1B1B2F] focus:outline-none cursor-pointer"
+                  className="w-full px-3 py-2 text-xs bg-white border border-[#E5E7EB] rounded-xl text-[#111827] focus:outline-none focus:border-[#2563EB] cursor-pointer"
                 >
                   {ALL_DIFFICULTIES.map((diff) => (
                     <option key={diff} value={diff}>
@@ -267,13 +269,13 @@ export default function ProjectStudioPage() {
 
               {/* Tech Stack Filter */}
               <div>
-                <label className="text-[11px] font-mono font-bold text-[#1B1B2F]/60 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider block mb-1">
                   Specific Technology
                 </label>
                 <select
                   value={selectedTech}
                   onChange={(e) => setSelectedTech(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-xl text-[#1B1B2F] font-bold shadow-[2px_2px_0px_#1B1B2F] focus:outline-none cursor-pointer"
+                  className="w-full px-3 py-2 text-xs bg-white border border-[#E5E7EB] rounded-xl text-[#111827] focus:outline-none focus:border-[#2563EB] cursor-pointer"
                 >
                   {availableTechStacks.map((tech) => (
                     <option key={tech} value={tech}>
@@ -288,10 +290,10 @@ export default function ProjectStudioPage() {
                 <button
                   disabled={!hasActiveFilters}
                   onClick={handleResetFilters}
-                  className={`w-full py-2 px-3 text-xs font-extrabold rounded-xl border-2 border-[#1B1B2F] transition-all inline-flex items-center justify-center gap-1.5 ${
+                  className={`w-full py-2 px-3 text-xs font-semibold rounded-xl border transition-colors inline-flex items-center justify-center gap-1.5 ${
                     hasActiveFilters
-                      ? "bg-[#FFF8EE] text-[#1B1B2F] hover:bg-white shadow-[2px_2px_0px_#1B1B2F] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer"
-                      : "bg-neutral-100 text-[#1B1B2F]/40 border-[#1B1B2F]/30 cursor-not-allowed"
+                      ? "bg-white text-[#111827] hover:bg-gray-50 border-[#E5E7EB] cursor-pointer shadow-xs"
+                      : "bg-[#F9FAFB] text-[#9CA3AF] border-[#E5E7EB] cursor-not-allowed"
                   }`}
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
@@ -301,16 +303,16 @@ export default function ProjectStudioPage() {
             </div>
 
             {/* Results Count and Active Filter Pills */}
-            <div className="pt-3 border-t-2 border-[#1B1B2F]/10 flex flex-wrap items-center justify-between gap-2.5 text-xs">
-              <div className="text-[#1B1B2F]/70 font-medium">
-                Showing <strong className="text-[#1B1B2F] font-bold">{filteredProblems.length}</strong> of{" "}
+            <div className="pt-3 border-t border-[#F3F4F6] flex flex-wrap items-center justify-between gap-2.5 text-xs">
+              <div className="text-[#6B7280]">
+                Showing <strong className="text-[#111827] font-semibold">{filteredProblems.length}</strong> of{" "}
                 {PROBLEM_STATEMENTS_DATA.length} problem statements
               </div>
 
               {hasActiveFilters && (
                 <div className="flex flex-wrap items-center gap-1.5">
                   {selectedDomain !== "All" && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FFF8EE] border-2 border-[#1B1B2F] text-[#1B1B2F] text-xs font-bold shadow-[2px_2px_0px_#1B1B2F]">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] text-xs font-medium">
                       Domain: {selectedDomain}
                       <button onClick={() => setSelectedDomain("All")} className="hover:text-red-500 cursor-pointer">
                         <X className="w-3 h-3" />
@@ -318,7 +320,7 @@ export default function ProjectStudioPage() {
                     </span>
                   )}
                   {selectedDifficulty !== "All" && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FFF8EE] border-2 border-[#1B1B2F] text-[#1B1B2F] text-xs font-bold shadow-[2px_2px_0px_#1B1B2F]">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] text-xs font-medium">
                       Level: {selectedDifficulty}
                       <button onClick={() => setSelectedDifficulty("All")} className="hover:text-red-500 cursor-pointer">
                         <X className="w-3 h-3" />
@@ -326,7 +328,7 @@ export default function ProjectStudioPage() {
                     </span>
                   )}
                   {selectedTech !== "All" && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FFF8EE] border-2 border-[#1B1B2F] text-[#1B1B2F] text-xs font-bold shadow-[2px_2px_0px_#1B1B2F]">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] text-xs font-medium">
                       Tech: {selectedTech}
                       <button onClick={() => setSelectedTech("All")} className="hover:text-red-500 cursor-pointer">
                         <X className="w-3 h-3" />
@@ -334,7 +336,7 @@ export default function ProjectStudioPage() {
                     </span>
                   )}
                   {sponsorOnly && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FFC93C] border-2 border-[#1B1B2F] text-[#1B1B2F] text-xs font-extrabold shadow-[2px_2px_0px_#1B1B2F]">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold">
                       Sponsored Only
                       <button onClick={() => setSponsorOnly(false)} className="hover:text-red-500 cursor-pointer">
                         <X className="w-3 h-3" />
@@ -352,30 +354,30 @@ export default function ProjectStudioPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
                 {filteredProblems.map((problem) => {
                   const difficultyBadge = {
-                    Beginner: "bg-[#6BCB77]/20 text-[#1B1B2F] border-2 border-[#1B1B2F]",
-                    Intermediate: "bg-[#FFC93C]/20 text-[#1B1B2F] border-2 border-[#1B1B2F]",
-                    Advanced: "bg-[#4D96FF]/20 text-[#1B1B2F] border-2 border-[#1B1B2F]",
-                    "Industry Grade": "bg-[#8E6CEF]/20 text-[#1B1B2F] border-2 border-[#1B1B2F]",
-                  }[problem.difficulty] || "bg-[#FFF8EE] text-[#1B1B2F] border-2 border-[#1B1B2F]";
+                    Beginner: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                    Intermediate: "bg-amber-50 text-amber-700 border-amber-200",
+                    Advanced: "bg-blue-50 text-blue-700 border-blue-200",
+                    "Industry Grade": "bg-indigo-50 text-indigo-700 border-indigo-200",
+                  }[problem.difficulty] || "bg-gray-50 text-gray-700 border-gray-200";
 
                   return (
                     <div
                       key={problem.id}
-                      className="bg-white rounded-2xl border-2 border-[#1B1B2F] p-6 shadow-[5px_5px_0px_#1B1B2F] hover:shadow-[7px_7px_0px_#1B1B2F] hover:-translate-y-0.5 transition-all flex flex-col justify-between space-y-4"
+                      className="bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-xs hover:border-gray-300 transition-colors flex flex-col justify-between space-y-4"
                     >
                       {/* Card Header Tags */}
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-[#FFF8EE] border-2 border-[#1B1B2F] text-[#1B1B2F]">
+                            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-[#F9FAFB] border border-[#E5E7EB] text-[#4B5563]">
                               {problem.domain}
                             </span>
-                            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md ${difficultyBadge}`}>
+                            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md border ${difficultyBadge}`}>
                               {problem.difficulty}
                             </span>
                           </div>
 
-                          <span className="text-[11px] text-[#1B1B2F]/60 flex items-center gap-1 font-mono font-bold">
+                          <span className="text-xs text-[#6B7280] flex items-center gap-1 font-medium">
                             <Clock className="w-3.5 h-3.5" />
                             {problem.timeEstimate}
                           </span>
@@ -383,34 +385,34 @@ export default function ProjectStudioPage() {
 
                         {/* Company Sponsor Callout */}
                         {problem.companySponsor && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFC93C]/20 border-2 border-[#1B1B2F] text-xs text-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F]">
-                            <Award className="w-4 h-4 text-[#1B1B2F] shrink-0" />
-                            <span className="font-extrabold text-[#1B1B2F]">{problem.companySponsor.name}</span>
-                            <span className="text-[#1B1B2F]/40">&bull;</span>
-                            <span className="font-semibold truncate">{problem.companySponsor.hiringTrack}</span>
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50/70 border border-blue-200/80 text-xs text-[#111827]">
+                            <Award className="w-4 h-4 text-blue-600 shrink-0" />
+                            <span className="font-bold text-[#111827]">{problem.companySponsor.name}</span>
+                            <span className="text-gray-300">&bull;</span>
+                            <span className="text-[#4B5563] truncate">{problem.companySponsor.hiringTrack}</span>
                           </div>
                         )}
 
                         {/* Title */}
-                        <h2 className="text-base sm:text-lg font-extrabold text-[#1B1B2F] leading-snug tracking-tight">
+                        <h2 className="text-base sm:text-lg font-bold text-[#111827] leading-snug tracking-tight">
                           {problem.title}
                         </h2>
 
                         {/* Summary */}
-                        <p className="text-xs text-[#1B1B2F]/70 leading-relaxed font-medium line-clamp-3">
+                        <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-3">
                           {problem.summary}
                         </p>
                       </div>
 
                       {/* Functional Snippets */}
-                      <div className="pt-3 border-t-2 border-[#1B1B2F]/10 space-y-2">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#1B1B2F]/60 block">
+                      <div className="pt-3 border-t border-[#F3F4F6] space-y-2">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#9CA3AF] block">
                           Key Deliverable Highlights:
                         </span>
                         <ul className="space-y-1">
                           {problem.functionalRequirements.slice(0, 2).map((req, rIdx) => (
-                            <li key={rIdx} className="text-xs text-[#1B1B2F]/80 font-medium flex items-start gap-1.5 line-clamp-1">
-                              <Check className="w-3.5 h-3.5 text-[#2EC4B6] shrink-0 mt-0.5" />
+                            <li key={rIdx} className="text-xs text-[#4B5563] flex items-start gap-1.5 line-clamp-1">
+                              <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                               <span className="truncate">{req}</span>
                             </li>
                           ))}
@@ -422,7 +424,7 @@ export default function ProjectStudioPage() {
                         {problem.techStack.map((tech, tIdx) => (
                           <span
                             key={tIdx}
-                            className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-[#FFF8EE] border-2 border-[#1B1B2F] text-[#1B1B2F]"
+                            className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-[#F9FAFB] border border-[#E5E7EB] text-[#4B5563]"
                           >
                             {tech}
                           </span>
@@ -430,18 +432,18 @@ export default function ProjectStudioPage() {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="pt-3 border-t-2 border-[#1B1B2F]/10 flex flex-wrap items-center justify-between gap-2">
+                      <div className="pt-3 border-t border-[#F3F4F6] flex flex-wrap items-center justify-between gap-2">
                         <Link
                           href={`/edbuild?problemId=${problem.id}&create=true`}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border-2 border-[#1B1B2F] bg-[#FFF8EE] hover:bg-white text-[#1B1B2F] text-xs font-extrabold transition-all shadow-[2px_2px_0px_#1B1B2F] hover:translate-x-[1px] hover:translate-y-[1px]"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#E5E7EB] bg-white hover:bg-gray-50 text-[#111827] text-xs font-semibold transition-colors shadow-xs"
                         >
-                          <Users className="w-3.5 h-3.5 text-[#2EC4B6]" />
+                          <Users className="w-3.5 h-3.5 text-blue-600" />
                           <span>Build in EdBuild</span>
                         </Link>
 
                         <button
                           onClick={() => handleOpenProblem(problem)}
-                          className="bg-[#1B1B2F] hover:bg-[#1B1B2F]/90 text-white text-xs font-extrabold py-2 px-4 rounded-xl transition-all border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#FFC93C] hover:translate-x-[1px] hover:translate-y-[1px] inline-flex items-center gap-1.5 cursor-pointer"
+                          className="bg-[#111827] hover:bg-black text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
                         >
                           <span>View Problem</span>
                           <ArrowRight className="w-3.5 h-3.5 text-white" />
@@ -453,19 +455,19 @@ export default function ProjectStudioPage() {
               </div>
             ) : (
               /* Empty Search State */
-              <div className="bg-white rounded-2xl border-2 border-[#1B1B2F] p-10 text-center space-y-4 shadow-[6px_6px_0px_#1B1B2F]">
-                <div className="w-14 h-14 rounded-2xl bg-[#FFC93C] border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#1B1B2F] text-[#1B1B2F] flex items-center justify-center mx-auto">
-                  <Search className="w-6 h-6" />
+              <div className="bg-white rounded-2xl border border-[#E5E7EB] p-10 text-center space-y-4 shadow-xs">
+                <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 text-gray-600 flex items-center justify-center mx-auto">
+                  <Search className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-extrabold text-[#1B1B2F]">
+                <h3 className="text-base font-bold text-[#111827]">
                   No problem statements matched your search
                 </h3>
-                <p className="text-xs text-[#1B1B2F]/70 max-w-md mx-auto leading-relaxed font-medium">
+                <p className="text-xs text-[#6B7280] max-w-md mx-auto leading-relaxed">
                   We could not find any problem statements matching "{searchQuery}" with the selected domain and difficulty filters.
                 </p>
                 <button
                   onClick={handleResetFilters}
-                  className="mt-2 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1B1B2F] text-white text-xs font-extrabold border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#FFC93C] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
+                  className="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#111827] hover:bg-black text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Clear All Filters</span>
@@ -475,14 +477,14 @@ export default function ProjectStudioPage() {
           </section>
 
           {/* 4. FOOTER GUIDANCE BANNER */}
-          <section className="p-5 sm:p-6 rounded-2xl bg-white border-2 border-[#1B1B2F] shadow-[4px_4px_0px_#1B1B2F] text-xs text-[#1B1B2F] flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-2 font-medium">
-              <ShieldCheck className="w-4 h-4 text-[#2EC4B6] shrink-0" />
+          <section className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs text-xs text-[#111827] flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-[#4B5563]">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>All problem statements are calibrated to real-world production engineering architectures.</span>
             </div>
             <Link
               href="/dashboard"
-              className="text-[#1B1B2F] font-extrabold hover:underline inline-flex items-center gap-1 shrink-0"
+              className="text-[#111827] font-semibold hover:underline inline-flex items-center gap-1 shrink-0"
             >
               <span>Back to Dashboard</span>
               <ChevronRight className="w-4 h-4" />
