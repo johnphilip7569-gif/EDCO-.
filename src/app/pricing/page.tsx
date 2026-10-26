@@ -15,15 +15,6 @@ import {
   GraduationCap,
   ChevronDown,
 } from "lucide-react";
-import StudioSticker from "@/components/studio/StudioSticker";
-import Card3DTilt from "@/components/studio/Card3DTilt";
-import {
-  ScribbleUnderline,
-  DoubleScribble,
-  DoodleStar,
-  DoodleArrow,
-  DoodleSparkle,
-} from "@/components/studio/DoodleAccents";
 import confetti from "canvas-confetti";
 
 export default function PricingPage() {
@@ -36,7 +27,7 @@ export default function PricingPage() {
         particleCount: 80,
         spread: 60,
         origin: { y: 0.8 },
-        colors: ["#FFC93C", "#FF6B6B", "#2EC4B6", "#4D96FF", "#8E6CEF"],
+        colors: ["#2563EB", "#10B981", "#F59E0B", "#6366F1"],
       });
     }
   };
@@ -48,8 +39,6 @@ export default function PricingPage() {
       priceInr: 0,
       period: "forever",
       description: "Essential foundational tools for interview practice and resume parsing.",
-      color: "#6BCB77", // Leaf Green
-      textColor: "#1B1B2F",
       badge: "Zero Cost",
       features: [
         "1 Single-Column ATS Vector Resume",
@@ -68,8 +57,6 @@ export default function PricingPage() {
       priceInr: billingCycle === "monthly" ? 49 : 39,
       period: "month",
       description: "Maximum velocity for campus placements and off-campus tech drives.",
-      color: "#FFC93C", // Sunshine Yellow
-      textColor: "#1B1B2F",
       badge: "✦ Most Popular",
       features: [
         "Unlimited ATS Resumes & Job Tailoring",
@@ -89,8 +76,6 @@ export default function PricingPage() {
       priceInr: null,
       period: "Custom Cohort",
       description: "End-to-end placement telemetry and cohort training for universities.",
-      color: "#FF6B6B", // Coral
-      textColor: "#FFFFFF",
       badge: "Campus Partner",
       features: [
         "TPO Placement Readiness Dashboard",
@@ -137,41 +122,35 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-28">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-16 sm:space-y-24 font-sans text-[#111827]">
       
-      {/* ========================================================================= */}
-      {/* 1. HERO HEADER                                                            */}
-      {/* ========================================================================= */}
-      <section className="relative text-center max-w-4xl mx-auto space-y-6">
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
-          <StudioSticker bgColor="#FFC93C" rotate="slight-left" size="sm">
-            ✦ Honest Student Pricing
-          </StudioSticker>
-          <StudioSticker bgColor="#2EC4B6" rotate="slight-right" size="sm">
+      {/* 1. HERO HEADER */}
+      <section className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+            Honest Student Pricing
+          </span>
+          <span className="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-[#4B5563] border border-gray-200">
             No Hidden Fees &bull; GST Included
-          </StudioSticker>
+          </span>
         </div>
 
-        <h1 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#1B1B2F] leading-[1.08] tracking-tight">
-          Fair, predictable plans for{" "}
-          <span className="relative inline-block text-[#FF6B6B]">
-            every student.
-            <ScribbleUnderline color="#FF6B6B" className="absolute -bottom-2 sm:-bottom-3 left-0 w-full" />
-          </span>
+        <h1 className="text-3xl sm:text-5xl font-bold text-[#111827] tracking-tight">
+          Fair, predictable plans for every student.
         </h1>
 
-        <p className="font-studio text-base sm:text-xl text-[#4A4A68] leading-relaxed max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base text-[#4B5563] leading-relaxed max-w-2xl mx-auto">
           Start completely free with foundational resume optimization and AI mock interviews. Upgrade to Career Pro for unlimited interview reps and production labs.
         </p>
 
         {/* Monthly / Annual Billing Toggle */}
-        <div className="pt-4 flex items-center justify-center gap-3">
+        <div className="pt-4 flex items-center justify-center gap-2">
           <button
             onClick={() => setBillingCycle("monthly")}
-            className={`btn-squishy px-5 py-2.5 rounded-2xl font-heading font-extrabold text-xs border-2 border-[#1B1B2F] transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               billingCycle === "monthly"
-                ? "bg-[#1B1B2F] text-white shadow-[3px_3px_0px_#FFC93C]"
-                : "bg-white text-[#1B1B2F] hover:bg-[#FFF8EE]"
+                ? "bg-[#111827] text-white border-[#111827] shadow-xs"
+                : "bg-white text-[#4B5563] hover:bg-gray-50 border-[#E5E7EB]"
             }`}
           >
             Monthly Billing
@@ -179,80 +158,78 @@ export default function PricingPage() {
           
           <button
             onClick={() => setBillingCycle("annual")}
-            className={`btn-squishy px-5 py-2.5 rounded-2xl font-heading font-extrabold text-xs border-2 border-[#1B1B2F] transition-all cursor-pointer flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-2 ${
               billingCycle === "annual"
-                ? "bg-[#1B1B2F] text-white shadow-[3px_3px_0px_#2EC4B6]"
-                : "bg-white text-[#1B1B2F] hover:bg-[#FFF8EE]"
+                ? "bg-[#111827] text-white border-[#111827] shadow-xs"
+                : "bg-white text-[#4B5563] hover:bg-gray-50 border-[#E5E7EB]"
             }`}
           >
             <span>Annual Billing</span>
-            <span className="px-2 py-0.5 rounded-full bg-[#FFC93C] text-[#1B1B2F] text-[10px] font-mono font-extrabold border border-[#1B1B2F]">
+            <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold">
               Save 20%
             </span>
           </button>
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 2. THREE PRICING TIERS (3D TILT CARDS)                                    */}
-      {/* ========================================================================= */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {/* 2. THREE PRICING TIERS */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {plans.map((p) => (
-          <Card3DTilt
+          <div
             key={p.id}
-            className={`rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-6 border-2 border-[#1B1B2F] transition-all relative ${
+            className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-all relative ${
               p.isPopular
-                ? "bg-white shadow-[8px_8px_0px_#1B1B2F] ring-4 ring-[#FFC93C]"
-                : "bg-white shadow-[6px_6px_0px_#1B1B2F]"
+                ? "bg-white border-2 border-[#2563EB] shadow-lg ring-1 ring-[#2563EB]/20"
+                : "bg-white border border-[#E5E7EB] shadow-xs hover:border-gray-300"
             }`}
-            shadowColor="#1B1B2F"
           >
             {p.isPopular && (
-              <div className="absolute -top-3.5 right-6">
-                <StudioSticker bgColor="#FFC93C" textColor="#1B1B2F" size="sm" rotate="slight-right">
+              <div className="absolute -top-3 right-6">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#2563EB] text-white text-[11px] font-semibold shadow-xs">
                   {p.badge}
-                </StudioSticker>
+                </span>
               </div>
             )}
 
             <div className="space-y-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-heading font-extrabold text-xs uppercase tracking-wider text-[#7E7E9A]">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">
                     {p.name}
                   </span>
                   {!p.isPopular && (
-                    <StudioSticker bgColor={p.color} textColor={p.textColor} size="sm" rotate="none">
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-gray-100 text-[#4B5563] border border-gray-200">
                       {p.badge}
-                    </StudioSticker>
+                    </span>
                   )}
                 </div>
 
                 <div className="flex items-baseline gap-1.5 pt-1">
-                  <span className="font-display font-black text-4xl sm:text-5xl text-[#1B1B2F]">
+                  <span className="text-4xl sm:text-5xl font-bold text-[#111827] tracking-tight">
                     {p.priceInr === null ? "Custom" : `₹${p.priceInr}`}
                   </span>
-                  <span className="font-studio text-xs text-[#7E7E9A]">
+                  <span className="text-xs text-[#6B7280]">
                     / {p.period}
                   </span>
                 </div>
 
-                <p className="font-studio text-xs sm:text-sm text-[#4A4A68] leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed pt-1">
                   {p.description}
                 </p>
               </div>
 
               {/* Included Features List */}
-              <div className="space-y-3 pt-4 border-t-2 border-[#1B1B2F]/15">
-                <span className="font-heading font-extrabold text-[10px] uppercase text-[#7E7E9A] block">
+              <div className="space-y-3 pt-4 border-t border-[#F3F4F6]">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] block">
                   Included Capabilities:
                 </span>
                 <div className="space-y-2.5">
                   {p.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs font-studio text-[#1B1B2F]">
+                    <div key={idx} className="flex items-start gap-2.5 text-xs text-[#374151]">
                       <CheckCircle2
-                        className="w-4 h-4 shrink-0 mt-0.5"
-                        style={{ color: p.color }}
+                        className={`w-4 h-4 shrink-0 mt-0.5 ${
+                          p.isPopular ? "text-[#2563EB]" : "text-emerald-600"
+                        }`}
                       />
                       <span className="leading-tight">{feat}</span>
                     </div>
@@ -261,62 +238,60 @@ export default function PricingPage() {
               </div>
             </div>
 
-            <div className="pt-4 border-t-2 border-[#1B1B2F]/15">
+            <div className="pt-4 border-t border-[#F3F4F6]">
               <Link
                 href={p.ctaHref}
                 onClick={p.isPopular ? triggerConfetti : undefined}
-                className="btn-squishy w-full py-3.5 rounded-2xl font-heading font-extrabold text-sm text-center flex items-center justify-center gap-2 select-none border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#1B1B2F]"
-                style={{
-                  backgroundColor: p.isPopular ? "#FFC93C" : p.color,
-                  color: p.textColor,
-                }}
+                className={`w-full py-3 rounded-xl text-xs font-semibold text-center flex items-center justify-center gap-2 transition-colors shadow-xs ${
+                  p.isPopular
+                    ? "bg-[#2563EB] hover:bg-blue-700 text-white"
+                    : "bg-[#111827] hover:bg-black text-white"
+                }`}
               >
                 <span>{p.ctaLabel}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-          </Card3DTilt>
+          </div>
         ))}
       </section>
 
-      {/* ========================================================================= */}
-      {/* 3. FEATURE COMPARISON MATRIX TABLE                                       */}
-      {/* ========================================================================= */}
-      <section className="rounded-3xl bg-white border-2 border-[#1B1B2F] p-6 sm:p-10 shadow-[8px_8px_0px_#1B1B2F] max-w-5xl mx-auto space-y-6">
+      {/* 3. FEATURE COMPARISON MATRIX TABLE */}
+      <section className="rounded-2xl bg-white border border-[#E5E7EB] p-6 sm:p-8 shadow-xs max-w-5xl mx-auto space-y-6">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2EC4B6] border-2 border-[#1B1B2F] text-xs font-heading font-extrabold uppercase shadow-[2px_2px_0px_#1B1B2F]">
-            <DoodleStar className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Side-by-Side Entitlements</span>
           </div>
-          <h2 className="font-display font-black text-2xl sm:text-3xl text-[#1B1B2F]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#111827]">
             Plan Feature Matrix
           </h2>
-          <p className="font-studio text-xs sm:text-sm text-[#4A4A68]">
+          <p className="text-xs sm:text-sm text-[#6B7280]">
             Detailed breakdown of limits and capabilities across tiers.
           </p>
         </div>
 
-        <div className="overflow-x-auto border-2 border-[#1B1B2F] rounded-2xl">
+        <div className="overflow-x-auto border border-[#E5E7EB] rounded-xl">
           <table className="w-full text-xs text-left">
             <thead>
-              <tr className="bg-[#FFF8EE] border-b-2 border-[#1B1B2F] text-[#1B1B2F] font-heading font-extrabold uppercase">
+              <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB] text-[#111827] font-semibold uppercase">
                 <th className="py-3 px-4">Feature</th>
                 <th className="py-3 px-4">Free Starter</th>
-                <th className="py-3 px-4 bg-[#FFC93C]/40 border-x-2 border-[#1B1B2F] text-[#1B1B2F]">
+                <th className="py-3 px-4 bg-blue-50/60 text-[#2563EB] font-bold">
                   Career Pro (₹49)
                 </th>
                 <th className="py-3 px-4">Campus Plan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1B1B2F]/15 font-studio">
+            <tbody className="divide-y divide-[#F3F4F6]">
               {comparisonRows.map((row, i) => (
-                <tr key={i} className="hover:bg-[#FFF8EE]/60 transition-colors">
-                  <td className="py-3.5 px-4 font-bold text-[#1B1B2F]">{row.feature}</td>
-                  <td className="py-3.5 px-4 text-[#4A4A68]">{row.free}</td>
-                  <td className="py-3.5 px-4 font-bold text-[#1B1B2F] bg-[#FFC93C]/20 border-x-2 border-[#1B1B2F]">
+                <tr key={i} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="py-3.5 px-4 font-semibold text-[#111827]">{row.feature}</td>
+                  <td className="py-3.5 px-4 text-[#4B5563]">{row.free}</td>
+                  <td className="py-3.5 px-4 font-semibold text-[#2563EB] bg-blue-50/30">
                     {row.pro}
                   </td>
-                  <td className="py-3.5 px-4 text-[#4A4A68]">{row.campus}</td>
+                  <td className="py-3.5 px-4 text-[#4B5563]">{row.campus}</td>
                 </tr>
               ))}
             </tbody>
@@ -324,34 +299,30 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 4. 100% TRANSPARENT BILLING GUARANTEE                                     */}
-      {/* ========================================================================= */}
-      <section className="p-7 sm:p-9 rounded-3xl bg-[#FFF8EE] border-2 border-[#1B1B2F] text-center space-y-3 max-w-4xl mx-auto shadow-[5px_5px_0px_#1B1B2F]">
-        <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-heading font-extrabold text-[#1B1B2F]">
+      {/* 4. 100% TRANSPARENT BILLING GUARANTEE */}
+      <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] text-center space-y-3 max-w-4xl mx-auto shadow-xs">
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-semibold text-[#111827]">
           <span>✦ All prices inclusive of applicable GST (18%)</span>
-          <span className="text-[#FF6B6B]">&bull;</span>
+          <span className="text-gray-300">&bull;</span>
           <span>Zero hidden platform surcharges</span>
-          <span className="text-[#FF6B6B]">&bull;</span>
+          <span className="text-gray-300">&bull;</span>
           <span>1-Click self-service cancellation</span>
         </div>
-        <p className="font-studio text-xs text-[#4A4A68] max-w-xl mx-auto leading-relaxed">
+        <p className="text-xs text-[#6B7280] max-w-xl mx-auto leading-relaxed">
           All paid tiers are backed by our transparent 7-Day Money-Back Guarantee. Subscriptions may be cancelled anytime with zero penalty. View our full{" "}
-          <Link href="/terms" className="font-bold underline text-[#1B1B2F]">
+          <Link href="/terms" className="font-semibold underline text-[#111827]">
             Terms of Learning
           </Link>.
         </p>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 5. PRICING FAQS ACCORDION                                                 */}
-      {/* ========================================================================= */}
-      <section className="max-w-4xl mx-auto space-y-8">
-        <div className="text-center space-y-2">
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-[#1B1B2F]">
+      {/* 5. PRICING FAQS ACCORDION */}
+      <section className="max-w-4xl mx-auto space-y-6">
+        <div className="text-center space-y-1">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#111827]">
             Pricing Questions &amp; Answers
           </h2>
-          <p className="font-studio text-xs sm:text-sm text-[#4A4A68]">
+          <p className="text-xs sm:text-sm text-[#6B7280]">
             Everything you need to know about plans, billing, and cancellations.
           </p>
         </div>
@@ -362,21 +333,21 @@ export default function PricingPage() {
             return (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-white border-2 border-[#1B1B2F] transition-all shadow-[3px_3px_0px_#1B1B2F]"
+                className="p-5 rounded-xl bg-white border border-[#E5E7EB] transition-colors shadow-xs"
               >
                 <button
                   onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between text-left gap-4 font-heading font-bold text-sm sm:text-base text-[#1B1B2F] cursor-pointer"
+                  className="w-full flex items-center justify-between text-left gap-4 font-semibold text-sm sm:text-base text-[#111827] cursor-pointer"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#4A4A68] transition-transform duration-200 shrink-0 ${
-                      isOpen ? "rotate-180 text-[#FF6B6B]" : ""
+                    className={`w-4 h-4 text-[#6B7280] transition-transform duration-200 shrink-0 ${
+                      isOpen ? "rotate-180 text-[#2563EB]" : ""
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <p className="text-xs sm:text-sm font-studio text-[#4A4A68] leading-relaxed mt-3 pt-3 border-t border-[#1B1B2F]/15 animate-in fade-in">
+                  <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed mt-3 pt-3 border-t border-[#F3F4F6] animate-in fade-in">
                     {faq.a}
                   </p>
                 )}
