@@ -31,7 +31,6 @@ import {
   ProblemDifficulty 
 } from "@/lib/projects/problem-statements-data";
 import ProblemStatementDetailModal from "@/components/project/ProblemStatementDetailModal";
-import { StudioSticker } from "@/components/studio/StudioSticker";
 
 const ALL_DOMAINS: ("All" | ProblemDomain)[] = [
   "All",
