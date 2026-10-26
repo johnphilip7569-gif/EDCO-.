@@ -24,7 +24,14 @@ export async function isFeatureEnabled(flagKey: string, userId?: string): Promis
       .eq("key", flagKey)
       .maybeSingle();
 
-    if (!flag) return true; // Default fallback to enabled if flag is unconfigured
+    if (!flag) {
+      // Safe default: site_launched must remain false (Coming Soon mode) until explicitly accepted in admin
+      if (flagKey === "site_launched") {
+        FLAG_CACHE.set(flagKey, { enabled: false, timestamp: Date.now() });
+        return false;
+      }
+      return true; // Default fallback to enabled for normal internal feature flags
+    }
 
     if (!flag.enabled) {
       FLAG_CACHE.set(flagKey, { enabled: false, timestamp: Date.now() });

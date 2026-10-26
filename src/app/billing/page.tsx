@@ -149,25 +149,25 @@ export default function BillingPage() {
 
   return (
     <AuthGuard requireAuth={true}>
-      <div className="min-h-screen bg-paper pb-20 pt-8 px-4 sm:px-6">
+      <div className="min-h-screen bg-white pb-20 pt-8 px-4 sm:px-6 font-sans">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="text-center space-y-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-forest/10 text-forest border border-forest/20">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-neutral-100 text-black border border-neutral-200">
               <Zap className="w-3.5 h-3.5" /> Plans &amp; Subscriptions
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black font-display text-ink tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black font-display text-black tracking-tight">
               Invest in Your Career Acceleration
             </h1>
 
             {/* Billing Cycle Toggle */}
-            <div className="inline-flex items-center gap-2 p-1 bg-paper-raised border border-line rounded-2xl shadow-sm mt-4">
+            <div className="inline-flex items-center gap-2 p-1 bg-white border border-neutral-200 rounded-2xl shadow-xs mt-4">
               <button
                 onClick={() => setBillingCycle("monthly")}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   billingCycle === "monthly"
-                    ? "bg-forest text-paper shadow-sm"
-                    : "text-ink-soft hover:text-ink"
+                    ? "bg-black text-white shadow-xs"
+                    : "text-neutral-500 hover:text-black"
                 }`}
               >
                 Monthly Billing
@@ -176,12 +176,12 @@ export default function BillingPage() {
                 onClick={() => setBillingCycle("yearly")}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                   billingCycle === "yearly"
-                    ? "bg-forest text-paper shadow-sm"
-                    : "text-ink-soft hover:text-ink"
+                    ? "bg-black text-white shadow-xs"
+                    : "text-neutral-500 hover:text-black"
                 }`}
               >
                 <span>Annual Billing</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-forest-light/30 text-paper font-mono">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 text-black font-mono">
                   Save ~17%
                 </span>
               </button>
@@ -190,8 +190,8 @@ export default function BillingPage() {
 
           {/* Toast Notification */}
           {actionSuccess && (
-            <div className="p-4 rounded-2xl bg-forest/10 border border-forest/30 text-forest text-xs font-bold flex items-center gap-3 animate-fade-in shadow-sm">
-              <CheckCircle2 className="w-5 h-5 shrink-0" />
+            <div className="p-4 rounded-2xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-3 animate-fade-in shadow-xs">
+              <CheckCircle2 className="w-5 h-5 shrink-0 text-black" />
               <span>{actionSuccess}</span>
             </div>
           )}
@@ -199,42 +199,42 @@ export default function BillingPage() {
           {/* Pricing Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {/* 1. FREE STARTER TIER */}
-            <div className="bg-paper-raised rounded-3xl p-6 border border-line flex flex-col justify-between space-y-6 shadow-sm">
+            <div className="bg-white rounded-3xl p-6 border border-neutral-200 flex flex-col justify-between space-y-6 shadow-xs">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-ink-muted">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500">
                     Starter Plan
                   </span>
                   {!isPro && (
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-ink/10 text-ink">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black">
                       Current Plan
                     </span>
                   )}
                 </div>
                 <div>
-                  <span className="text-4xl font-black font-mono text-ink">₹0</span>
-                  <span className="text-xs text-ink-soft font-medium"> / forever</span>
+                  <span className="text-4xl font-black font-mono text-black">₹0</span>
+                  <span className="text-xs text-neutral-500 font-medium"> / forever</span>
                 </div>
-                <p className="text-xs text-ink-soft leading-relaxed">
+                <p className="text-xs text-neutral-600 leading-relaxed font-normal">
                   Foundational career exploration for students and self-directed learners.
                 </p>
 
                 {/* Feature List */}
-                <div className="space-y-2.5 pt-3 border-t border-line text-xs text-ink">
+                <div className="space-y-2.5 pt-3 border-t border-neutral-100 text-xs text-black">
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-forest shrink-0" />
+                    <Check className="w-4 h-4 text-black shrink-0" />
                     <span>1 ATS Resume Version</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-forest shrink-0" />
+                    <Check className="w-4 h-4 text-black shrink-0" />
                     <span>2 AI Mock Interviews / month</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-forest shrink-0" />
+                    <Check className="w-4 h-4 text-black shrink-0" />
                     <span>Basic Skills &amp; Growth tracking</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-forest shrink-0" />
+                    <Check className="w-4 h-4 text-black shrink-0" />
                     <span>View-only Job &amp; Internship Board</span>
                   </div>
                   <div className="flex items-center gap-2 text-ink-muted">
@@ -322,10 +322,10 @@ export default function BillingPage() {
                       <div className="text-[10px] font-mono text-ink-muted">Order: {ph.order_id} &bull; Payment: {ph.payment_id}</div>
                     </div>
                     <div className="text-right">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-forest/10 text-forest border border-forest/20">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200">
                         {ph.status}
                       </span>
-                      <div className="text-[10px] text-ink-muted mt-0.5">{new Date(ph.created_at).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-neutral-500 mt-0.5">{new Date(ph.created_at).toLocaleDateString()}</div>
                     </div>
                   </div>
                 ))}
@@ -334,11 +334,11 @@ export default function BillingPage() {
           )}
 
           {/* Payment Methods & Guarantee Notice */}
-          <div className="max-w-4xl mx-auto p-4 rounded-2xl bg-paper-raised border border-line text-xs text-ink-soft flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+          <div className="max-w-4xl mx-auto p-4 rounded-2xl bg-white border border-neutral-200 text-xs text-neutral-600 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-forest shrink-0" />
+              <ShieldCheck className="w-5 h-5 text-black shrink-0" />
               <span>
-                <strong className="text-ink">Zero Data Loss Guarantee:</strong> If your subscription lapses, your saved resumes and interview scores remain safe forever.
+                <strong className="text-black">Zero Data Loss Guarantee:</strong> If your subscription lapses, your saved resumes and interview scores remain safe forever.
               </span>
             </div>
             <div className="flex items-center gap-2 text-[11px] font-bold text-ink-muted">

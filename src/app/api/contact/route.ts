@@ -1,10 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { forwardContactInquiry } from "@/lib/email-service";
 import { supabase } from "@/lib/supabase";
+import { rateLimit, getClientIp } from "@/lib/rate-limiter";
+import { logger } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  const requestId = req.headers.get("x-request-id") || `req-${Date.now()}`;
+  const log = logger.child({ request_id: requestId, route: "/api/contact", service: "email" });
+
+  // Rate limit: 5 contact submissions per IP per minute to prevent spam
+  const ip = getClientIp(req);
+  const rl = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 });
+  if (!rl.allowed) {
+    log.warn("Contact rate limit exceeded", { ip });
+    return NextResponse.json(
+      { success: false, error: "Too many submissions. Please wait a moment before trying again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.reset - Date.now()) / 1000)),
+          "x-request-id": requestId,
+        },
+      }
+    );
+  }
+
   try {
     const body = await req.json();
     const { name, email, category, message } = body;

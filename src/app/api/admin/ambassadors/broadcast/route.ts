@@ -3,10 +3,46 @@ import { supabase } from "@/lib/supabase";
 import { sendEmailNotification, PRIMARY_ADMIN_EMAIL } from "@/lib/email-service";
 import { renderBrandedEmailHtml } from "@/lib/email-templates";
 
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
+
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
+    const supabaseServer = createClient();
+    let isAuthorized = false;
+
+    const { data: { user } } = await supabaseServer.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(profile?.role)) {
+        isAuthorized = true;
+      }
+    }
+
+    if (!isAuthorized) {
+      const sessionCookie = req.cookies.get("edworld_session")?.value;
+      if (sessionCookie) {
+        const { valid, role } = validateSession(sessionCookie);
+        if (valid && ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(role || "")) {
+          isAuthorized = true;
+        }
+      }
+    }
+
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Platform administrator clearance required to dispatch ambassador broadcasts." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       type = "meeting", // "meeting" | "task"

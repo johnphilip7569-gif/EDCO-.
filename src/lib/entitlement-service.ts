@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-export type EntitlementAction = "create_resume" | "start_mock_interview" | "apply_to_job" | "mentor_messaging" | "ask_myra";
+export type EntitlementAction = "create_resume" | "start_mock_interview" | "live_voice_interview" | "apply_to_job" | "mentor_messaging" | "ask_myra";
 
 export interface EntitlementCheckResult {
   allowed: boolean;
@@ -72,6 +72,7 @@ export async function checkEntitlement(
       return { allowed: true, plan: currentPlan, status: currentStatus, currentCount: resumeCount, limit: 1 };
     }
 
+    case "live_voice_interview":
     case "start_mock_interview": {
       // Calculate start of current month in UTC
       const now = new Date();

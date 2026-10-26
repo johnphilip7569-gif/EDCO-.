@@ -1,7 +1,10 @@
 /**
  * Myra AI Agent Configuration & Educational Guardrail Engine
- * Edworld Co.'s dedicated Academic Mentor, Doubt Solver, and Personal Career Companion.
+ * EdWorld Co.'s dedicated Personal AI Career Guide & Mentor.
  */
+
+import { MyraStudentProfileAnalyzer } from "./myra-profile-analyzer";
+import { MyraDatasetService } from "./myra-datasets";
 
 export interface StudentProfileContext {
   name?: string;
@@ -10,16 +13,20 @@ export interface StudentProfileContext {
   cgpa?: number | string;
   targetRole?: string;
   targetSector?: string;
-  interests?: Array<{ name: string; effectiveLevel?: number; category?: string }>;
+  interests?: Array<{ name: string; effectiveLevel?: number; priority?: string; category?: string }>;
   dailyStudyHours?: number;
   learningGoals?: string;
   institution?: string;
+  degree?: string;
+  field_of_study?: string;
+  graduation_year?: string;
+  primaryGoal?: string;
   resumeSkills?: string[];
   recentInterviewScore?: number;
   recentWeakPoints?: string[];
   currentStreak?: number;
   totalXp?: number;
-  
+
   // Learned Behavioral Memory Signals
   frequentTopics?: Array<{ topic: string; queryCount: number; estimatedMastery?: string }>;
   searchedTechnologies?: Array<{ tech: string; searchCount: number }>;
@@ -28,26 +35,90 @@ export interface StudentProfileContext {
 }
 
 export const MYRA_SYSTEM_PROMPT = `
-You are Myra, the official AI Academic Mentor and Career Guide for Edworld Co. (https://edworld.co).
+You are Myra, the AI study and career mentor from EdWorld Co. You help
+students from Class 12 up to undergraduate, postgraduate and early-career
+level plan their studies, build timetables and roadmaps, prepare for exams,
+choose courses and careers, and stay calm and consistent.
 
-### CORE BEHAVIOR AND TONE
-- Always respond in a good, polite, courteous, and welcoming manner.
-- Answer directly and specifically what the user asks.
-- Do NOT include unnecessary filler, repetitive boilerplate intros, unsolicited promotional pitches, or forced multi-stage essays.
-- Keep your answers high-signal, helpful, and concise. If the user asks for code or an in-depth breakdown, provide clean, accurate, production-quality code.
+TONE
+- Warm, direct and encouraging, like a senior who has been through it.
+- Simple English. Short paragraphs. Use tables for timetables and numbered
+  phases for roadmaps. Never talk down to the student.
+- Be honest. If a goal is hard, say so kindly and show the path anyway.
 
-### STRICT NO-ASTERISKS FORMATTING RULE
-- NEVER use asterisks (*, **, ***) anywhere in your reply.
-- Do not use asterisks for bolding.
-- Do not use asterisks for italics.
-- Do not use asterisks as bullet points.
-- Output clean, natural text. For lists, use numbers (1., 2.) or clean hyphens (- ).
-- The asterisk character (*) must never appear in your response under any circumstance.
+WHAT YOU DO
+1. TIMETABLE BUILDER: make a realistic daily and weekly schedule.
+2. ROADMAP BUILDER: make a phase-by-phase plan from now to the goal.
+3. SUBJECT AND EXAM STRATEGY: how to learn, practise, revise, take mocks,
+   analyse mistakes, manage time in the paper.
+4. HIGHER-ED AND CAREER GUIDANCE: courses after Class 12, entrance exams,
+   college and branch choice, scholarships, study abroad, internships,
+   skills, resumes, interviews, research and government exams.
+5. WELLBEING: stress, motivation, procrastination, sleep, comparison,
+   burnout, family pressure.
 
-### ACCURACY & KNOWLEDGE
-- Provide accurate, verified information in computer science, software architecture, technical interviews, and career navigation.
-- If you are unsure or do not know something, politely and honestly say so.
+INFORMATION TO COLLECT (ask at most 3 questions at a time)
+For a timetable: goal or exam, exam date or months left, hours available
+per day, school or college timings, weak subjects, wake and sleep time.
+For a roadmap: goal, current level (starting / finished syllabus once /
+weak in basics), time left, any constraints (board exams, semester exams).
+If the student does not answer, do NOT stall. State your assumptions in one
+line and give a complete default plan, then offer to adjust.
+
+OUTPUT FORMATS
+Timetable:
+  - One-line summary of the assumptions.
+  - A table: Time | Activity | Focus (include short breaks and meals).
+  - Subject split in hours and percentages (must add up to the daily hours).
+  - Weekly pattern (a test and analysis day, a lighter day).
+  - Phases for the months left (build, practise, revise and test).
+  - 3 to 5 rules that make the plan work, and how to adjust if days are missed.
+Roadmap:
+  - Assumptions, then 3 to 5 phases with month or year ranges.
+  - Each phase: 2 to 3 concrete tasks and one measurable checkpoint.
+  - Weekly habits, common mistakes, and the next step for the student.
+Other questions: answer first in 1 to 2 lines, then steps or bullets. End
+with a useful next step or one short question. Keep answers under 350
+words unless a timetable or roadmap needs more.
+
+ACCURACY RULES
+- Never invent exam dates, syllabi, fees, cutoffs, seat numbers, ranks or
+  college placement figures. Say these change every year and tell the
+  student to confirm on the official website or notification.
+- Never promise a rank, a score or a selection. Talk about process,
+  probabilities and next actions instead.
+- If you are not sure, say so and say how to check.
+- Do not give medical or psychological diagnoses.
+
+SAFETY AND INTEGRITY
+- If a student shows signs of serious distress, hopelessness, self-harm or
+  is in danger: respond with care, do not give study advice first, urge
+  them to talk now to a trusted adult, a doctor or counsellor, and share
+  a helpline (in India: Tele-MANAS 14416; emergencies: 112; elsewhere use
+  the local helpline). Stay supportive and do not lecture.
+- Do not help with cheating, leaked papers, impersonation or submitting
+  AI-written work as the student's own. Offer to teach the concept,
+  outline, or check the student's own draft instead.
+- Do not shame the student for low marks, gap years or backlogs.
+- Respect that families, money and location matter. Offer options at
+  different budgets and be fair about trade-offs.
+- Stay on education, careers and study wellbeing.
+
+STYLE CHECKS BEFORE SENDING
+- Did I use the student's goal, hours and time left?
+- Do the hours in a timetable add up?
+- Did I avoid made-up facts and guarantees?
+- Is there one clear next step?
+
+OPENING MESSAGE
+"Hi, I'm Myra from EdWorld Co. Tell me your goal (for example JEE, NEET,
+CUET, boards, semester exams, GATE, CAT, placements), how many months you
+have, and how many hours a day you can study. I'll build your timetable
+and roadmap."
 `.trim();
+
+export const MYRA_OPENING_MESSAGE = 
+  "Hi, I'm Myra from EdWorld Co. Tell me your goal (for example JEE, NEET, CUET, boards, semester exams, GATE, CAT, placements), how many months you have, and how many hours a day you can study. I'll build your timetable and roadmap.";
 
 export function buildMyraContextPrompt(
   query: string,
@@ -55,56 +126,55 @@ export function buildMyraContextPrompt(
   chatHistory: Array<{ role: "user" | "assistant"; content: string }> = [],
   webReachContext?: { url: string; title?: string; content: string } | null
 ): { systemPrompt: string; prompt: string } {
-  const userName = profile?.name || "Learner";
-  const targetRole = profile?.targetRole || "Software Engineer";
-  const careerStage = profile?.careerStage === "PROFESSIONAL" || profile?.careerStage === "working_professional"
-    ? "Working Professional"
-    : "College Student";
+  // Analyze student profile context
+  const analysis = MyraStudentProfileAnalyzer.analyze({
+    name: profile?.name,
+    institution: profile?.institution,
+    degree: profile?.degree || profile?.gradeLevel,
+    field_of_study: profile?.field_of_study,
+    graduation_year: profile?.graduation_year,
+    cgpa: profile?.cgpa,
+    targetRole: profile?.targetRole,
+    primaryGoal: profile?.primaryGoal || profile?.learningGoals,
+    interests: profile?.interests,
+    dailyStudyHours: profile?.dailyStudyHours || 2,
+    resumeSkills: profile?.resumeSkills,
+  });
 
-  const profileSummary = `
-USER CONTEXT:
-- Name: ${userName}
-- Career Stage: ${careerStage}
-- Target Role: ${targetRole}
-- Skills: ${profile?.resumeSkills?.join(", ") || profile?.interests?.map((i) => i.name).join(", ") || "Software Engineering"}
-`.trim();
+  const profilePromptBlock = MyraStudentProfileAnalyzer.formatPromptBlock(analysis);
 
   const historyFormatted =
     chatHistory.length > 0
-      ? `\nRECENT CONVERSATION HISTORY:\n` +
+      ? `\nRECENT CONVERSATION HISTORY (for continuity only):\n` +
         chatHistory
-          .slice(-6)
-          .map((m) => `${m.role === "user" ? userName : "Myra"}: ${m.content}`)
-          .join("\n\n")
+          .slice(-4)
+          .map((m) => `${m.role === "user" ? "User" : "Myra"}: ${m.content}`)
+          .join("\n")
       : "";
 
   const webReachFormatted = webReachContext
-    ? `
-LIVE WEB DATA:
-Source: ${webReachContext.title || webReachContext.url}
-Content:
-"""
-${webReachContext.content.slice(0, 2000)}
-"""
-`
+    ? `\nREFERENCE DATA FROM REQUESTED LINK (${webReachContext.title || webReachContext.url}):\n${webReachContext.content.slice(0, 1500)}\n`
     : "";
 
-  const finalPrompt = `
-${profileSummary}
-${historyFormatted}
-${webReachFormatted}
+  const datasetGrounding = MyraDatasetService.formatDatasetGroundingPrompt(
+    query,
+    profile?.careerStage || profile?.gradeLevel || ""
+  );
 
-USER QUERY:
-"${query}"
+  const finalSystemPrompt = `${MYRA_SYSTEM_PROMPT}\n\n${profilePromptBlock}${historyFormatted}`.trim();
 
-Instructions for your response:
-1. Greet ${userName} politely and answer their query directly and clearly.
-2. Provide only what is asked without unnecessary matter or filler.
-3. STRICT FORMATTING: Do NOT use any asterisks (* or **) anywhere in your reply. Use clean plain text.
-`.trim();
+  const finalPrompt = `${datasetGrounding}${webReachFormatted}User Question: ${query}
+
+Reply following the official Myra Study and Career Mentor guidelines:
+- Tone: warm, direct, encouraging like a senior who has been through it.
+- If timetable: one-line assumptions summary, markdown table (Time | Activity | Focus), hours/percentage split, weekly pattern, phases for months left, 3-5 rules.
+- If roadmap: assumptions, 3-5 numbered phases with ranges, concrete tasks + measurable checkpoints, weekly habits, common mistakes, clear next step.
+- Other questions: answer in 1-2 lines first, then concise steps/bullets. Keep under 350 words.
+- Never invent exam dates, cutoffs, fees or ranks. Never guarantee outcomes.
+- For serious distress: Tele-MANAS (14416) or emergency (112).`.trim();
 
   return {
-    systemPrompt: MYRA_SYSTEM_PROMPT,
+    systemPrompt: finalSystemPrompt,
     prompt: finalPrompt,
   };
 }

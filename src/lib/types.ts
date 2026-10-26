@@ -38,13 +38,16 @@ export interface UserProfile {
   degree?: string;
   field_of_study?: string;
   graduation_year?: string;
+  cgpa?: string | number;
   experience_level?: string;
   current_company?: string;
   github_url?: string;
   linkedin_url?: string;
   leetcode_url?: string;
   isTeacher?: boolean;         // Educator role
-  isSchoolAdmin?: boolean;
+  email?: string;
+  avatar_url?: string;
+  photoURL?: string;
   certifications?: Array<{ id: string; name: string; issuer: string; issueDate: string; url?: string }>;     // Institutional Admin role
   updatedAt?: string;
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { queryDb } from "@/lib/db-server";
 import { awardPoints } from "@/lib/gamification-service";
 import { analyzeSpokenLanguage, syncUserCommunicationProfile } from "@/lib/interview/language-analysis-service";
 import { UniversalAI } from "@/lib/ai/universal-ai";
@@ -143,63 +144,65 @@ export async function POST(req: NextRequest) {
 
     const interviewFormat = body.format || "standard";
     const modelVersion = aiEvaluation.modelUsed || "claude-3-5-sonnet";
-    const sessionId = `session-${Date.now()}`;
+    const sessionId = (body.sessionId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.sessionId))
+      ? body.sessionId
+      : (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `00000000-0000-4000-8000-${Date.now().toString(16).padStart(12, '0')}`);
 
-    // 6. Save Session to Supabase interview_sessions
+    const voiceOptIn = Boolean(body.voiceOptIn);
+    const retentionExpiresAt = voiceOptIn 
+      ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() 
+      : null;
+    const audioDeletedAt = !voiceOptIn ? new Date().toISOString() : null;
+
+    // 6. Save Session to Supabase interview_sessions via direct PostgreSQL pooler
     try {
-      await supabase.from("interview_sessions").insert({
-        id: sessionId,
-        user_id: userId,
-        category,
-        difficulty_level: difficultyLevel,
-        format: interviewFormat,
-        model_version: modelVersion,
-        questions: questions.length > 0 ? questions : [{ id: "q1", text: questionText, transcript }],
-        overall_score: overallScore,
-        metrics: {
-          ...metrics,
-          annotations,
-          fullscreen_exit_events: fullscreenExitEvents,
-          format: interviewFormat,
-          model_version: modelVersion,
-        },
-        created_at: new Date().toISOString(),
-      });
-
-      // Save to interview_language_metrics table
-      await supabase.from("interview_language_metrics").insert({
-        interview_id: sessionId,
-        user_id: userId,
-        language_score: langAnalysis.overallLanguageScore,
-        grammar_score: langAnalysis.grammarScore,
-        clarity_score: langAnalysis.clarityScore,
-        fluency_score: langAnalysis.fluencyScore,
-        vocabulary_score: langAnalysis.vocabularyScore,
-        professional_score: langAnalysis.professionalScore,
-        filler_word_count: langAnalysis.fillerWordCount,
-        speaking_rate_wpm: wordsPerMinute,
-        pause_count: annotations.filter((a) => a.type === "pacing").length,
-        answer_structure_score: aiEvaluation.structureScore,
-        what_you_said: feedback.whatYouSaid,
-        improved_version: feedback.improvedVersion,
-        improvement_rationale: feedback.improvementRationale,
-        coachSuggestions: feedback.coachSuggestions,
-        created_at: new Date().toISOString(),
-      });
+      await queryDb(
+        `INSERT INTO public.interview_sessions (
+          id, user_id, category, difficulty_level, questions, overall_score,
+          voice_opt_in, audio_url, audio_deleted_at, retention_expires_at, metrics, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+        [
+          sessionId,
+          userId,
+          category,
+          difficultyLevel,
+          JSON.stringify(questions.length > 0 ? questions : [{ id: "q1", text: questionText, transcript }]),
+          overallScore,
+          voiceOptIn,
+          null,
+          audioDeletedAt,
+          retentionExpiresAt,
+          JSON.stringify({
+            ...metrics,
+            annotations,
+            fullscreen_exit_events: fullscreenExitEvents,
+            format: interviewFormat,
+            model_version: modelVersion,
+            voice_opt_in: voiceOptIn,
+            retention_expires_at: retentionExpiresAt,
+          }),
+          new Date().toISOString(),
+        ]
+      );
 
       // Sync long-term user communication profile
-      await syncUserCommunicationProfile(userId, langAnalysis);
+      await syncUserCommunicationProfile(userId, langAnalysis).catch((e) => console.warn("[Profile Sync Note]:", e.message));
 
       // Log interaction in myra_interactions table
-      await supabase.from("myra_interactions").insert({
-        user_id: userId,
-        feature_context: "interview_score",
-        input_summary: `Question: ${questionText.slice(0, 100)}, Transcript: ${transcript.slice(0, 150)}`,
-        output_summary: `Overall Score: ${overallScore}/100, Structure: ${aiEvaluation.structureScore}`,
-        model_version: aiEvaluation.modelUsed || MyraOrchestrator.getModelVersion(),
-        status: "success",
-        metadata: { overallScore, category, sessionId },
-      });
+      await queryDb(
+        `INSERT INTO public.myra_interactions (
+          user_id, feature_context, input_summary, output_summary, model_version, status, metadata, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
+        [
+          userId,
+          "interview_score",
+          `Question: ${questionText.slice(0, 100)}, Transcript: ${transcript.slice(0, 150)}`,
+          `Overall Score: ${overallScore}/100, Structure: ${aiEvaluation.structureScore}`,
+          aiEvaluation.modelUsed || MyraOrchestrator.getModelVersion(),
+          "success",
+          JSON.stringify({ overallScore, category, sessionId }),
+        ]
+      ).catch((e) => console.warn("[Myra Interaction Log Warning]:", e.message));
     } catch (saveErr) {
       console.warn("[Save Interview Session Supabase Note]:", saveErr);
     }

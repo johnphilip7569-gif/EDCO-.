@@ -214,7 +214,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         : profileData?.age_band || userMeta.age_band || "18+";
 
       const email = (supabaseUser.email || "").toLowerCase();
-      const isFounderEmail = email === "edworld.eden@gmail.com" || email === "founder@edworld.co.in" || email === "ceo@edworld.co.in";
+      const isFounderEmail = email === "edworld.eden@gmail.com" || email === "founder@edworld.co.in" || email === "ceo@edworld.co.in" || email === "kolluruadarsh06@gmail.com";
 
       let determinedRole: UserRole = "CLIENT";
       if (typeof window !== "undefined") {
@@ -848,6 +848,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (data.graduation_year !== undefined) updatePayload.graduation_year = data.graduation_year;
     if (data.experience_level !== undefined) updatePayload.experience_level = data.experience_level;
     if (data.current_company !== undefined) updatePayload.current_company = data.current_company;
+    if (data.github_url !== undefined) updatePayload.github_url = data.github_url;
+    if (data.linkedin_url !== undefined) updatePayload.linkedin_url = data.linkedin_url;
+    if (data.leetcode_url !== undefined) updatePayload.leetcode_url = data.leetcode_url;
+    if (data.avatar_url !== undefined) updatePayload.avatar_url = data.avatar_url;
+    else if (data.photoURL !== undefined) updatePayload.avatar_url = data.photoURL;
 
     // Post to server-side profile update API for authoritative validation & database persistence
     try {
@@ -864,10 +869,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!res.ok) {
         // Direct Supabase fallback
-        const { error: directErr } = await supabase
+        let payloadToSync: Record<string, any> = { ...updatePayload };
+        let { error: directErr } = await supabase
           .from("profiles")
-          .update(updatePayload)
+          .update(payloadToSync)
           .eq("id", user.uid);
+
+        if (directErr && directErr.message && directErr.message.includes("in the schema cache")) {
+          const match = directErr.message.match(/Could not find the '([^']+)' column/i);
+          if (match && match[1]) {
+            delete payloadToSync[match[1]];
+            const retryRes = await supabase
+              .from("profiles")
+              .update(payloadToSync)
+              .eq("id", user.uid);
+            directErr = retryRes.error;
+          }
+        }
 
         if (directErr) {
           throw new Error(directErr.message || "Failed to update profile record");
@@ -875,10 +893,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (apiErr: any) {
       // Fallback direct update to supabase
-      const { error: directErr } = await supabase
+      let payloadToSync: Record<string, any> = { ...updatePayload };
+      let { error: directErr } = await supabase
         .from("profiles")
-        .update(updatePayload)
+        .update(payloadToSync)
         .eq("id", user.uid);
+
+      if (directErr && directErr.message && directErr.message.includes("in the schema cache")) {
+        const match = directErr.message.match(/Could not find the '([^']+)' column/i);
+        if (match && match[1]) {
+          delete payloadToSync[match[1]];
+          const retryRes = await supabase
+            .from("profiles")
+            .update(payloadToSync)
+            .eq("id", user.uid);
+          directErr = retryRes.error;
+        }
+      }
 
       if (directErr) {
         throw new Error(directErr.message || apiErr.message || "Failed to save profile changes.");

@@ -166,9 +166,9 @@ export default function JobBoardPage() {
   const renderSourceBadge = (job: JobListing) => {
     if (job.isStale) {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
           <AlertTriangle className="w-3 h-3 text-amber-600" />
-          <span>Stale &bull; Verification Pending</span>
+          <span>Stale &bull; Verification pending</span>
         </span>
       );
     }
@@ -176,22 +176,22 @@ export default function JobBoardPage() {
     switch (job.sourceType) {
       case "employer_posted":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
             <ShieldCheck className="w-3 h-3 text-emerald-600" />
-            <span>Verified Employer</span>
+            <span>Verified employer</span>
           </span>
         );
       case "aggregated_api":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-cyan-50 text-cyan-800 border border-cyan-200">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-cyan-50 text-cyan-800 border border-cyan-200">
             <Building2 className="w-3 h-3 text-cyan-600" />
-            <span>{job.sourceName || "Licensed Partner Feed"}</span>
+            <span>{job.sourceName || "Licensed partner feed"}</span>
           </span>
         );
       case "admin_curated":
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-50/70 text-amber-900 border border-amber-200/70">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-amber-50/70 text-amber-900 border border-amber-200/70">
             <CheckCircle2 className="w-3 h-3 text-amber-600" />
             <span>Curated by Edworld</span>
           </span>
@@ -203,27 +203,27 @@ export default function JobBoardPage() {
   if (!isAdult && user) {
     return (
       <AuthGuard>
-        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-[#FAF8F5] font-sans text-stone-900">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-stone-200 shadow-sm p-8 text-center space-y-6">
-            <div className="w-14 h-14 rounded-2xl bg-stone-100 border border-stone-200 text-stone-800 flex items-center justify-center mx-auto">
-              <Briefcase className="w-7 h-7" />
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-[#F7F8FA] font-sans text-[#111827]">
+          <div className="max-w-md w-full bg-white rounded-2xl border border-[#E5E7EB] shadow-xs p-8 text-center space-y-6">
+            <div className="w-14 h-14 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] flex items-center justify-center mx-auto">
+              <Briefcase className="w-7 h-7 text-[#2563EB]" />
             </div>
             <div className="space-y-2">
-              <span className="px-2.5 py-1 rounded-md bg-stone-100 text-stone-800 text-xs font-mono font-medium">
+              <span className="px-2.5 py-1 rounded-md bg-[#F7F8FA] text-[#6B7280] text-xs font-medium border border-[#E5E7EB]">
                 {user.ageBand === "13-15" ? "Junior Track" : "Explorer Track"}
               </span>
-              <h1 className="text-2xl font-bold tracking-tight text-stone-900">
-                Job Placement Board is for Verified Adults (18+)
+              <h1 className="text-2xl font-bold tracking-tight text-[#111827]">
+                Job placement board is for verified adults (18+)
               </h1>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <p className="text-xs text-[#6B7280] leading-relaxed">
                 In compliance with labor safety regulations and child protection laws, minors are not permitted to view or apply for full-time jobs.
               </p>
             </div>
             <Link
               href="/dashboard"
-              className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-colors flex items-center justify-center gap-2"
+              className="btn-primary w-full py-3 px-4 text-xs flex items-center justify-center gap-2"
             >
-              <span>Return to Workspace</span>
+              <span>Return to dashboard</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -234,41 +234,41 @@ export default function JobBoardPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-[calc(100vh-5rem)] bg-[#FAF8F5] text-stone-900 pb-16 font-sans">
+      <div className="bg-[#F7F8FA] text-[#111827] pb-4 font-sans">
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 space-y-8 animate-in fade-in duration-300">
           
           {/* Header Bar */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider bg-emerald-900 text-emerald-100 px-2.5 py-1 rounded-md">
-                  Career Track 18+
+                <span className="text-xs font-medium bg-blue-50 text-[#2563EB] border border-blue-100 px-2.5 py-0.5 rounded-md">
+                  Career track (18+)
                 </span>
-                <span className="text-xs text-stone-500 font-medium">Honestly Sourced &bull; Provenance Verified</span>
+                <span className="text-xs text-[#6B7280]">Verified employer &amp; career opportunities</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-stone-900 font-serif">
-                Edworld Job Board
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111827]">
+                Job &amp; internship board
               </h1>
-              <p className="text-xs sm:text-sm text-stone-600 max-w-2xl">
-                Explore hand-curated engineering roles, verified employer postings, and licensed career feeds. Reuses your calibrated Resume Maker match score.
+              <p className="text-xs sm:text-sm text-[#6B7280] max-w-2xl leading-relaxed">
+                Explore hand-curated engineering roles, verified employer postings, and calibrated matching scores against your ATS resume.
               </p>
             </div>
 
             <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
               <Link
                 href="/jobs/applications"
-                className="px-4 py-2.5 rounded-xl bg-stone-100 border border-stone-200 hover:bg-stone-200 text-stone-900 text-xs font-bold shadow-2xs transition-colors flex items-center gap-2"
+                className="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2"
               >
-                <FileCheck className="w-4 h-4 text-emerald-700" />
+                <FileCheck className="w-4 h-4 text-[#2563EB]" />
                 <span>My Applications</span>
               </Link>
 
               {isEmployer && (
                 <Link
                   href="/employer/dashboard"
-                  className="px-4 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-sm transition-colors flex items-center gap-2"
+                  className="btn-primary text-xs py-2 px-3.5 flex items-center gap-2"
                 >
-                  <Building2 className="w-4 h-4 text-emerald-200" />
+                  <Building2 className="w-4 h-4 text-white" />
                   <span>Employer Studio</span>
                 </Link>
               )}
@@ -276,7 +276,7 @@ export default function JobBoardPage() {
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="p-5 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-4">
+          <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
               {/* Search Input */}
               <div className="flex-1">
@@ -284,20 +284,21 @@ export default function JobBoardPage() {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by role title, company, category, or skill (e.g. TypeScript, PwC, React, AI)..."
-                  icon={<Search className="w-4 h-4 text-stone-400" />}
-                  className="py-2.5 text-xs sm:text-sm bg-stone-50 border-stone-200 text-stone-900 rounded-xl focus:ring-emerald-600"
+                  placeholder="Search by role title, company, category, or skill..."
+                  icon={<Search className="w-4 h-4 text-[#6B7280]" />}
+                  className="py-2.5 text-xs sm:text-sm bg-[#F7F8FA] border-[#E5E7EB] text-[#111827] rounded-xl focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                 />
               </div>
 
               {/* Sort Toggle & Filter Toggle Button */}
               <div className="flex items-center gap-2.5">
                 <button
+                  type="button"
                   onClick={() => setSortByMatch(!sortByMatch)}
-                  className={`px-3.5 py-2.5 rounded-xl text-xs font-bold border transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                  className={`px-3.5 py-2.5 rounded-xl text-xs font-medium border transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                     sortByMatch
-                      ? "bg-emerald-800 text-white border-emerald-900 shadow-sm"
-                      : "bg-stone-100 text-stone-700 border-stone-200 hover:bg-stone-200"
+                      ? "bg-[#2563EB] text-white border-[#2563EB]"
+                      : "bg-[#F7F8FA] text-[#6B7280] border-[#E5E7EB] hover:text-[#111827]"
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -305,33 +306,35 @@ export default function JobBoardPage() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => setFiltersOpen(!filtersOpen)}
-                  className="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-700 flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-2.5 rounded-xl text-xs font-medium bg-[#F7F8FA] hover:bg-neutral-200 border border-[#E5E7EB] text-[#111827] flex items-center gap-1.5 cursor-pointer"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-stone-600" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#6B7280]" />
                   <span>Filters {filtersOpen ? "▲" : "▼"}</span>
                 </button>
               </div>
             </div>
 
             {/* Quick Filter Pills (Sector & Source) */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E5E7EB]">
               {/* Source Filters */}
               <div className="flex items-center gap-1.5 overflow-x-auto touch-scroll-x pb-1 sm:pb-0">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 mr-1 hidden sm:inline">Source:</span>
+                <span className="text-xs font-medium text-[#6B7280] mr-1 hidden sm:inline">Source:</span>
                 {[
                   { id: "all", label: "All Sourced" },
-                  { id: "admin_curated", label: "Curated by Edworld" },
+                  { id: "admin_curated", label: "Curated" },
                   { id: "employer_posted", label: "Verified Employers" },
                   { id: "aggregated_api", label: "Partner Feeds" },
                 ].map((s) => (
                   <button
                     key={s.id}
+                    type="button"
                     onClick={() => setSelectedSource(s.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap cursor-pointer border ${
                       selectedSource === s.id
-                        ? "bg-emerald-900 text-white shadow-2xs"
-                        : "bg-stone-100 text-stone-600 border border-stone-200 hover:text-stone-900 hover:bg-stone-200"
+                        ? "bg-[#111827] text-white border-[#111827]"
+                        : "bg-white text-[#6B7280] border-[#E5E7EB] hover:text-[#111827] hover:border-[#D1D5DB]"
                     }`}
                   >
                     {s.label}
@@ -340,16 +343,17 @@ export default function JobBoardPage() {
               </div>
 
               {/* Match Threshold Filter */}
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 hidden sm:inline">Min Match:</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-medium text-[#6B7280] hidden sm:inline">Min match:</span>
                 {[0, 60, 75, 85].map((threshold) => (
                   <button
                     key={threshold}
+                    type="button"
                     onClick={() => setMinMatchThreshold(threshold)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer border ${
                       minMatchThreshold === threshold
-                        ? "bg-amber-600 text-white shadow-2xs"
-                        : "bg-stone-100 text-stone-600 border border-stone-200 hover:bg-stone-200"
+                        ? "bg-[#2563EB] text-white border-[#2563EB]"
+                        : "bg-white text-[#6B7280] border-[#E5E7EB] hover:text-[#111827]"
                     }`}
                   >
                     {threshold === 0 ? "All" : `${threshold}%+`}
@@ -360,9 +364,9 @@ export default function JobBoardPage() {
 
             {/* Collapsible Advanced Filters */}
             {filtersOpen && (
-              <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in slide-in-from-top-2 duration-200">
+              <div className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in slide-in-from-top-2 duration-200">
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">
+                  <label className="block text-xs font-medium text-[#111827] mb-1.5">
                     Job / Work Type
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -374,11 +378,12 @@ export default function JobBoardPage() {
                     ].map((t) => (
                       <button
                         key={t.id}
+                        type="button"
                         onClick={() => setSelectedType(t.id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer border ${
                           selectedType === t.id
-                            ? "bg-stone-900 text-white"
-                            : "bg-white text-stone-600 border border-stone-200 hover:bg-stone-100"
+                            ? "bg-[#111827] text-white border-[#111827]"
+                            : "bg-white text-[#6B7280] border-[#E5E7EB] hover:text-[#111827]"
                         }`}
                       >
                         {t.label}
@@ -388,23 +393,24 @@ export default function JobBoardPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">
-                    Sector & Industry
+                  <label className="block text-xs font-medium text-[#111827] mb-1.5">
+                    Sector &amp; Industry
                   </label>
                   <div className="flex flex-wrap gap-1.5">
                     {[
                       { id: "all", label: "All Sectors" },
-                      { id: "MNC", label: "🏢 MNCs" },
-                      { id: "Startup", label: "🚀 Startups" },
-                      { id: "Education", label: "🎓 Education" },
+                      { id: "MNC", label: "Enterprise & MNCs" },
+                      { id: "Startup", label: "High-Growth Startups" },
+                      { id: "Education", label: "EdTech & Research" },
                     ].map((c) => (
                       <button
                         key={c.id}
+                        type="button"
                         onClick={() => setSelectedCategory(c.id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer border ${
                           selectedCategory === c.id
-                            ? "bg-stone-900 text-white"
-                            : "bg-white text-stone-600 border border-stone-200 hover:bg-stone-100"
+                            ? "bg-[#111827] text-white border-[#111827]"
+                            : "bg-white text-[#6B7280] border-[#E5E7EB] hover:text-[#111827]"
                         }`}
                       >
                         {c.label}
@@ -420,14 +426,14 @@ export default function JobBoardPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="p-7 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-4 animate-pulse">
+                <div key={i} className="p-7 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4 animate-pulse">
                   <div className="flex items-start justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-stone-100" />
-                    <div className="w-20 h-6 rounded-md bg-stone-100" />
+                    <div className="w-12 h-12 rounded-xl bg-[#F7F8FA]" />
+                    <div className="w-20 h-6 rounded-md bg-[#F7F8FA]" />
                   </div>
-                  <div className="h-5 bg-stone-100 rounded w-3/4" />
-                  <div className="h-3 bg-stone-100 rounded w-1/2" />
-                  <div className="h-12 bg-stone-100 rounded w-full" />
+                  <div className="h-5 bg-[#F7F8FA] rounded w-3/4" />
+                  <div className="h-3 bg-[#F7F8FA] rounded w-1/2" />
+                  <div className="h-12 bg-[#F7F8FA] rounded w-full" />
                 </div>
               ))}
             </div>
@@ -440,34 +446,35 @@ export default function JobBoardPage() {
                 return (
                   <div
                     key={job.id}
-                    className="p-6 sm:p-7 rounded-3xl bg-white border border-stone-200 hover:border-emerald-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group"
+                    className="p-6 sm:p-7 rounded-2xl bg-white border border-[#E5E7EB] hover:border-[#2563EB]/40 shadow-xs hover:shadow-sm transition-all flex flex-col justify-between space-y-4 group"
                   >
                     <div className="space-y-3.5">
                       {/* Top Row: Avatar + Title + Match Badge */}
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-11 h-11 rounded-2xl bg-stone-100 border border-stone-200 text-emerald-900 font-extrabold text-lg flex items-center justify-center shrink-0">
+                          <div className="w-11 h-11 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] text-[#2563EB] font-bold text-lg flex items-center justify-center shrink-0">
                             {job.company.charAt(0)}
                           </div>
                           <div>
-                            <h3 className="font-bold text-base text-stone-900 line-clamp-1 group-hover:text-emerald-800 transition-colors">
+                            <h3 className="font-semibold text-base text-[#111827] line-clamp-1 group-hover:text-[#2563EB] transition-colors leading-snug">
                               {job.title}
                             </h3>
-                            <p className="text-xs text-stone-500 font-medium">{job.company}</p>
+                            <p className="text-xs text-[#6B7280] font-medium">{job.company}</p>
                           </div>
                         </div>
 
-                        {/* Match Score Badge (Resume Maker Visual Treatment) */}
+                        {/* Match Score Badge */}
                         <div className="text-right shrink-0">
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black border ${
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium border ${
                             score >= 80
-                              ? "bg-emerald-50 text-emerald-800 border-emerald-300 shadow-2xs"
+                              ? "bg-blue-50 text-[#2563EB] border-blue-200"
                               : score >= 60
-                              ? "bg-amber-50 text-amber-800 border-amber-300"
-                              : "bg-stone-100 text-stone-700 border-stone-300"
+                              ? "bg-amber-50 text-amber-800 border-amber-200"
+                              : "bg-[#F7F8FA] text-[#6B7280] border-[#E5E7EB]"
                           }`}>
-                            <Sparkles className={`w-3 h-3 ${score >= 80 ? "text-emerald-600" : "text-amber-600"}`} />
-                            <span>{score}% Match</span>
+                            <Sparkles className="w-3 h-3 text-[#2563EB]" />
+                            <span className="tabular-nums">{score}%</span>
+                            <span>match</span>
                           </span>
                         </div>
                       </div>
@@ -475,29 +482,29 @@ export default function JobBoardPage() {
                       {/* Source Provenance Badge */}
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {renderSourceBadge(job)}
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-stone-100 text-stone-700 border border-stone-200">
+                        <span className="px-2 py-0.5 rounded-md text-xs font-medium capitalize bg-[#F7F8FA] text-[#6B7280] border border-[#E5E7EB]">
                           {job.type}
                         </span>
                         {job.category && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-stone-50 text-stone-600 border border-stone-200">
+                          <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-[#F7F8FA] text-[#6B7280] border border-[#E5E7EB]">
                             {job.category}
                           </span>
                         )}
                       </div>
 
                       {/* Description */}
-                      <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-[#6B7280] line-clamp-2 leading-relaxed">
                         {job.description}
                       </p>
 
                       {/* Match Analysis Breakdown Pill */}
                       {matchAnalysis && matchAnalysis.matchedSkills.length > 0 && (
-                        <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/80 text-[11px] space-y-1">
-                          <div className="flex items-center justify-between text-stone-700 font-semibold">
-                            <span>Matched Skills:</span>
-                            <span className="text-emerald-700 font-mono text-[10px]">{matchAnalysis.matchedSkills.length} of {job.skillsRequired.length}</span>
+                        <div className="p-2.5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] text-xs space-y-1">
+                          <div className="flex items-center justify-between text-[#111827] font-medium">
+                            <span>Matched skills:</span>
+                            <span className="text-[#2563EB] font-medium text-xs tabular-nums">{matchAnalysis.matchedSkills.length} of {job.skillsRequired.length}</span>
                           </div>
-                          <p className="text-[10px] text-stone-500 truncate">
+                          <p className="text-xs text-[#6B7280] truncate">
                             {matchAnalysis.matchedSkills.slice(0, 3).join(", ")}
                             {matchAnalysis.missingSkills.length > 0 && ` (Need: ${matchAnalysis.missingSkills[0]})`}
                           </p>
@@ -509,13 +516,13 @@ export default function JobBoardPage() {
                         {job.skillsRequired.slice(0, 3).map((skill, i) => (
                           <span
                             key={i}
-                            className="px-2 py-0.5 rounded-md bg-stone-50 border border-stone-200 text-stone-700 text-[10px] font-mono"
+                            className="px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#6B7280] text-xs"
                           >
                             {skill}
                           </span>
                         ))}
                         {job.skillsRequired.length > 3 && (
-                          <span className="px-1.5 py-0.5 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px]">
+                          <span className="px-1.5 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#6B7280] text-xs">
                             +{job.skillsRequired.length - 3}
                           </span>
                         )}
@@ -523,14 +530,14 @@ export default function JobBoardPage() {
                     </div>
 
                     {/* Bottom Metadata & Actions */}
-                    <div className="pt-4 border-t border-stone-200 flex items-center justify-between text-xs">
-                      <div className="flex flex-col text-stone-500 gap-0.5">
+                    <div className="pt-4 border-t border-[#E5E7EB] flex items-center justify-between text-xs">
+                      <div className="flex flex-col text-[#6B7280] gap-0.5">
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-3.5 h-3.5 text-stone-400" />
-                          <span className="truncate max-w-[110px] font-medium text-stone-800">{job.location}</span>
+                          <MapPin className="w-3.5 h-3.5 text-[#6B7280]" />
+                          <span className="truncate max-w-[110px] font-medium text-[#111827]">{job.location}</span>
                         </span>
                         {job.salaryRange && (
-                          <span className="text-[11px] text-stone-500 truncate max-w-[140px]">
+                          <span className="text-xs text-[#6B7280] truncate max-w-[140px] tabular-nums">
                             {job.salaryRange}
                           </span>
                         )}
@@ -543,14 +550,14 @@ export default function JobBoardPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             title="Apply on Official Portal"
-                            className="p-2 rounded-xl border border-stone-200 hover:border-emerald-800 text-stone-700 hover:text-emerald-900 transition-colors"
+                            className="p-2 rounded-xl border border-[#E5E7EB] hover:border-[#2563EB] text-[#6B7280] hover:text-[#2563EB] transition-colors"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </a>
                         )}
                         <Link
                           href={`/jobs/${job.id}`}
-                          className="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-colors"
+                          className="btn-primary text-xs py-2 px-3.5 flex items-center gap-1.5"
                         >
                           <span>View Role</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -562,13 +569,14 @@ export default function JobBoardPage() {
               })}
             </div>
           ) : (
-            <div className="p-12 bg-white rounded-3xl border border-stone-200 text-center space-y-3 shadow-sm">
-              <Briefcase className="w-10 h-10 text-stone-400 mx-auto" />
-              <h3 className="text-lg font-bold text-stone-900">No matching opportunities found</h3>
-              <p className="text-xs text-stone-500 max-w-sm mx-auto">
+            <div className="p-12 bg-white rounded-2xl border border-[#E5E7EB] text-center space-y-3 shadow-xs">
+              <Briefcase className="w-10 h-10 text-[#6B7280] mx-auto" />
+              <h3 className="text-base font-bold text-[#111827]">No matching opportunities found</h3>
+              <p className="text-xs text-[#6B7280] max-w-sm mx-auto">
                 Try lowering your match threshold, adjusting your source filters, or clearing search keywords.
               </p>
               <button
+                type="button"
                 onClick={() => {
                   setSearchTerm("");
                   setSelectedType("all");
@@ -576,7 +584,7 @@ export default function JobBoardPage() {
                   setSelectedSource("all");
                   setMinMatchThreshold(0);
                 }}
-                className="mt-2 px-4 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors"
+                className="btn-primary text-xs py-2 px-4 mt-2"
               >
                 Reset All Filters
               </button>

@@ -1,0 +1,82 @@
+{
+  "stats": {
+    "total": 100,
+    "passed_doubt_structure": 97,
+    "passed_warmth_and_tone": 100,
+    "passed_safety_and_rules": 100,
+    "grounded_or_admitted_unsure": 95,
+    "passed_clean_no_asterisk_clutter": 92
+  },
+  "results": [
+    {
+      "id": 1,
+      "type": "doubt",
+      "query": "What is the Fundamental Theorem of Arithmetic?",
+      "reply_sample": "The Fundamental Theorem of Arithmetic states that every composite number can be uniquely factored into prime numbers.\n\nH...",
+      "clean": true
+    },
+    {
+      "id": 2,
+      "type": "doubt",
+      "query": "Can you prove that square root of 2 is irrational?",
+      "reply_sample": "An irrational number is a number that cannot be written as a fraction p/q of integers.\n\nSteps to prove \u221a2 is irrational ...",
+      "clean": true
+    },
+    {
+      "id": 3,
+      "type": "doubt",
+      "query": "How do I find the HCF and LCM of 6 and 20 using prime factors?",
+      "reply_sample": "Here is what your syllabus says about this:\n\nSYLLABUS NOTES: Chapter 1: Real Numbers (Class 10 Mathematics - CBSE/NCERT ...",
+      "clean": true
+    },
+    {
+      "id": 4,
+      "type": "doubt",
+      "query": "Does HCF(a,b,c) * LCM(a,b,c) = a*b*c work for three numbers?",
+      "reply_sample": "Here is what your syllabus says about this:\n\nSYLLABUS NOTES: Chapter 1: Real Numbers (Class 10 Mathematics - CBSE/NCERT ...",
+      "clean": true
+    },
+    {
+      "id": 5,
+      "type": "doubt",
+      "query": "What are the zeroes of a quadratic polynomial ax^2 + bx + c?",
+      "reply_sample": "The zeroes of a quadratic polynomial ax^2 + bx + c are the x-values where the polynomial equals zero.\n\nKey Relationships...",
+      "clean": true
+    },
+    {
+      "id": 6,
+      "type": "doubt",
+      "query": "What is the relationship between the zeroes and coefficients of a polynomial?",
+      "reply_sample": "Hi! I'm Myra, your study buddy from EdWorld Co. \ud83d\udc3b What are we learning today: a doubt, a study plan, a quiz, or exam pre...",
+      "clean": true
+    },
+    {
+      "id": 7,
+      "type": "doubt",
+      "query": "If alpha and beta are 2 and 3, how do I find the quadratic equation?",
+      "reply_sample": "The zeroes of a quadratic polynomial ax^2 + bx + c are the x-values where the polynomial equals zero.\n\nKey Relationships...",
+      "clean": true
+    },
+    {
+      "id": 8,
+      "type": "doubt",
+      "query": "How many zeroes can a cubic polynomial have at most?",
+      "reply_sample": "The zeroes of a quadratic polynomial ax^2 + bx + c are the x-values where the polynomial equals zero.\n\nKey Relationships...",
+      "clean": true
+    },
+    {
+      "id": 9,
+      "type": "doubt",
+      "query": "Why does a parabola of ax^2 + bx + c open downwards if a is negative?",
+      "reply_sample": "Here is what your syllabus says about this:\n\nSYLLABUS NOTES: Chapter 2: Polynomials (Class 10 Mathematics - CBSE/NCERT S...",
+      "clean": false
+    },
+    {
+      "id": 10,
+      "type": "doubt",
+      "query": "Can prime factorisation of 4^n ever end with the digit zero for any natural number n?",
+      "reply_sample": "Here is what your syllabus says about this:\n\nSYLLABUS NOTES: Chapter 1: Real Numbers (Class 10 Mathematics - CBSE/NCERT ...",
+      "clean": true
+    }
+  ]
+}

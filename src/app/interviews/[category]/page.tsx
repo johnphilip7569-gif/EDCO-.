@@ -10,6 +10,8 @@ import { AVAILABLE_CATEGORIES } from "@/lib/mock-data";
 import { SkillLevel } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import MediaRecorderStudio from "@/components/interview/MediaRecorderStudio";
+import PreFlightAudioCheckModal from "@/components/interview/PreFlightAudioCheckModal";
+import { VoiceChoice } from "@/lib/interview/voice-profiles";
 import { 
   ArrowLeft, 
   Sparkles, 
@@ -18,19 +20,22 @@ import {
   Award, 
   CheckCircle2, 
   Layers,
-  HelpCircle,
-  Lock,
-  ArrowRight,
-  FileText,
-  Play,
-  RotateCcw,
-  Briefcase,
-  Code2,
-  Cpu,
-  Check,
-  ChevronRight,
-  AlertCircle
+  HelpCircle, 
+  Lock, 
+  ArrowRight, 
+  FileText, 
+  Play, 
+  RotateCcw, 
+  Briefcase, 
+  Code2, 
+  Cpu, 
+  Check, 
+  ChevronRight, 
+  AlertTriangle,
+  Maximize2,
+  ExternalLink
 } from "lucide-react";
+import { useExamProctoring } from "@/hooks/useExamProctoring";
 
 interface SavedResume {
   id: string;
@@ -42,27 +47,9 @@ interface SavedResume {
 export default function ActiveInterviewStudioPage() {
   const params = useParams();
   const router = useRouter();
-  const { user, profile, loading } = useAuth();
+  const { user, profile } = useAuth();
   const categoryId = params?.category as string;
-
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const jobTitleParam = searchParams.get("jobTitle");
-    const jdParam = searchParams.get("jd");
-    const resumeIdParam = searchParams.get("resumeId");
-
-    if (jobTitleParam) {
-      setTargetRole(jobTitleParam);
-    }
-    if (jdParam) {
-      setJobDescriptionInput(jdParam);
-    }
-    if (resumeIdParam) {
-      setSelectedResumeId(resumeIdParam);
-    }
-  }, [searchParams]);
-
 
   // Career Track Gating: 18+ only
   const isMinorUser = user ? user.ageBand !== "18+" : false;
@@ -83,7 +70,7 @@ export default function ActiveInterviewStudioPage() {
   const [selectedSector, setSelectedSector] = useState<string>("Software & Full-Stack");
   const [jobDescriptionInput, setJobDescriptionInput] = useState("");
   const [savedResumes, setSavedResumes] = useState<SavedResume[]>([]);
-  const [selectedResumeId, setSelectedResumeId] = useState<string>("none");
+  const [selectedResumeId, setSelectedResumeId] = useState<string>("");
   const [rawResumeInput, setRawResumeInput] = useState("");
   const [loadingResumes, setLoadingResumes] = useState(true);
 
@@ -96,12 +83,37 @@ export default function ActiveInterviewStudioPage() {
   const [resumeConnected, setResumeConnected] = useState(false);
   const [sessionTranscripts, setSessionTranscripts] = useState<Record<number, string>>({});
 
+  // Voice & Pre-Flight Hardware Check State
+  const [isPreFlightOpen, setIsPreFlightOpen] = useState(false);
+  const [audioOptIn, setAudioOptIn] = useState(false);
+  const [voiceChoice, setVoiceChoice] = useState<VoiceChoice>("myra-neutral");
+  const [speakingSpeed, setSpeakingSpeed] = useState(1.0);
+  const [useKeyboardFallback, setUseKeyboardFallback] = useState(false);
+
   // Myra Auto-Setup & Progress States
   const [isAutoSettingUp, setIsAutoSettingUp] = useState(false);
   const [myraNotice, setMyraNotice] = useState<string | null>(null);
   const [isScoring, setIsScoring] = useState(false);
   const [scoringStageIndex, setScoringStageIndex] = useState(0);
   const [generatingStageIndex, setGeneratingStageIndex] = useState(0);
+
+  // Proctoring in Live Mock Interview
+  const {
+    violationCount,
+    maxViolations,
+    isDisqualified,
+    activeWarning,
+    requestFullscreen,
+    dismissWarning,
+  } = useExamProctoring({
+    enabled: sessionStarted && !isScoring,
+    maxViolations: 2,
+    onDisqualify: (reason) => {
+      // Auto-terminate interview
+      alert(`Interview Terminated: ${reason}`);
+      router.push("/interviews");
+    },
+  });
 
   const scoringStages = [
     "Evaluating interview audio telemetry...",
@@ -111,11 +123,21 @@ export default function ActiveInterviewStudioPage() {
   ];
 
   const generatingStages = [
-    "Calibrating industry competency benchmarks...",
-    "Aligning questions to target job profile...",
-    "Synthesizing real-world scenario challenges...",
-    "Finalizing mock interview environment..."
+    "Analyzing resume projects and technical stack...",
+    "Cross-referencing target Job Description competencies...",
+    "Synthesizing high-signal situational questions...",
+    "Finalizing proctored interview environment..."
   ];
+
+  useEffect(() => {
+    const jobTitleParam = searchParams.get("jobTitle");
+    const jdParam = searchParams.get("jd");
+    const resumeIdParam = searchParams.get("resumeId");
+
+    if (jobTitleParam) setTargetRole(jobTitleParam);
+    if (jdParam) setJobDescriptionInput(jdParam);
+    if (resumeIdParam) setSelectedResumeId(resumeIdParam);
+  }, [searchParams]);
 
   // Progress timer for generating questions
   useEffect(() => {
@@ -141,7 +163,7 @@ export default function ActiveInterviewStudioPage() {
     return () => clearInterval(interval);
   }, [isScoring]);
 
-  // 1. Fetch User's Saved Resumes from Supabase
+  // Fetch User's Saved Resumes from Supabase
   useEffect(() => {
     if (!user || isMinorUser) {
       setLoadingResumes(false);
@@ -150,7 +172,7 @@ export default function ActiveInterviewStudioPage() {
 
     const fetchResumes = async () => {
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("resumes")
           .select("id, title, content, updated_at")
           .eq("user_id", user.uid)
@@ -158,8 +180,10 @@ export default function ActiveInterviewStudioPage() {
 
         if (data && data.length > 0) {
           setSavedResumes(data);
-          // Auto-select the most recently updated resume
-          setSelectedResumeId(data[0].id);
+          // Default to the most recently updated resume if not already set
+          setSelectedResumeId((prev) => (prev ? prev : data[0].id));
+        } else {
+          setSelectedResumeId("custom");
         }
       } catch (err) {
         console.warn("[Fetch Resumes Supabase Note]:", err);
@@ -186,20 +210,16 @@ export default function ActiveInterviewStudioPage() {
 
     const lowerRole = inferredRole.toLowerCase();
     let bestSector = "Software & Full-Stack";
-    if (lowerRole.includes("data") || lowerRole.includes("ai") || lowerRole.includes("machine learning") || lowerRole.includes("ml")) {
+    if (lowerRole.includes("data") || lowerRole.includes("ai") || lowerRole.includes("ml")) {
       bestSector = "AI, ML & Data Science";
-    } else if (lowerRole.includes("cloud") || lowerRole.includes("devops") || lowerRole.includes("infrastructure") || lowerRole.includes("sre")) {
+    } else if (lowerRole.includes("cloud") || lowerRole.includes("devops") || lowerRole.includes("sre")) {
       bestSector = "Cloud & DevOps";
-    } else if (lowerRole.includes("security") || lowerRole.includes("cyber") || lowerRole.includes("penetration")) {
+    } else if (lowerRole.includes("security") || lowerRole.includes("cyber")) {
       bestSector = "CyberSecurity";
-    } else if (lowerRole.includes("fintech") || lowerRole.includes("quant") || lowerRole.includes("trading") || lowerRole.includes("bank")) {
-      bestSector = "Fintech & Banking";
-    } else if (lowerRole.includes("product") || lowerRole.includes("pm")) {
-      bestSector = "Product Management";
     }
     setSelectedSector(bestSector);
 
-    if (savedResumes.length > 0) {
+    if (savedResumes.length > 0 && !selectedResumeId) {
       setSelectedResumeId(savedResumes[0].id);
     }
 
@@ -209,11 +229,18 @@ export default function ActiveInterviewStudioPage() {
       );
     }
 
-    setMyraNotice(`Myra configured your setup for ${inferredRole} in ${bestSector}!`);
+    setMyraNotice(`Myra configured your setup for ${inferredRole} using your saved resume!`);
     setTimeout(() => setIsAutoSettingUp(false), 350);
   };
 
   const handleStartSession = async () => {
+    // Validate resume input
+    const hasResume = (selectedResumeId && selectedResumeId !== "custom" && selectedResumeId !== "none") || (selectedResumeId === "custom" && rawResumeInput.trim().length > 10);
+    if (!hasResume && savedResumes.length === 0) {
+      alert("Please build or paste your resume details first so questions can be calibrated to your projects!");
+      return;
+    }
+
     setGenerating(true);
     try {
       const candidateName = user?.name || profile?.name || "";
@@ -229,7 +256,7 @@ export default function ActiveInterviewStudioPage() {
         jobDescription: jobDescriptionInput,
       };
 
-      if (selectedResumeId && selectedResumeId !== "none" && selectedResumeId !== "custom") {
+      if (selectedResumeId && selectedResumeId !== "custom" && selectedResumeId !== "none") {
         payload.resumeId = selectedResumeId;
         payload.resumeContent = selectedResumeObj?.content;
       } else if (selectedResumeId === "custom" && rawResumeInput.trim()) {
@@ -248,68 +275,90 @@ export default function ActiveInterviewStudioPage() {
         setAiModelUsed(data.modelUsed || data.source || "Claude 3.5 Sonnet");
         setResumeConnected(Boolean(data.resumeConnected));
       } else {
-        // Fallback questions
+        // Fallback questions calibrated to role
         setQuestions([
           {
             id: "warmup-1",
             text: firstName
-              ? `Hi ${firstName}, welcome to your mock interview for ${targetRole || categoryName}. Let's begin with a high-level overview of your engineering background and what drives your technical passion.`
-              : `Welcome! Let's begin with an overview of your engineering background and your focus in ${targetRole || categoryName}.`,
+              ? `Hi ${firstName}, welcome to your mock round for ${targetRole || categoryName}. To start, walk me through the key architectural decisions of the most complex project on your resume.`
+              : `Welcome! Walk me through the key architectural decisions and metrics of the most complex project on your resume.`,
             difficultyLevel: 0,
             type: "warmup",
-            contextSource: "Target Role Alignment",
-            suggestedDurationSeconds: 90,
+            contextSource: "Resume Alignment",
+            suggestedDurationSeconds: 120,
           },
           {
-            id: "q-project-2",
-            text: `Walk me through the most technically challenging project you have engineered. What architecture did you choose, what was the hardest bottleneck, and how did you measure success?`,
-            difficultyLevel: 1,
+            id: "q-project-1",
+            text: `Based on your technical experience and the requirements for ${targetRole || categoryName}, how did you handle data consistency, performance bottlenecks, and automated unit testing in your last major deployment?`,
+            difficultyLevel: effectiveLevel,
             type: "project_deep_dive",
-            contextSource: "Core Architecture & Trade-offs",
+            contextSource: "JD Competency Evaluation",
             suggestedDurationSeconds: 150,
           },
           {
             id: "q-tech-3",
-            text: `In ${categoryName}, how do you approach fault tolerance, latency optimization, and automated testing across distributed environments?`,
+            text: `Looking at this target role's production requirements, suppose you experience an unexpected latency spike or service outage. What is your step-by-step triage and post-mortem workflow?`,
             difficultyLevel: effectiveLevel,
             type: "technical",
-            contextSource: "Technical Stack Rigor",
+            contextSource: "JD Technical Rigor",
             suggestedDurationSeconds: 120,
           },
         ]);
         setAiModelUsed("Universal Deterministic Engine");
       }
-      setSessionStarted(true);
+
+      // Open hardware and privacy preflight check before entering active interview
+      setIsPreFlightOpen(true);
     } catch (e) {
       console.warn("Question generation note:", e);
-      setSessionStarted(true);
+      setIsPreFlightOpen(true);
     } finally {
       setGenerating(false);
     }
+  };
+
+  const handlePreFlightProceed = async (config: {
+    audioOptIn: boolean;
+    voiceChoice: VoiceChoice;
+    speakingSpeed: number;
+    isAudioOnly: boolean;
+    useKeyboardFallback: boolean;
+  }) => {
+    setAudioOptIn(config.audioOptIn);
+    setVoiceChoice(config.voiceChoice);
+    setSpeakingSpeed(config.speakingSpeed);
+    setUseKeyboardFallback(config.useKeyboardFallback);
+    setIsPreFlightOpen(false);
+
+    try {
+      await requestFullscreen();
+    } catch (fsErr) {
+      console.warn("Fullscreen request note:", fsErr);
+    }
+    setSessionStarted(true);
   };
 
   const handleQuestionSubmit = async (sessionSubmission: {
     transcript: string;
     durationSeconds: number;
     isAudioOnly?: boolean;
+    voiceOptIn?: boolean;
     fullscreenExitEvents?: Array<{ timestamp: string; questionIndex: number }>;
   }) => {
     if (!user) return;
 
-    // Record transcript for current question
     const updatedTranscripts = {
       ...sessionTranscripts,
       [currentQuestionIdx]: sessionSubmission.transcript,
     };
     setSessionTranscripts(updatedTranscripts);
 
-    // If there are more questions, go to next question
     if (currentQuestionIdx < questions.length - 1) {
       setCurrentQuestionIdx((prev) => prev + 1);
       return;
     }
 
-    // Finished all questions or final submission -> Score Session
+    // Finished all questions -> Score Session
     setIsScoring(true);
     try {
       const combinedTranscript = Object.values(updatedTranscripts).join(" \n\n ");
@@ -326,6 +375,7 @@ export default function ActiveInterviewStudioPage() {
           transcript: combinedTranscript || sessionSubmission.transcript,
           durationSeconds: sessionSubmission.durationSeconds,
           resumeContext: selectedResumeObj?.title ? `Resume: ${selectedResumeObj.title}` : "",
+          voiceOptIn: audioOptIn,
           fullscreenExitEvents: sessionSubmission.fullscreenExitEvents || [],
         }),
       });
@@ -347,16 +397,16 @@ export default function ActiveInterviewStudioPage() {
 
   if (isMinorUser) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-slate-50">
-        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-white">
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-neutral-200 shadow-xl text-center space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-neutral-100 text-black flex items-center justify-center mx-auto">
             <Lock className="w-6 h-6" />
           </div>
-          <h1 className="text-xl font-bold text-slate-900">Career Track Restricted</h1>
-          <p className="text-xs text-slate-500">
-            Mock interviews and speech diagnostics are available for 18+ Career Track members. Practice modules are tailored for career progression.
+          <h1 className="text-xl font-bold text-black">Career Track Restricted</h1>
+          <p className="text-xs text-neutral-500">
+            Mock interviews and speech diagnostics are available for 18+ Career Track members.
           </p>
-          <Link href="/dashboard" className="inline-block px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold">
+          <Link href="/dashboard" className="inline-block px-4 py-2 rounded-xl bg-black text-white text-xs font-bold">
             Return to Dashboard
           </Link>
         </div>
@@ -372,128 +422,309 @@ export default function ActiveInterviewStudioPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-[#F4F6FB] py-8 px-4 sm:px-6 lg:px-8 text-[#181920]">
+    <div className="min-h-[calc(100vh-4rem)] bg-white py-8 px-4 sm:px-6 lg:px-8 text-black select-none">
+      
+      {/* Tab/Window Switch Warning Modal during Active Interview */}
+      {activeWarning && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 border-2 border-black shadow-2xl text-center space-y-5">
+            <div className={`w-14 h-14 rounded-2xl mx-auto flex items-center justify-center ${
+              isDisqualified ? "bg-red-100 text-red-600" : "bg-neutral-100 text-black"
+            }`}>
+              <AlertTriangle className="w-7 h-7" />
+            </div>
+
+            <div className="space-y-2">
+              <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider ${
+                isDisqualified ? "bg-red-600 text-white" : "bg-black text-white"
+              }`}>
+                Lockdown Violation
+              </span>
+              <h2 className="text-xl font-extrabold text-black">
+                {isDisqualified ? "Interview Terminated" : "Tab or Window Switch Detected"}
+              </h2>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                {activeWarning}
+              </p>
+            </div>
+
+            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-[11px] text-neutral-600 font-mono">
+              Strikes: {Math.min(violationCount, maxViolations + 1)} / {maxViolations + 1} &bull; Fullscreen Enforced
+            </div>
+
+            {!isDisqualified ? (
+              <button
+                type="button"
+                onClick={dismissWarning}
+                className="w-full py-3 px-4 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+              >
+                Resume Interview Session
+              </button>
+            ) : (
+              <Link
+                href="/interviews"
+                className="inline-block w-full py-3 px-4 rounded-xl bg-black text-white text-xs font-bold"
+              >
+                Return to Interviews
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto space-y-6">
         
-        {/* Navigation */}
+        {/* Navigation Bar */}
         <div className="flex items-center justify-between">
-          <Link href="/interviews" className="text-xs font-bold text-[#767E94] hover:text-[#181920] flex items-center gap-1.5 transition-colors">
+          <Link href="/interviews" className="text-xs font-bold text-neutral-500 hover:text-black flex items-center gap-1.5 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Mock Interview Studio</span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-black text-[#7B57FF] bg-[#EDE8FD] border border-[#7B57FF]/30 px-3 py-1 rounded-full">
-              {categoryName} • Level {effectiveLevel}
+            <span className="text-xs font-black text-black bg-neutral-100 border border-neutral-300 px-3 py-1 rounded-full">
+              {categoryName} &bull; Level {effectiveLevel}
             </span>
           </div>
         </div>
 
         {!sessionStarted ? (
-          /* PRE-SESSION SETUP: 3-STEP VISIBLE FLOW STEPPER & CLAUDE AI CONFIGURATION */
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EBECEF] shadow-xs space-y-8 animate-in fade-in">
+          /* RESUME-FIRST PRE-SESSION SETUP: 3-STEP FLOW */
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200 shadow-xs space-y-8 animate-in fade-in">
             
             {/* 3-Step Flow Stepper Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-[#13141B] text-[#00D2B4] flex items-center gap-1.5 shadow-2xs">
+                <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-black text-white flex items-center gap-1.5 shadow-2xs">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>EdInterview Studio</span>
+                  <span>Resume-First Interview Flow</span>
                 </span>
-                <span className="text-[10px] font-mono text-[#5E6573] bg-[#FCFCFB] px-2 py-0.5 rounded-md border border-[#EBECEF]">
-                  Production
+                <span className="text-[10px] font-mono text-neutral-500 bg-neutral-50 px-2 py-0.5 rounded-md border border-neutral-200">
+                  Calibrated to your experience
                 </span>
               </div>
 
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#13141B] tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-black tracking-tight">
                   EdInterview &bull; {categoryName}
                 </h1>
+                <p className="text-xs sm:text-sm text-neutral-600 mt-1">
+                  Step 1: Connect your resume. Step 2: Input target JD. Step 3: Face questions calibrated to your actual projects.
+                </p>
               </div>
 
               {/* 3-Step Visual Progress Flow */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div className="p-4 rounded-2xl bg-[#FCFCFB] border-2 border-[#00D2B4] space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#13141B]">
-                    <span className="w-5 h-5 rounded-full bg-[#00D2B4] text-[#0A5245] flex items-center justify-center text-[11px] font-mono font-black">1</span>
-                    <span>Role &amp; Job Description</span>
+                <div className="p-4 rounded-2xl bg-neutral-50 border-2 border-black space-y-1">
+                  <div className="flex items-center gap-2 text-xs font-bold text-black">
+                    <span className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-[11px] font-mono font-black">1</span>
+                    <span>Build / Select Resume</span>
                   </div>
+                  <p className="text-[10px] text-neutral-500">Your projects &amp; verified skills</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF] space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#13141B]">
-                    <span className="w-5 h-5 rounded-full bg-[#13141B] text-white flex items-center justify-center text-[11px] font-mono font-black">2</span>
-                    <span>EdResume Connection</span>
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
+                  <div className="flex items-center gap-2 text-xs font-bold text-black">
+                    <span className="w-5 h-5 rounded-full bg-neutral-200 text-black flex items-center justify-center text-[11px] font-mono font-black">2</span>
+                    <span>Target Role &amp; JD</span>
                   </div>
+                  <p className="text-[10px] text-neutral-500">Specific job requirements</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF] space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#13141B]">
-                    <span className="w-5 h-5 rounded-full bg-slate-200 text-[#5E6573] flex items-center justify-center text-[11px] font-mono font-black">3</span>
-                    <span>Practice &amp; Get Scored</span>
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
+                  <div className="flex items-center gap-2 text-xs font-bold text-black">
+                    <span className="w-5 h-5 rounded-full bg-neutral-200 text-black flex items-center justify-center text-[11px] font-mono font-black">3</span>
+                    <span>Lockdown Interview</span>
                   </div>
+                  <p className="text-[10px] text-neutral-500">Video round &amp; STAR scoring</p>
                 </div>
               </div>
             </div>
 
-            {/* Myra AI Lead Interviewer Banner with "Let Myra set this up for me" Action */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-emerald-500/20 shadow-xl">
-              <div className="flex items-center gap-3.5">
-                <div className="relative w-12 h-12 rounded-2xl overflow-hidden bg-emerald-500/20 border border-[#00D2B4]/40 shrink-0">
-                  <img
-                    src="/images/teddy-interviewer.png"
-                    alt="Myra AI Interviewer"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+            {/* STEP 1: RESUME REQUIREMENT & SELECTOR */}
+            <div className="space-y-4 p-5 rounded-2xl bg-neutral-50 border border-neutral-200">
+              <div className="flex items-center justify-between">
                 <div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-bold text-sm text-white">Myra • Lead AI Interviewer</h3>
-                    <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#00D2B4]/20 text-[#00D2B4] border border-[#00D2B4]/30">
-                      Live Audio &amp; Video
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-300 mt-0.5">
-                    Myra will conduct your interview in locked mode, evaluate your STAR responses, and provide an upgrade roadmap.
+                  <h3 className="text-xs font-bold text-black uppercase tracking-wider flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-black" />
+                    <span>Step 1: Your Active ATS Resume (Mandatory)</span>
+                  </h3>
+                  <p className="text-[11px] text-neutral-500 mt-0.5">
+                    Questions are directly derived from the technical projects, languages, and metrics in your resume.
                   </p>
                 </div>
+
+                <Link
+                  href="/resumes"
+                  className="px-3 py-1.5 rounded-xl bg-white hover:bg-neutral-100 border border-neutral-200 text-black text-xs font-bold flex items-center gap-1 shadow-2xs transition-all"
+                  target="_blank"
+                >
+                  <span>Build New Resume</span>
+                  <ExternalLink className="w-3 h-3 text-neutral-500" />
+                </Link>
               </div>
 
-              <button
-                type="button"
-                onClick={handleMyraAutoSetup}
-                disabled={isAutoSettingUp}
-                className="w-full md:w-auto px-4 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-102 cursor-pointer active:scale-95 shrink-0 border border-emerald-400/30"
-              >
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>{isAutoSettingUp ? "Calibrating..." : "Let Myra set this up for me"}</span>
-              </button>
+              {savedResumes.length === 0 && !loadingResumes ? (
+                /* No Resume Warning & Quick Gate */
+                <div className="p-5 rounded-xl bg-white border border-neutral-300 space-y-3">
+                  <div className="flex items-center gap-2 text-black font-bold text-xs">
+                    <AlertTriangle className="w-4 h-4 text-black" />
+                    <span>No Saved Resume Detected</span>
+                  </div>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    EdWorld mock rounds evaluate your real project architectural decisions against recruiter criteria. You can create your ATS resume in 2 minutes, or paste your experience bullets below.
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Link
+                      href="/resumes"
+                      className="px-4 py-2 rounded-xl bg-black text-white text-xs font-bold flex items-center gap-1.5 hover:bg-neutral-800"
+                    >
+                      <span>Build ATS Resume First</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedResumeId("custom")}
+                      className="px-4 py-2 rounded-xl bg-neutral-100 border border-neutral-200 text-black text-xs font-bold hover:bg-neutral-200"
+                    >
+                      Paste Resume Text Instead
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Saved Resumes Selector */
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {savedResumes.map((resume) => (
+                    <button
+                      key={resume.id}
+                      type="button"
+                      onClick={() => setSelectedResumeId(resume.id)}
+                      className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
+                        selectedResumeId === resume.id
+                          ? "border-black bg-white text-black shadow-xs ring-2 ring-black"
+                          : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400"
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <FileText className={`w-4 h-4 ${selectedResumeId === resume.id ? "text-black" : "text-neutral-400"}`} />
+                          {selectedResumeId === resume.id && (
+                            <CheckCircle2 className="w-4 h-4 text-black" />
+                          )}
+                        </div>
+                        <p className="font-bold text-xs line-clamp-1">{resume.title || "Portfolio Resume"}</p>
+                        <p className="text-[10px] text-neutral-500">
+                          Updated {new Date(resume.updated_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedResumeId("custom")}
+                    className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
+                      selectedResumeId === "custom"
+                        ? "border-black bg-white text-black shadow-xs ring-2 ring-black"
+                        : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400"
+                    }`}
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <Code2 className={`w-4 h-4 ${selectedResumeId === "custom" ? "text-black" : "text-neutral-400"}`} />
+                        {selectedResumeId === "custom" && <CheckCircle2 className="w-4 h-4 text-black" />}
+                      </div>
+                      <p className="font-bold text-xs">Paste Resume Text</p>
+                      <p className="text-[10px] text-neutral-500">Manual bullet points</p>
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Custom Resume Text Box if Selected */}
+              {selectedResumeId === "custom" && (
+                <div className="pt-2 animate-in fade-in space-y-1.5">
+                  <label className="text-[11px] font-bold text-black">
+                    Paste Your Key Projects &amp; Skills:
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={rawResumeInput}
+                    onChange={(e) => setRawResumeInput(e.target.value)}
+                    placeholder="e.g. Project: E-commerce microservice built with Node.js, Redis cache, Postgres. Handled 10k req/sec with zero downtime during flash sales. Skills: TypeScript, Docker, Kafka, AWS..."
+                    className="w-full p-3.5 rounded-2xl bg-white border border-neutral-300 text-xs text-black focus:outline-none focus:ring-2 focus:ring-black"
+                  />
+                </div>
+              )}
+
+              {/* Connected Resume Deep-Dive Insights */}
+              {selectedResumeObj && selectedResumeId !== "custom" && (
+                <div className="p-3.5 rounded-xl bg-white border border-neutral-200 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-black" />
+                    <span className="font-bold text-xs text-black">
+                      Connected Resume: {selectedResumeObj.title}
+                    </span>
+                  </div>
+                  
+                  {resumeSkills.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[10px] font-mono text-neutral-500">Skills to test:</span>
+                      {resumeSkills.slice(0, 6).map((sk, i) => (
+                        <span key={i} className="px-2 py-0.5 rounded-md bg-neutral-100 text-[10px] font-bold text-black border border-neutral-200">
+                          {sk}
+                        </span>
+                      ))}
+                      {resumeSkills.length > 6 && (
+                        <span className="text-[10px] font-bold text-neutral-500">+{resumeSkills.length - 6} more</span>
+                      )}
+                    </div>
+                  )}
+
+                  {resumeProjects.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[10px] font-mono text-neutral-500">Projects for deep-dive:</span>
+                      {resumeProjects.slice(0, 3).map((pj, i) => (
+                        <span key={i} className="px-2 py-0.5 rounded-md bg-neutral-100 text-[10px] font-bold text-black border border-neutral-200">
+                          {pj.title}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* Myra Auto-Setup Confirmation Notice */}
-            {myraNotice && (
-              <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between gap-3 animate-in fade-in">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span className="font-medium">{myraNotice}</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setMyraNotice(null)}
-                  className="text-emerald-700 hover:text-emerald-950 font-bold text-xs"
-                >
-                  Dismiss
-                </button>
-              </div>
-            )}
-
-            {/* Step 1: Sector & Target Job Description */}
+            {/* STEP 2: TARGET ROLE & JOB DESCRIPTION */}
             <div className="space-y-4 pt-2">
-              
+              <div className="space-y-1">
+                <h3 className="text-xs font-bold text-black uppercase tracking-wider flex items-center gap-1.5">
+                  <Briefcase className="w-3.5 h-3.5 text-black" />
+                  <span>Step 2: Target Job Description (JD) &amp; Role</span>
+                </h3>
+                <p className="text-[11px] text-neutral-500">
+                  The AI interviewer will ask questions cross-referencing your resume against these specific JD requirements.
+                </p>
+              </div>
+
+              {/* Target Role Input */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-black uppercase tracking-wider">
+                  Target Role Title
+                </label>
+                <input
+                  type="text"
+                  value={targetRole}
+                  onChange={(e) => setTargetRole(e.target.value)}
+                  placeholder="e.g. Full-Stack Software Engineer, Machine Learning Engineer, Systems Architect..."
+                  className="w-full p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs font-medium text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                />
+              </div>
+
               {/* Sector Selection */}
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5 text-[#00D2B4]" />
-                  <span>Target Industry Sector</span>
+                <label className="block text-xs font-bold text-black uppercase tracking-wider flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-black" />
+                  <span>Industry Sector</span>
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {[
@@ -510,10 +741,10 @@ export default function ActiveInterviewStudioPage() {
                       key={sec}
                       type="button"
                       onClick={() => setSelectedSector(sec)}
-                      className={`p-2.5 rounded-xl text-xs font-bold border transition-all text-left truncate ${
+                      className={`p-2.5 rounded-xl text-xs font-bold border transition-all text-left truncate cursor-pointer ${
                         selectedSector === sec
-                          ? "bg-[#13141B] text-white border-[#13141B] shadow-2xs"
-                          : "bg-[#FCFCFB] text-gray-700 border-[#EBECEF] hover:bg-slate-50"
+                          ? "bg-black text-white border-black shadow-2xs"
+                          : "bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50"
                       }`}
                     >
                       {sec}
@@ -522,180 +753,39 @@ export default function ActiveInterviewStudioPage() {
                 </div>
               </div>
 
+              {/* Job Description Textarea */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider flex items-center gap-1.5">
-                    <Briefcase className="w-3.5 h-3.5 text-[#00D2B4]" />
-                    <span>Paste Target Job Description (Optional / Recommended)</span>
+                  <label className="block text-xs font-bold text-black uppercase tracking-wider">
+                    Target Job Description (JD)
                   </label>
-                  <span className="text-[10px] font-mono text-[#5E6573]">Calibrates Questions</span>
+                  <span className="text-[10px] font-mono text-neutral-500">Pasted or calibrated</span>
                 </div>
                 <textarea
                   rows={4}
                   value={jobDescriptionInput}
                   onChange={(e) => setJobDescriptionInput(e.target.value)}
-                  placeholder="Paste the full job description or key technical requirements here (e.g. required tech stack, responsibilities, years of experience)..."
-                  className="w-full p-3.5 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF] text-xs text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#00D2B4] focus:border-transparent transition-all"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider flex items-center gap-1.5">
-                  <Briefcase className="w-3.5 h-3.5 text-[#5E6573]" />
-                  <span>Target Role Title</span>
-                </label>
-                <input
-                  type="text"
-                  value={targetRole}
-                  onChange={(e) => setTargetRole(e.target.value)}
-                  placeholder="e.g. Full-Stack Software Engineer, Machine Learning Engineer, Systems Architect..."
-                  className="w-full p-3.5 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF] text-xs font-medium text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#00D2B4] focus:border-transparent transition-all"
+                  placeholder="Paste the job requirements, responsibilities, or target tech stack here (e.g. Distributed caching, REST/GraphQL APIs, Kubernetes orchestration, 99.99% uptime)..."
+                  className="w-full p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
             </div>
 
-            {/* Step 2: Resume Connection Selector */}
-            <div className="space-y-3 p-5 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF]">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-[#00D2B4]" />
-                  <span>Step 2: Connect Resume for AI Question Generation</span>
-                </label>
-                {savedResumes.length > 0 && (
-                  <span className="text-[10px] font-mono font-bold text-[#0A5245] bg-[#00D2B4]/10 border border-[#00D2B4]/20 px-2 py-0.5 rounded-full">
-                    {savedResumes.length} Resume{savedResumes.length > 1 ? "s" : ""} in Database
-                  </span>
-                )}
+            {/* STEP 3: LAUNCH LOCKDOWN INTERVIEW */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-200 pt-4">
+              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                <ShieldCheck className="w-4 h-4 text-black" />
+                <span>Fullscreen lockdown &amp; tab switch monitoring will activate upon start.</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {savedResumes.map((resume) => (
-                  <button
-                    key={resume.id}
-                    type="button"
-                    onClick={() => setSelectedResumeId(resume.id)}
-                    className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
-                      selectedResumeId === resume.id
-                        ? "border-[#00D2B4] bg-white text-[#13141B] shadow-sm ring-1 ring-[#00D2B4]"
-                        : "border-[#EBECEF] bg-white text-[#13141B] hover:border-slate-300"
-                    }`}
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <FileText className={`w-4 h-4 ${selectedResumeId === resume.id ? "text-[#00D2B4]" : "text-[#5E6573]"}`} />
-                        {selectedResumeId === resume.id && (
-                          <CheckCircle2 className="w-4 h-4 text-[#00D2B4]" />
-                        )}
-                      </div>
-                      <p className="font-bold text-xs line-clamp-1">{resume.title || "Portfolio Resume"}</p>
-                      <p className="text-[10px] text-[#5E6573] line-clamp-1">
-                        Updated {new Date(resume.updated_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-
-                {/* Option: Custom Paste */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedResumeId("custom")}
-                  className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
-                    selectedResumeId === "custom"
-                      ? "border-[#00D2B4] bg-white text-[#13141B] shadow-sm ring-1 ring-[#00D2B4]"
-                      : "border-[#EBECEF] bg-white text-[#13141B] hover:border-slate-300"
-                  }`}
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <Code2 className={`w-4 h-4 ${selectedResumeId === "custom" ? "text-[#00D2B4]" : "text-[#5E6573]"}`} />
-                      {selectedResumeId === "custom" && <CheckCircle2 className="w-4 h-4 text-[#00D2B4]" />}
-                    </div>
-                    <p className="font-bold text-xs">Paste Resume Text</p>
-                    <p className="text-[10px] text-[#5E6573]">Manual bullet points</p>
-                  </div>
-                </button>
-
-                {/* Option: Standard Track */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedResumeId("none")}
-                  className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
-                    selectedResumeId === "none"
-                      ? "border-[#00D2B4] bg-white text-[#13141B] shadow-sm ring-1 ring-[#00D2B4]"
-                      : "border-[#EBECEF] bg-white text-[#13141B] hover:border-slate-300"
-                  }`}
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <Sparkles className={`w-4 h-4 ${selectedResumeId === "none" ? "text-[#00D2B4]" : "text-[#5E6573]"}`} />
-                      {selectedResumeId === "none" && <CheckCircle2 className="w-4 h-4 text-[#00D2B4]" />}
-                    </div>
-                    <p className="font-bold text-xs">General Practice</p>
-                    <p className="text-[10px] text-[#5E6573]">Standard role bank</p>
-                  </div>
-                </button>
-              </div>
-
-              {/* Custom Resume Text Box if Selected */}
-              {selectedResumeId === "custom" && (
-                <div className="pt-2 animate-in fade-in">
-                  <textarea
-                    rows={4}
-                    value={rawResumeInput}
-                    onChange={(e) => setRawResumeInput(e.target.value)}
-                    placeholder="Paste your key projects, technical skills, languages, tools, and achievements here..."
-                    className="w-full p-3.5 rounded-2xl bg-white border border-[#EBECEF] text-xs text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#00D2B4]"
-                  />
-                </div>
-              )}
-
-              {/* Connected Resume Deep-Dive Insights */}
-              {selectedResumeObj && selectedResumeId !== "none" && selectedResumeId !== "custom" && (
-                <div className="mt-3 p-4 rounded-xl bg-[#00D2B4]/10 border border-[#00D2B4]/20 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#00D2B4]" />
-                    <span className="font-bold text-xs text-[#13141B]">
-                      Connected Resume: {selectedResumeObj.title}
-                    </span>
-                  </div>
-                  
-                  {resumeSkills.length > 0 && (
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[10px] font-mono text-[#5E6573]">Skills extracted:</span>
-                      {resumeSkills.slice(0, 6).map((sk, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded-md bg-white text-[10px] font-bold text-[#13141B] border border-[#EBECEF]">
-                          {sk}
-                        </span>
-                      ))}
-                      {resumeSkills.length > 6 && (
-                        <span className="text-[10px] font-bold text-[#5E6573]">+{resumeSkills.length - 6} more</span>
-                      )}
-                    </div>
-                  )}
-
-                  {resumeProjects.length > 0 && (
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[10px] font-mono text-[#5E6573]">Projects for deep-dive:</span>
-                      {resumeProjects.slice(0, 3).map((pj, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded-md bg-white text-[10px] font-bold text-[#0A5245] border border-[#00D2B4]/30">
-                          {pj.title}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Launch Action */}
-            <div className="pt-2 flex justify-end">
               <button
+                type="button"
                 onClick={handleStartSession}
                 disabled={generating}
-                className="px-7 py-3.5 rounded-2xl bg-[#13141B] hover:bg-black text-[#00D2B4] text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-md transition-all hover:scale-102 disabled:opacity-50 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-black hover:bg-neutral-800 text-white text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
               >
-                <Play className="w-4 h-4 fill-current" />
-                <span>{generating ? "Generating Tailored Questions from Resume & JD..." : "Step 3: Generate Questions & Start Interview"}</span>
+                <Play className="w-4 h-4 fill-current text-white" />
+                <span>{generating ? "Calibrating Questions from Resume & JD..." : "Step 3: Generate Questions & Launch"}</span>
               </button>
             </div>
           </div>
@@ -704,21 +794,21 @@ export default function ActiveInterviewStudioPage() {
           <div className="space-y-4">
             
             {/* Header with AI Model Badge, Generation Source Label & Progress */}
-            <div className="bg-white rounded-2xl p-4 border border-[#EBECEF] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="bg-white rounded-2xl p-4 border border-neutral-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-[#13141B] text-white">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-black text-white">
                     Question {currentQuestionIdx + 1} of {questions.length}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#00D2B4]/10 text-[#0A5245] border border-[#00D2B4]/30">
-                    Generated from your resume &amp; {targetRole || categoryName} JD
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200">
+                    Calibrated from your resume &amp; {targetRole || categoryName} JD
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-[11px] font-mono text-[#5E6573]">
-                <span>Engine:</span>
-                <span className="font-bold text-[#13141B] bg-slate-100 px-2 py-0.5 rounded-md border border-[#EBECEF]">
-                  {aiModelUsed || "Claude AI"}
+              <div className="flex items-center gap-2 text-[11px] font-mono text-neutral-500">
+                <span>Lockdown:</span>
+                <span className="font-bold text-black bg-neutral-100 px-2 py-0.5 rounded-md border border-neutral-200">
+                  {violationCount}/{maxViolations} Strikes
                 </span>
               </div>
             </div>
@@ -732,37 +822,49 @@ export default function ActiveInterviewStudioPage() {
               totalQuestions={questions.length || 3}
               adaptiveFocus={currentQ.adaptiveFocus}
               userId={user?.uid}
+              targetRole={targetRole || categoryName}
+              resumeContext={selectedResumeObj?.title ? `Resume: ${selectedResumeObj.title}` : ""}
+              voiceChoice={voiceChoice}
+              speakingSpeed={speakingSpeed}
+              audioOptIn={audioOptIn}
+              initialUseKeyboardFallback={useKeyboardFallback}
               onSubmitSession={handleQuestionSubmit}
             />
           </div>
         )}
 
+        {/* Hardware Pre-Flight & Voice Privacy Consent Modal */}
+        <PreFlightAudioCheckModal
+          isOpen={isPreFlightOpen}
+          onProceed={handlePreFlightProceed}
+          onCancel={() => setIsPreFlightOpen(false)}
+        />
+
         {/* Multi-Stage Branded Progress Loader during Generation or Scoring */}
         {(generating || isScoring) && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
-            <div className="max-w-md w-full bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+            <div className="max-w-md w-full bg-white border border-neutral-300 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl">
               <div className="relative w-16 h-16 mx-auto">
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-500/20 animate-ping" />
-                <div className="w-16 h-16 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-emerald-300" />
+                <div className="w-16 h-16 rounded-full border-4 border-black border-t-transparent animate-spin flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-black" />
                 </div>
               </div>
               <div className="space-y-1">
-                <h3 className="text-lg font-black text-white font-serif">
+                <h3 className="text-lg font-black text-black">
                   {isScoring ? "Evaluating Your Session" : "Calibrating Your Interview"}
                 </h3>
-                <p className="text-xs text-emerald-400 font-medium">
+                <p className="text-xs text-neutral-600 font-medium">
                   {isScoring ? scoringStages[scoringStageIndex] : generatingStages[generatingStageIndex]}
                 </p>
               </div>
-              <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
+              <div className="w-full bg-neutral-100 rounded-full h-2 overflow-hidden border border-neutral-200">
                 <div
-                  className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full transition-all duration-500 rounded-full"
+                  className="bg-black h-full transition-all duration-500 rounded-full"
                   style={{ width: `${((isScoring ? scoringStageIndex + 1 : generatingStageIndex + 1) / 4) * 100}%` }}
                 />
               </div>
-              <p className="text-[11px] text-slate-400">
-                EdWorld Production Standard &bull; Zero Mock Data
+              <p className="text-[11px] text-neutral-400 font-mono">
+                Matching Resume Experience ↔ Target JD Competencies
               </p>
             </div>
           </div>

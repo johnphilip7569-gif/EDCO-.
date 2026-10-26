@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { executeMCPTool } from "@/lib/mcp/engine";
 import { verifyUserRole } from "@/lib/server-role-guard";
 import { MCPAuthContext } from "@/lib/mcp/types";
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
 
 export const dynamic = "force-dynamic";
 
@@ -17,17 +19,42 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Extract authentication from headers or body context
-    const userId = req.headers.get("x-user-id") || body.userId;
-    const organizationId = req.headers.get("x-organization-id") || body.organizationId;
-    const correlationId = req.headers.get("x-correlation-id") || `mcp_${Date.now()}`;
+    // Authenticate caller strictly from verified session
+    let authenticatedUserId: string | null = null;
+    let verifiedSessionRole: string | undefined = undefined;
 
-    if (!userId) {
+    try {
+      const supabaseServer = createClient();
+      const { data: { user } } = await supabaseServer.auth.getUser();
+      if (user?.id) {
+        authenticatedUserId = user.id;
+      }
+    } catch {}
+
+    if (!authenticatedUserId) {
+      const sessionCookie = 
+        req.cookies.get("edworld_session")?.value ||
+        req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+
+      if (sessionCookie && sessionCookie.startsWith("edw_sess_")) {
+        const sessRes = validateSession(sessionCookie);
+        if (sessRes.valid && sessRes.userId) {
+          authenticatedUserId = sessRes.userId;
+          verifiedSessionRole = sessRes.role;
+        }
+      }
+    }
+
+    if (!authenticatedUserId) {
       return NextResponse.json(
-        { success: false, error: "Unauthorized: Missing authentication credentials (x-user-id)." },
+        { success: false, error: "Unauthorized: Active authenticated session required to execute MCP tools." },
         { status: 401 }
       );
     }
+
+    const userId = authenticatedUserId;
+    const organizationId = req.headers.get("x-organization-id") || body.organizationId;
+    const correlationId = req.headers.get("x-correlation-id") || `mcp_${Date.now()}`;
 
     // Validate database role & status (never trust client-supplied role claims blindly)
     const roleCheck = await verifyUserRole(userId, [

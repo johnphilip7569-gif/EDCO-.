@@ -1,0 +1,3168 @@
+id,category,question,answer
+B0001,roadmap,"Roadmap for ESE (Engineering Services Exam) for 9 months, please. My basics are weak.","Here is a 9-month roadmap for **ESE (Engineering Services Exam)**.
+
+Since your basics are weak, Phase 1 is longer. Do not rush into mocks until the basics feel solid.
+
+**Phase 1: Technical basics (Months 1 to 4)**
+   - Cover core subjects of your branch from standard books
+   - Make short notes and formula sheets
+   - Start General Studies and aptitude basics
+   - Checkpoint: all core subjects covered once.
+
+**Phase 2: Prelims practice (Months 5 to 6)**
+   - Solve previous papers topic-wise
+   - Weekly tests with conventional-style questions
+   - Maintain current-affairs notes
+   - Checkpoint: prelims-style tests above 60 percent.
+
+**Phase 3: Mains and interview (Months 7 to 8)**
+   - Write conventional answers daily
+   - Revise notes and formulae
+   - Practise a personality-test interview
+   - Checkpoint: answers within time and well structured.
+
+**Phase 4: Final revision (Month 9)**
+   - Revise notes and the error log
+   - Mock tests in exam time
+   - Sleep and routine
+   - Checkpoint: complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Not reading the official notice for the latest pattern.
+- Neglecting General Studies.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0002,timetable,I have 3 months for GATE (ECE) and only 6 hours daily because I'm preparing full-time. What's the best timetable?,"Here is a realistic plan for **GATE (ECE)** with **6 hours of focused study a day** (as a full-time student) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:00 AM | Analog + Digital: learn today's topic (concepts + short notes) | 1 h |
+| 7:00 AM - 7:15 AM | Break (walk, water, stretch) | 15 min |
+| 7:15 AM - 8:45 AM | Networks + Signals: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:30 AM | Communications + EM: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 10:30 AM - 10:45 AM | Break (walk, water, stretch) | 15 min |
+| 10:45 AM - 11:45 AM | Control + Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 11:45 AM - 12:00 PM | Break (walk, water, stretch) | 15 min |
+| 12:00 PM - 1:00 PM | Analog + Digital: practice questions on that topic | 1 h |
+| 1:00 PM - 1:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **6 h** (plus a 15-minute recap).
+
+### Subject split of the 6 hours
+Networks + Signals 1.5 h, Analog + Digital 2 h, Communications + EM 1.5 h, Control + Maths + Aptitude 1 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0003,timetable,"Make a 3-hour daily timetable for ESE (Engineering Services, Civil). I'm a final-year B.Tech Civil student and have 3 months left.","Here is a realistic plan for **ESE (Engineering Services, Civil)** with **3 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Structures group: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Geotech + Transportation: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | General Studies + Aptitude: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Water, Environment + Survey: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+General Studies + Aptitude 0.5 h, Structures group 1 h, Geotech + Transportation 1 h, Water, Environment + Survey 0.5 h.
+
+### Sunday
+- First half: ESE-style mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0004,subject_help,How do I make notes for Digital Electronics?,"For **Digital Electronics**, make notes with a purpose: truth tables, flip-flop tables and design steps.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (errors in minimisation).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0005,roadmap,I want to do well in CA Intermediate over 6 months. I have covered most of the syllabus once. What should my plan be?,"Here is a 6-month roadmap for **CA Intermediate**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Concepts (Month 1)**
+   - Study each paper's chapters in the ICAI-order or your coaching order
+   - Write out accounting problems and tax computations
+   - Make short notes of sections and standards
+   - Checkpoint: all papers' chapters covered once.
+
+**Phase 2: Practice (Months 2 to 3)**
+   - Solve ICAI practice manuals and past papers by chapter
+   - Write answers in exam format
+   - Weekly tests
+   - Checkpoint: chapter tests above 60 percent.
+
+**Phase 3: Mocks and revision (Months 4 to 6)**
+   - Full 3-hour papers and answer writing
+   - Revise sections, standards and case laws
+   - Analyse and rewrite weak answers
+   - Checkpoint: all papers comfortably above the passing marks.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Reading material without writing answers.
+- Ignoring the passing rules in each paper; check the official ICAI notice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0006,higher_studies,M.Tech through GATE: how does the process work?,"The process is score-based, with several steps.
+1. Take GATE in your branch and keep the scorecard.
+2. Apply to institutes through their official admission or common counselling portals; the process, dates and rounds change each year.
+3. Some programmes add written tests or interviews.
+4. Compare specialisations, faculty, labs and placements.
+Cut-offs vary by institute, branch and category every year; check past trends on official sites and do not rely on rumours. A good thesis topic and supervisor matter as much as the institute."
+B0007,roadmap,I want to do well in GATE (Mechanical) over 12 months. I have covered most of the syllabus once. What should my plan be?,"Here is a 12-month roadmap for **GATE (Mechanical)**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Core subjects (Months 1 to 2)**
+   - Cover Applied Mechanics and Design, Fluid and Thermal Sciences, Manufacturing and Materials using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 3 to 7)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 8 to 11)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 12)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Skipping Thermodynamics and Fluid Mechanics practice.
+- Neglecting Engineering Mathematics.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0008,college_life,I feel stressed and alone in college. Whom should I talk to?,"Looking after your mind is part of being a student.
+- Keep a routine: sleep, meals, movement, time with people.
+- Many colleges have a counselling cell or mentor; check your college website or ask the student affairs office.
+- Talk to a friend, family member or mentor early, and not only when things are very bad.
+- In India, Tele-MANAS (14416) offers free support; elsewhere, use a local helpline.
+- If you feel hopeless or unsafe, please contact someone right now and tell them how you feel."
+B0009,timetable,"Myra, I'm a B.Tech Electrical student. Build a study schedule for semester exams (Electrical Engineering) with 5 hours per day (3 months left).","Here is a realistic plan for **semester exams (Electrical Engineering)** with **5 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Machines + Power Systems: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Circuits + Control + Signals: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 8:15 PM | Electronics + Measurements: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:15 PM - 8:30 PM | Break (walk, water, stretch) | 15 min |
+| 8:30 PM - 9:00 PM | Labs + Assignments: learn today's topic (concepts + short notes) | 30 min |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Machines + Power Systems 1.5 h, Circuits + Control + Signals 1.5 h, Electronics + Measurements 1.5 h, Labs + Assignments 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0010,timetable,"Myra, I'm a final-year B.Tech Civil student. Build a study schedule for ESE (Engineering Services, Civil) with 4 hours per day (9 months left).","Here is a realistic plan for **ESE (Engineering Services, Civil)** with **4 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | General Studies + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Structures group: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Geotech + Transportation: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Water, Environment + Survey: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+General Studies + Aptitude 1 h, Structures group 1 h, Geotech + Transportation 1 h, Water, Environment + Survey 1 h.
+
+### Sunday
+- First half: ESE-style mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0011,roadmap,"Myra, make a 9-month plan for UGC NET or CSIR NET. My basics are weak.","Here is a 9-month roadmap for **UGC NET or CSIR NET**.
+
+Since your basics are weak, Phase 1 is longer. Do not rush into mocks until the basics feel solid.
+
+**Phase 1: Syllabus and Paper 1 (Months 1 to 4)**
+   - Read the official syllabus and previous papers
+   - Build Paper 1 basics: teaching and research aptitude, reasoning, comprehension, data interpretation
+   - Start subject notes
+   - Checkpoint: Paper 1 topics covered once.
+
+**Phase 2: Subject mastery (Months 5 to 7)**
+   - Study each unit from standard books and make short notes
+   - Solve unit-wise previous questions
+   - Weekly tests
+   - Checkpoint: unit test scores at 65 percent or more.
+
+**Phase 3: Mocks and revision (Months 8 to 9)**
+   - Full mocks weekly with analysis
+   - Revise notes with recall
+   - Practise time management across both papers
+   - Checkpoint: mock scores clearly above the expected cut-off trend.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring Paper 1 because it seems easy.
+- Reading widely without making revision notes.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0012,college_academics,How do I prepare for Engineering Mathematics?,"Engineering maths is a pattern game; practise it every day.
+- Revise Class 12 basics: calculus, algebra and trigonometry.
+- For each unit, learn 4 or 5 standard methods and solve 10 problems of each.
+- Use previous university papers to see what is repeated.
+- Study in short daily blocks (45 to 60 minutes) instead of one long session before exams.
+- Join a study group or watch a lecture series for tough topics, then practise yourself."
+B0013,subject_help,Give me a quick revision plan for Real Analysis and Calculus before the exam.,"A 15-day revision plan for **Real Analysis and Calculus**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using definitions, theorems and common proof patterns.
+- **Days 6 to 10:** redo key proofs and counterexamples.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: memorising proofs without understanding."
+B0014,degree_career,Is agriculture a good career?,"Agriculture has government, research and business routes.
+- Government and public sector: state agriculture departments, banks, research institutes, as per official notifications.
+- Research and teaching: M.Sc and PhD through ICAR-linked or university entrance tests.
+- Agribusiness: input companies, food processing, supply chain, agri-tech startups, own farm or enterprise.
+- Skills: soil and crop science, data and remote sensing, marketing, accounts.
+Do field internships, and build a plan with realistic costs before starting a venture."
+B0015,degree_career,How do I prepare for IIT JAM?,"IIT JAM is an entrance for M.Sc and related programmes at IITs and some other institutes; check the official JAM site for papers, eligibility and dates.
+- Choose your paper (Physics, Chemistry, Mathematics, Mathematical Statistics, Biotechnology and others) and read the syllabus.
+- Study B.Sc topics in depth, using standard textbooks; solve previous year questions topic-wise.
+- Practise numerical and multiple-select questions as well as MCQs.
+- Take full mocks in the last 2 or 3 months.
+Other options are university M.Sc entrances (such as CUET-PG for participating universities) and state tests."
+B0016,timetable,How should I divide 5 hours of study daily for GATE (Mechanical)? I have about 9 months.,"Here is a realistic plan for **GATE (Mechanical)** with **5 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Applied Mechanics + Design: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Fluid + Thermal Sciences: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 7:45 PM | Engineering Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 PM - 8:00 PM | Break (walk, water, stretch) | 15 min |
+| 8:00 PM - 9:00 PM | Manufacturing, Materials + Industrial: learn today's topic (concepts + short notes) | 1 h |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Engineering Maths + Aptitude 1 h, Applied Mechanics + Design 1.5 h, Fluid + Thermal Sciences 1.5 h, Manufacturing, Materials + Industrial 1 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0017,timetable,"Myra, I'm a commerce graduate. Build a study schedule for CFA Level I with 3 hours per day (12 months left).","Here is a realistic plan for **CFA Level I** with **3 hours of focused study a day** (after college) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Economics + Financial Reporting: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | Ethics + Quant: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | Corporate + Equity: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Break (walk, water, stretch) | 15 min |
+| 7:45 PM - 8:15 PM | Fixed Income + Derivatives: learn today's topic (concepts + short notes) | 30 min |
+| 8:15 PM - 8:30 PM | Break (walk, water, stretch) | 15 min |
+| 8:30 PM - 9:00 PM | Alternatives + Portfolio: learn today's topic (concepts + short notes) | 30 min |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Ethics + Quant 0.5 h, Economics + Financial Reporting 1 h, Corporate + Equity 0.5 h, Fixed Income + Derivatives 0.5 h, Alternatives + Portfolio 0.5 h.
+
+### Sunday
+- First half: CFA-style mock (4.5 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0018,college_academics,How do I get good marks in the drawing paper?,"Speed and neatness come from regular practice.
+- Learn the standard conventions: lines, dimensions, scales, projections.
+- Practise 1 or 2 sheets weekly; time yourself.
+- Use proper instruments: sharp pencils (H/HB), drafter, set squares.
+- Learn the sequence for each problem type (projection of points, lines, planes, solids, sections, isometric views) and repeat it.
+- In the exam, plan the sheet layout first, and keep construction lines light."
+B0019,timetable,How should I divide 10 hours of study daily for IIT JAM (Mathematics)? I have about 12 months.,"Here is a realistic plan for **IIT JAM (Mathematics)** with **10 hours of focused study a day** (as a full-time student) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Calculus: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Linear Algebra: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Real Analysis: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:15 PM | Differential Equations + Statistics: learn today's topic (concepts + short notes) | 1 h |
+| 12:15 PM - 12:30 PM | Break (walk, water, stretch) | 15 min |
+| 12:30 PM - 2:00 PM | Calculus: practice questions on that topic | 1 h 30 min |
+| 2:00 PM - 2:15 PM | Break (walk, water, stretch) | 15 min |
+| 2:15 PM - 3:15 PM | Lunch + short rest | Recharge |
+| 3:15 PM - 4:15 PM | Linear Algebra: practice questions on that topic | 1 h |
+| 4:15 PM - 4:30 PM | Break (walk, water, stretch) | 15 min |
+| 4:30 PM - 5:30 PM | Real Analysis: practice questions on that topic | 1 h |
+| 5:30 PM - 5:45 PM | Break (walk, water, stretch) | 15 min |
+| 5:45 PM - 6:45 PM | Differential Equations + Statistics: practice questions on that topic | 1 h |
+| 6:45 PM - 7:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Calculus 3 h, Linear Algebra 2.5 h, Real Analysis 2.5 h, Differential Equations + Statistics 2 h.
+
+### Sunday
+- First half: JAM-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0020,roadmap,"Myra, make a 4-year plan for B.Pharm career. I'm just starting the course.","Here is a 4-year roadmap for **B.Pharm career**.
+
+**Phase 1: Foundations (Year 1)**
+   - Build strong basics in pharmaceutics, chemistry and anatomy
+   - Maintain neat lab records
+   - Learn Excel and basic statistics
+   - Checkpoint: good first-year marks and lab habits.
+
+**Phase 2: Core skills (Year 2)**
+   - Master pharmacology and medicinal chemistry
+   - Do a hospital or industry visit
+   - Start a small project
+   - Checkpoint: a project and one visit report.
+
+**Phase 3: Specialise and train (Year 3)**
+   - Choose: industry, hospital, research or regulatory
+   - Do an industrial training or internship
+   - Prepare for GPAT if you want M.Pharm
+   - Checkpoint: one training and a chosen path.
+
+**Phase 4: Launch (Year 4)**
+   - Final-year project and registration steps
+   - Apply for jobs or M.Pharm
+   - Keep a backup route
+   - Checkpoint: an offer, admission or exam plan in place.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring practical training.
+- Not checking registration rules with the pharmacy council.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0021,timetable,"Make a 8-hour daily timetable for ESE (Engineering Services, Civil). I'm a final-year B.Tech Civil student and have 9 months left.","Here is a realistic plan for **ESE (Engineering Services, Civil)** with **8 hours of focused study a day** (as a full-time student) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Structures group: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 8:45 AM | Geotech + Transportation: learn today's topic (concepts + short notes) | 1 h |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:00 AM | Water, Environment + Survey: learn today's topic (concepts + short notes) | 1 h |
+| 10:00 AM - 10:15 AM | Break (walk, water, stretch) | 15 min |
+| 10:15 AM - 11:45 AM | General Studies + Aptitude: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:45 AM - 12:00 PM | Break (walk, water, stretch) | 15 min |
+| 12:00 PM - 1:00 PM | Structures group: practice questions on that topic | 1 h |
+| 1:00 PM - 1:15 PM | Break (walk, water, stretch) | 15 min |
+| 1:15 PM - 2:15 PM | Lunch + short rest | Recharge |
+| 2:15 PM - 3:15 PM | Geotech + Transportation: practice questions on that topic | 1 h |
+| 3:15 PM - 3:30 PM | Break (walk, water, stretch) | 15 min |
+| 3:30 PM - 4:30 PM | Water, Environment + Survey: practice questions on that topic | 1 h |
+| 4:30 PM - 4:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **8 h** (plus a 15-minute recap).
+
+### Subject split of the 8 hours
+General Studies + Aptitude 1.5 h, Structures group 2.5 h, Geotech + Transportation 2 h, Water, Environment + Survey 2 h.
+
+### Sunday
+- First half: ESE-style mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0022,roadmap,"Roadmap for CA Intermediate for 4 months, please. I have covered most of the syllabus once.","Here is a 4-month roadmap for **CA Intermediate**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Concepts (Month 1)**
+   - Study each paper's chapters in the ICAI-order or your coaching order
+   - Write out accounting problems and tax computations
+   - Make short notes of sections and standards
+   - Checkpoint: all papers' chapters covered once.
+
+**Phase 2: Practice (Month 2)**
+   - Solve ICAI practice manuals and past papers by chapter
+   - Write answers in exam format
+   - Weekly tests
+   - Checkpoint: chapter tests above 60 percent.
+
+**Phase 3: Mocks and revision (Months 3 to 4)**
+   - Full 3-hour papers and answer writing
+   - Revise sections, standards and case laws
+   - Analyse and rewrite weak answers
+   - Checkpoint: all papers comfortably above the passing marks.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Reading material without writing answers.
+- Ignoring the passing rules in each paper; check the official ICAI notice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0023,roadmap,How should I plan the next 3 months for core placement preparation (final year)? I already have the basics.,"Here is a 3-month roadmap for **core placement preparation (final year)**.
+
+Since you already have the basics, Phase 1 is shorter and you can move to projects sooner.
+
+**Phase 1: Foundation (Month 1)**
+   - Revise core subjects with one-page summaries
+   - Start aptitude practice three times a week
+   - Update your resume and projects
+   - Checkpoint: resume ready and subject summaries done.
+
+**Phase 2: Practice (Month 2)**
+   - Solve company-style aptitude and technical questions
+   - Mock interviews and group discussions
+   - Prepare each project for deep questions
+   - Checkpoint: mock interviews feeling comfortable.
+
+**Phase 3: Applications (Month 3)**
+   - Apply to campus and off-campus roles and PSU notifications
+   - Do company-specific preparation
+   - Learn from every interview
+   - Checkpoint: interview calls and offers.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Knowing only the final project's name, not the details.
+- Ignoring communication practice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0024,roadmap,I want to do well in GATE (Chemical) over 9 months. I'm starting from zero. What should my plan be?,"Here is a 9-month roadmap for **GATE (Chemical)**.
+
+**Phase 1: Core subjects (Months 1 to 4)**
+   - Cover Process calculations, Thermodynamics, Fluid Mechanics, Heat and Mass Transfer, Reaction Engineering and Process Control using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 5 to 6)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 7 to 8)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 9)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Skipping Mass Transfer and Reaction Engineering numericals.
+- Not practising the calculator.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0025,subject_help,How do I make notes for Structural Analysis?,"For **Structural Analysis**, make notes with a purpose: method-wise steps and standard results.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (mistakes in support reactions).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0026,degree_career,How do I get an M.Sc seat in a good university?,"IIT JAM is an entrance for M.Sc and related programmes at IITs and some other institutes; check the official JAM site for papers, eligibility and dates.
+- Choose your paper (Physics, Chemistry, Mathematics, Mathematical Statistics, Biotechnology and others) and read the syllabus.
+- Study B.Sc topics in depth, using standard textbooks; solve previous year questions topic-wise.
+- Practise numerical and multiple-select questions as well as MCQs.
+- Take full mocks in the last 2 or 3 months.
+Other options are university M.Sc entrances (such as CUET-PG for participating universities) and state tests."
+B0027,timetable,I have 12 months for UGC NET and only 3 hours daily after college. What's the best timetable?,"Here is a realistic plan for **UGC NET** with **3 hours of focused study a day** (after college) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Paper 1 (teaching + research aptitude): learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Subject Part A: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:30 PM | Subject Part B: learn today's topic (concepts + short notes) | 1 h |
+| 8:30 PM - 8:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Paper 1 (teaching + research aptitude) 1 h, Subject Part A 1 h, Subject Part B 1 h.
+
+### Sunday
+- First half: NET-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0028,degree_career,How do I get my first media internship?,"Media careers run on proof of work.
+- Write or produce regularly: news reports, blogs, videos, podcasts or photo stories.
+- Build a simple portfolio website with your best 5 to 8 pieces.
+- Learn tools: editing software, social media analytics, basic data and fact-checking.
+- Internships: send tailored pitches to local outlets and digital media; show a sample idea and a past piece.
+- Ethics matter: verify facts, credit sources and avoid plagiarism."
+B0029,branch_career,Hi Myra! What are the career options for Electrical Engineering students?,"Electrical engineers are needed wherever power is generated, moved or used.
+- Power sector: generation, transmission and distribution companies, utilities, renewables and substations.
+- Industry: plant electrical, automation (PLC, SCADA, drives), maintenance and EV/charging.
+- Design and consulting: electrical design for buildings and plants using ETAP, AutoCAD and MATLAB.
+- Electronics and control: power electronics, motor drives, embedded systems.
+- Government/PSU: GATE-based recruitment, ESE, SSC JE, state electricity boards.
+Choose a niche (power systems, drives, automation or renewables), learn its tools, and do a project in it."
+B0030,subject_help,How should I revise Organic Chemistry in the last 15 days?,"A 15-day revision plan for **Organic Chemistry**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using reaction maps with reagents and conditions.
+- **Days 6 to 10:** revise mechanisms and named reactions.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: rote learning without mechanisms."
+B0031,core_skills,Which software should a civil engineering student learn?,"Pick tools that match your target role.
+- Drafting: AutoCAD, then Revit for BIM.
+- Structural analysis and design: STAAD.Pro or ETABS with the relevant design codes.
+- Planning and scheduling: Primavera or MS Project, plus estimation and billing in Excel.
+- Survey and GIS basics: total station, QGIS.
+Learn the codes (concrete, steel, loads) alongside software so you understand the results. Do a site internship and a design project, and keep sample drawings and a report in your portfolio."
+B0032,timetable,Make a 5-hour daily timetable for semester exams (BA Humanities). I'm a BA student and have 3 months left.,"Here is a realistic plan for **semester exams (BA Humanities)** with **5 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Core paper 1: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Core paper 2: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 7:45 PM | Core paper 3: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 PM - 8:00 PM | Break (walk, water, stretch) | 15 min |
+| 8:00 PM - 9:00 PM | Language + Elective: learn today's topic (concepts + short notes) | 1 h |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Core paper 1 1.5 h, Core paper 2 1.5 h, Core paper 3 1 h, Language + Elective 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0033,core_skills,Are technical clubs worth my time?,"Yes, if you choose one and give it real work.
+- Teams like BAJA/SAE, Formula Student, solar car, rocketry, robotics, drone and concrete canoe teams give hands-on experience.
+- Join in first or second year, start with a small sub-team, and learn one skill (design, electronics, manufacturing or business).
+- Document everything: drawings, test data, photos and your role.
+- Balance: keep your attendance and exam preparation safe.
+Recruiters value real team projects strongly, especially in core branches."
+B0034,timetable,Make a 4-hour daily timetable for semester exams (Chemical Engineering). I'm a B.Tech Chemical student and have 3 months left.,"Here is a realistic plan for **semester exams (Chemical Engineering)** with **4 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Heat + Mass Transfer: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Thermodynamics + Reaction Engineering: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Fluid Mechanics + Process Control: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Labs + Plant Design: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Heat + Mass Transfer 1 h, Thermodynamics + Reaction Engineering 1 h, Fluid Mechanics + Process Control 1 h, Labs + Plant Design 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0035,subject_help,I'm weak in Thermodynamics. How do I improve in 30 days?,"A 30-day plan for **Thermodynamics**:
+
+- **Days 1 to 7: Basics.** Learn the laws and system definitions first, then use property tables and diagrams (P-v, T-s) to solve cycles. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve 8 to 10 problems daily from open and closed systems, cycles and entropy.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo cycle and entropy problems and revise property-table use.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: mixing up system types and sign conventions, and not using the property tables properly.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0036,timetable,"Myra, I'm a final-year B.Tech Civil student. Build a study schedule for GATE (Civil) with 4 hours per day (12 months left).","Here is a realistic plan for **GATE (Civil)** with **4 hours of focused study a day** (after college) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Structural Engineering: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Water Resources + Environmental: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Engineering Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | Geotechnical: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | Transportation + Geomatics: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Structural Engineering 1 h, Geotechnical 0.5 h, Water Resources + Environmental 1 h, Transportation + Geomatics 0.5 h, Engineering Maths + Aptitude 1 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0037,timetable,I have 6 months for GATE (Chemical) and only 5 hours daily after college. What's the best timetable?,"Here is a realistic plan for **GATE (Chemical)** with **5 hours of focused study a day** (after college) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Transfer operations: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Thermodynamics + Reaction Engineering: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 8:15 PM | Fluid, Control + Technology: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:15 PM - 8:30 PM | Break (walk, water, stretch) | 15 min |
+| 8:30 PM - 9:00 PM | Maths + Aptitude: learn today's topic (concepts + short notes) | 30 min |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Transfer operations 1.5 h, Thermodynamics + Reaction Engineering 1.5 h, Fluid, Control + Technology 1.5 h, Maths + Aptitude 0.5 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0038,timetable,"Time table please! semester exams (Electrical Engineering), 4 hrs/day after college, 12 months to go.","Here is a realistic plan for **semester exams (Electrical Engineering)** with **4 hours of focused study a day** (after college) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Machines + Power Systems: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Circuits + Control + Signals: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Electronics + Measurements: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Labs + Assignments: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Machines + Power Systems 1.5 h, Circuits + Control + Signals 1 h, Electronics + Measurements 1 h, Labs + Assignments 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0039,subject_help,I'm weak in Taxation (GST and Income Tax). How do I improve in 30 days?,"A 30-day plan for **Taxation (GST and Income Tax)**:
+
+- **Days 1 to 7: Basics.** Learn the heads of income and GST concepts with examples, then practise computations. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve 4 or 5 computations daily with current-year rules.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo computations and check the latest rules in official notifications.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: using outdated rates, and missing exemptions or conditions.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0040,college_life,Final year checklist for students,"Use the last year to convert learning into outcomes.
+1. Decide the main path: job, GATE or other exams, MBA, or study abroad.
+2. Finish a strong final-year project and document it.
+3. Update your resume and LinkedIn; prepare for aptitude and technical interviews.
+4. Clear backlogs, and keep your CGPA steady.
+5. Apply early: campus and off-campus roles, exam forms, and university applications.
+6. Keep one backup plan and your health in check."
+B0041,roadmap,I want to do well in moving from a core branch to IT over 9 months. I already have some projects or internship experience. What should my plan be?,"Here is a 9-month roadmap for **moving from a core branch to IT**.
+
+Since you already have some experience, use Phase 1 to fill gaps and spend more time on depth, applications and interviews.
+
+**Phase 1: Programming basics (Month 1)**
+   - Learn one language (Python, Java or C++) and basic problem solving
+   - Practise 30 to 60 minutes daily
+   - Learn Excel and SQL
+   - Checkpoint: 20 or more small problems solved and basics understood.
+
+**Phase 2: DSA and projects (Months 2 to 6)**
+   - Learn core data structures and algorithms
+   - Build 2 projects that use your branch knowledge
+   - Learn Git
+   - Checkpoint: 2 projects on GitHub and consistent practice.
+
+**Phase 3: Job preparation (Months 7 to 9)**
+   - Prepare for aptitude and coding tests
+   - Make a resume that highlights projects and domain skill
+   - Apply to roles that suit your branch (analytics, automation, CAE tools, and IT roles open to all branches)
+   - Checkpoint: applications sent and interviews attended.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Expecting a switch without regular coding practice.
+- Ignoring roles where your domain knowledge is an advantage.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0042,roadmap,"Myra, make a 12-month plan for judicial services exams. I have covered most of the syllabus once.","Here is a 12-month roadmap for **judicial services exams**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Bare acts and basics (Months 1 to 3)**
+   - Study the Constitution and major procedural and substantive laws from bare acts
+   - Make short notes and landmark case lists
+   - Begin language and general knowledge reading
+   - Checkpoint: all major laws covered once.
+
+**Phase 2: Practice and writing (Months 4 to 7)**
+   - Solve previous papers; practise MCQs and answer writing
+   - Weekly tests
+   - Revise case laws
+   - Checkpoint: answers well structured and on time.
+
+**Phase 3: Mocks and interview (Months 8 to 12)**
+   - Full mocks and mains-style practice
+   - Revise bare acts and amendments
+   - Prepare for the interview
+   - Checkpoint: stable test scores near your target.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Reading commentaries without bare acts.
+- Not checking each state's notification.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0043,subject_help,How can I score high in Taxation (GST and Income Tax)?,"To score high in **Taxation (GST and Income Tax)**:
+
+1. **Learn well:** Learn the heads of income and GST concepts with examples, then practise computations.
+2. **Practise:** Solve 4 or 5 computations daily with current-year rules.
+3. **Make notes:** section-wise sheets with conditions and examples.
+4. **Avoid mistakes:** using outdated rates; missing exemptions or conditions.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0044,roadmap,How should I plan the next 6 months for core placement preparation (final year)? I already have some projects or internship experience.,"Here is a 6-month roadmap for **core placement preparation (final year)**.
+
+Since you already have some experience, use Phase 1 to fill gaps and spend more time on depth, applications and interviews.
+
+**Phase 1: Foundation (Month 1)**
+   - Revise core subjects with one-page summaries
+   - Start aptitude practice three times a week
+   - Update your resume and projects
+   - Checkpoint: resume ready and subject summaries done.
+
+**Phase 2: Practice (Months 2 to 4)**
+   - Solve company-style aptitude and technical questions
+   - Mock interviews and group discussions
+   - Prepare each project for deep questions
+   - Checkpoint: mock interviews feeling comfortable.
+
+**Phase 3: Applications (Months 5 to 6)**
+   - Apply to campus and off-campus roles and PSU notifications
+   - Do company-specific preparation
+   - Learn from every interview
+   - Checkpoint: interview calls and offers.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Knowing only the final project's name, not the details.
+- Ignoring communication practice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0045,higher_studies,MBA or M.Tech after engineering?,"They lead to different careers.
+- M.Tech: deeper technical skills for design, R&D, teaching, PSU and research.
+- MBA: management, finance, marketing, operations and consulting; many programmes value work experience.
+- Ask: do I want to work on technical problems or on business and people?
+- Test it: do an internship or talk to 3 people in each path.
+- Money and time: compare fees, scholarships and expected roles.
+A common path is to work 2 or 3 years, then decide with real experience. Check each college's entrance and eligibility on its official site."
+B0046,subject_help,I'm weak in Manufacturing Processes. How do I improve in 30 days?,"A 30-day plan for **Manufacturing Processes**:
+
+- **Days 1 to 7: Basics.** Learn each process with a diagram, its parameters, advantages and limits. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Make comparison tables and solve numericals on machining, casting and forming.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and revise tables and numericals.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: memorising without diagrams, and confusing process parameters.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0047,branch_career,How do I build a career in biotechnology?,"Biotech is research-heavy; most good paths need specialisation or higher studies.
+- Industry: pharma, biologics, diagnostics, food and agri-biotech, bioinformatics, quality control and regulatory affairs.
+- Studies: M.Tech/M.Sc, MS abroad, PhD; entrances include GATE (BT), IIT JAM and university tests.
+- Skills: lab techniques (PCR, cell culture, chromatography), Python or R for biological data, statistics, documentation.
+- Experience: research internships at institutes and labs, and a final-year project with a paper or poster.
+Be honest about the job market: build both lab and data skills so you have more options."
+B0048,timetable,"Time table please! judicial services exams, 8 hrs/day because I'm preparing full-time, 9 months to go.","Here is a realistic plan for **judicial services exams** with **8 hours of focused study a day** (as a full-time student) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Constitution + Procedure laws: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 8:45 AM | Civil law: learn today's topic (concepts + short notes) | 1 h |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:00 AM | Criminal law: learn today's topic (concepts + short notes) | 1 h |
+| 10:00 AM - 10:15 AM | Break (walk, water, stretch) | 15 min |
+| 10:15 AM - 11:45 AM | Language + General Knowledge: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:45 AM - 12:00 PM | Break (walk, water, stretch) | 15 min |
+| 12:00 PM - 1:00 PM | Constitution + Procedure laws: practice questions on that topic | 1 h |
+| 1:00 PM - 1:15 PM | Break (walk, water, stretch) | 15 min |
+| 1:15 PM - 2:15 PM | Lunch + short rest | Recharge |
+| 2:15 PM - 3:15 PM | Civil law: practice questions on that topic | 1 h |
+| 3:15 PM - 3:30 PM | Break (walk, water, stretch) | 15 min |
+| 3:30 PM - 4:30 PM | Criminal law: practice questions on that topic | 1 h |
+| 4:30 PM - 4:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **8 h** (plus a 15-minute recap).
+
+### Subject split of the 8 hours
+Constitution + Procedure laws 2.5 h, Civil law 2 h, Criminal law 2 h, Language + General Knowledge 1.5 h.
+
+### Sunday
+- First half: timed paper + answer writing.
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0049,timetable,How should I divide 10 hours of study daily for GATE (Mechanical)? I have about 9 months.,"Here is a realistic plan for **GATE (Mechanical)** with **10 hours of focused study a day** (as a full-time student) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Fluid + Thermal Sciences: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Applied Mechanics + Design: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Manufacturing, Materials + Industrial: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:45 PM | Engineering Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 12:45 PM - 1:00 PM | Break (walk, water, stretch) | 15 min |
+| 1:00 PM - 2:00 PM | Lunch + short rest | Recharge |
+| 2:00 PM - 3:00 PM | Fluid + Thermal Sciences: practice questions on that topic | 1 h |
+| 3:00 PM - 3:15 PM | Break (walk, water, stretch) | 15 min |
+| 3:15 PM - 4:15 PM | Applied Mechanics + Design: practice questions on that topic | 1 h |
+| 4:15 PM - 4:30 PM | Break (walk, water, stretch) | 15 min |
+| 4:30 PM - 5:30 PM | Manufacturing, Materials + Industrial: practice questions on that topic | 1 h |
+| 5:30 PM - 5:45 PM | Break (walk, water, stretch) | 15 min |
+| 5:45 PM - 6:45 PM | Fluid + Thermal Sciences: revise older topics (spaced revision) | 1 h |
+| 6:45 PM - 7:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Engineering Maths + Aptitude 1.5 h, Applied Mechanics + Design 2.5 h, Fluid + Thermal Sciences 3.5 h, Manufacturing, Materials + Industrial 2.5 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0050,timetable,I have 6 months for GATE (Mechanical) and only 10 hours daily because I'm preparing full-time. What's the best timetable?,"Here is a realistic plan for **GATE (Mechanical)** with **10 hours of focused study a day** (as a full-time student) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Fluid + Thermal Sciences: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Applied Mechanics + Design: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Manufacturing, Materials + Industrial: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:45 PM | Engineering Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 12:45 PM - 1:00 PM | Break (walk, water, stretch) | 15 min |
+| 1:00 PM - 2:00 PM | Lunch + short rest | Recharge |
+| 2:00 PM - 3:00 PM | Fluid + Thermal Sciences: practice questions on that topic | 1 h |
+| 3:00 PM - 3:15 PM | Break (walk, water, stretch) | 15 min |
+| 3:15 PM - 4:15 PM | Applied Mechanics + Design: practice questions on that topic | 1 h |
+| 4:15 PM - 4:30 PM | Break (walk, water, stretch) | 15 min |
+| 4:30 PM - 5:30 PM | Manufacturing, Materials + Industrial: practice questions on that topic | 1 h |
+| 5:30 PM - 5:45 PM | Break (walk, water, stretch) | 15 min |
+| 5:45 PM - 6:45 PM | Fluid + Thermal Sciences: revise older topics (spaced revision) | 1 h |
+| 6:45 PM - 7:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Engineering Maths + Aptitude 1.5 h, Applied Mechanics + Design 2.5 h, Fluid + Thermal Sciences 3.5 h, Manufacturing, Materials + Industrial 2.5 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0051,roadmap,How should I plan the next 3 years for BA career? I already have some projects or internship experience.,"Here is a 3-year roadmap for **BA career**.
+
+Since you already have some experience, use Phase 1 to fill gaps and spend more time on depth, applications and interviews.
+
+**Phase 1: Foundations (Year 1)**
+   - Build reading, writing and research habits
+   - Choose electives wisely
+   - Learn basic data and digital skills
+   - Checkpoint: good marks and a writing sample.
+
+**Phase 2: Direction and skills (Year 2)**
+   - Choose a direction: civil services, teaching, media, policy or corporate
+   - Do internships and projects
+   - Start the relevant preparation (such as NCERTs for UPSC or NET basics)
+   - Checkpoint: one internship and a direction chosen.
+
+**Phase 3: Launch (Year 3)**
+   - Prepare exam forms or applications
+   - Build a portfolio or resume
+   - Keep a backup option such as a master's or a skill course
+   - Checkpoint: an exam, admission or job plan in place.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Choosing a direction by pressure and not exploring.
+- No portfolio or practical skills.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0052,core_skills,What skills do chemical engineering students need?,"Combine fundamentals and tools.
+- Fundamentals: material and energy balances, thermodynamics, fluid mechanics, heat and mass transfer, reaction engineering, process control.
+- Tools: Aspen Plus or HYSYS for simulation, MATLAB or Python for modelling, P&ID reading.
+- Safety and standards: HAZOP basics, process safety and environmental rules.
+- Practice: model a distillation column, a heat exchanger network or a reactor, and compare with textbook results.
+A plant internship plus a simulation project gives you the best interview stories."
+B0053,timetable,I have 12 months for CFA Level I and only 8 hours daily because I'm preparing full-time. What's the best timetable?,"Here is a realistic plan for **CFA Level I** with **8 hours of focused study a day** (as a full-time student) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:00 AM | Economics + Financial Reporting: learn today's topic (concepts + short notes) | 1 h |
+| 7:00 AM - 7:15 AM | Break (walk, water, stretch) | 15 min |
+| 7:15 AM - 8:45 AM | Ethics + Quant: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:30 AM | Corporate + Equity: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 10:30 AM - 10:45 AM | Break (walk, water, stretch) | 15 min |
+| 10:45 AM - 12:15 PM | Fixed Income + Derivatives: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 12:15 PM - 12:30 PM | Break (walk, water, stretch) | 15 min |
+| 12:30 PM - 2:00 PM | Alternatives + Portfolio: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 2:00 PM - 2:15 PM | Break (walk, water, stretch) | 15 min |
+| 2:15 PM - 3:15 PM | Lunch + short rest | Recharge |
+| 3:15 PM - 4:15 PM | Economics + Financial Reporting: practice questions on that topic | 1 h |
+| 4:15 PM - 4:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **8 h** (plus a 15-minute recap).
+
+### Subject split of the 8 hours
+Ethics + Quant 1.5 h, Economics + Financial Reporting 2 h, Corporate + Equity 1.5 h, Fixed Income + Derivatives 1.5 h, Alternatives + Portfolio 1.5 h.
+
+### Sunday
+- First half: CFA-style mock (4.5 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0054,degree_career,"How can BA students prepare for UPSC, teaching or journalism?","BA graduates can build strong careers when they add practical skills.
+- Civil services: start with NCERTs, newspaper reading and answer writing; keep a backup plan.
+- Teaching: B.Ed, TET/CTET and NET depending on the level; check official notices.
+- Journalism and media: writing, a portfolio, multimedia skills and internships.
+- Policy, research and NGOs: data skills, writing and fieldwork.
+- Corporate: communication, HR, content and marketing roles.
+Choose 1 or 2 directions, and add skills such as writing, data analysis, a foreign language and digital tools."
+B0055,core_skills,"Which companies hire mechanical, civil and electrical freshers?","Plan for both aptitude and technical rounds.
+- Aptitude: quant, reasoning and English practice 3 times a week.
+- Technical: revise fundamentals and your projects; learn the company's products and sectors.
+- Communication: group discussion and HR basics.
+- Targets: manufacturing, construction, energy, automotive, process, infrastructure and consulting firms, plus IT companies that hire all branches.
+- Keep a list of companies, eligibility and dates; apply on and off campus. Check each company's official careers page for current openings."
+B0056,subject_help,Give me a quick revision plan for Signals and Systems before the exam.,"A 15-day revision plan for **Signals and Systems**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using transform tables, properties and plots.
+- **Days 6 to 10:** redo convolution and transform problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: mistakes in convolution limits."
+B0057,roadmap,I want to do well in MS abroad for core engineering over 9 months. I have covered most of the syllabus once. What should my plan be?,"Here is a 9-month roadmap for **MS abroad for core engineering**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Plan and profile (Month 1)**
+   - Pick a specialisation and shortlist programmes and funding
+   - Check test requirements (English test, GRE only if needed)
+   - Start a project or research work to strengthen your profile
+   - Checkpoint: a shortlist with deadlines.
+
+**Phase 2: Tests and documents (Months 2 to 5)**
+   - Prepare and take the required tests
+   - Ask faculty for recommendation letters
+   - Draft your SOP and CV
+   - Checkpoint: scores and drafts ready.
+
+**Phase 3: Applications (Months 6 to 8)**
+   - Apply to a mix of ambitious, moderate and safe programmes
+   - Apply for scholarships and assistantships
+   - Prepare for interviews
+   - Checkpoint: all applications submitted before the deadlines.
+
+**Phase 4: Decision and visa (Month 9)**
+   - Compare offers and funding
+   - Arrange loan, documents and visa
+   - Plan travel and housing
+   - Checkpoint: visa and finances ready.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Using agents without verifying them.
+- Choosing a university only by name, not research fit.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0058,college_life,"Hey Myra, I am in the final year of B.Tech. What should I do now?","Use the last year to convert learning into outcomes.
+1. Decide the main path: job, GATE or other exams, MBA, or study abroad.
+2. Finish a strong final-year project and document it.
+3. Update your resume and LinkedIn; prepare for aptitude and technical interviews.
+4. Clear backlogs, and keep your CGPA steady.
+5. Apply early: campus and off-campus roles, exam forms, and university applications.
+6. Keep one backup plan and your health in check."
+B0059,timetable,How should I divide 4 hours of study daily for GATE (Civil)? I have about 9 months.,"Here is a realistic plan for **GATE (Civil)** with **4 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Structural Engineering: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Water Resources + Environmental: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Engineering Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | Geotechnical: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | Transportation + Geomatics: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Structural Engineering 1 h, Geotechnical 0.5 h, Water Resources + Environmental 1 h, Transportation + Geomatics 0.5 h, Engineering Maths + Aptitude 1 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0060,timetable,Make a 10-hour daily timetable for UGC NET. I'm a postgraduate student and have 6 months left.,"Here is a realistic plan for **UGC NET** with **10 hours of focused study a day** (as a full-time student) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Subject Part A: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Paper 1 (teaching + research aptitude): learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Subject Part B: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:45 PM | Subject Part A: practice questions on that topic | 1 h 30 min |
+| 12:45 PM - 1:00 PM | Break (walk, water, stretch) | 15 min |
+| 1:00 PM - 2:00 PM | Lunch + short rest | Recharge |
+| 2:00 PM - 3:30 PM | Paper 1 (teaching + research aptitude): practice questions on that topic | 1 h 30 min |
+| 3:30 PM - 3:45 PM | Break (walk, water, stretch) | 15 min |
+| 3:45 PM - 5:15 PM | Subject Part B: practice questions on that topic | 1 h 30 min |
+| 5:15 PM - 5:30 PM | Break (walk, water, stretch) | 15 min |
+| 5:30 PM - 6:30 PM | Subject Part A: revise older topics (spaced revision) | 1 h |
+| 6:30 PM - 6:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Paper 1 (teaching + research aptitude) 3 h, Subject Part A 4 h, Subject Part B 3 h.
+
+### Sunday
+- First half: NET-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0061,timetable,"Myra, I'm a final-year B.Tech Electrical student. Build a study schedule for GATE (Electrical) with 10 hours per day (3 months left).","Here is a realistic plan for **GATE (Electrical)** with **10 hours of focused study a day** (as a full-time student) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Machines + Power Systems: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Circuits + Control + Signals: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Electronics + Measurements: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:45 PM | Maths + Aptitude + EMF: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 12:45 PM - 1:00 PM | Break (walk, water, stretch) | 15 min |
+| 1:00 PM - 2:00 PM | Lunch + short rest | Recharge |
+| 2:00 PM - 3:30 PM | Machines + Power Systems: practice questions on that topic | 1 h 30 min |
+| 3:30 PM - 3:45 PM | Break (walk, water, stretch) | 15 min |
+| 3:45 PM - 5:15 PM | Circuits + Control + Signals: practice questions on that topic | 1 h 30 min |
+| 5:15 PM - 5:30 PM | Break (walk, water, stretch) | 15 min |
+| 5:30 PM - 6:30 PM | Electronics + Measurements: practice questions on that topic | 1 h |
+| 6:30 PM - 6:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Machines + Power Systems 3 h, Circuits + Control + Signals 3 h, Electronics + Measurements 2.5 h, Maths + Aptitude + EMF 1.5 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0062,subject_help,Give me a quick revision plan for Chemical Reaction Engineering before the exam.,"A 15-day revision plan for **Chemical Reaction Engineering**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using design equations for each reactor and key relations.
+- **Days 6 to 10:** redo CSTR, PFR and mixed-reactor problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: mixing up design equations."
+B0063,subject_help,What is the best strategy to score well in Strength of Materials exams?,"To score high in **Strength of Materials**:
+
+1. **Learn well:** Understand stress, strain and the beam diagrams; derive formulas once.
+2. **Practise:** Draw shear force and bending moment diagrams daily and solve 6 to 8 problems.
+3. **Make notes:** a sheet of formulas, diagram patterns and section properties.
+4. **Avoid mistakes:** wrong sign conventions in SFD and BMD; skipping free-body diagrams.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0064,timetable,"Myra, I'm a B.Tech ECE student. Build a study schedule for semester exams (Electronics and Communication) with 4 hours per day (9 months left).","Here is a realistic plan for **semester exams (Electronics and Communication)** with **4 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Analog + Digital Electronics: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Signals + Communication: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Networks + Electromagnetics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Labs + Mini project: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Analog + Digital Electronics 1 h, Signals + Communication 1 h, Networks + Electromagnetics 1 h, Labs + Mini project 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0065,subject_help,How should I practise Fluid Mechanics every day?,"A daily routine for **Fluid Mechanics** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Start with fluid statics, then continuity, Bernoulli and momentum; draw control volumes.
+- **40 min:** practise. Solve 8 to 10 problems per topic; draw a diagram for each.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0066,timetable,How should I divide 5 hours of study daily for semester exams (B.Sc)? I have about 9 months.,"Here is a realistic plan for **semester exams (B.Sc)** with **5 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Core paper 1: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Core paper 2: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 7:45 PM | Core paper 3: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 PM - 8:00 PM | Break (walk, water, stretch) | 15 min |
+| 8:00 PM - 9:00 PM | Practicals + Records: learn today's topic (concepts + short notes) | 1 h |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Core paper 1 1.5 h, Core paper 2 1.5 h, Core paper 3 1 h, Practicals + Records 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0067,subject_help,How can I score high in Statistics?,"To score high in **Statistics**:
+
+1. **Learn well:** Learn concepts through examples; practise formulas and interpretation.
+2. **Practise:** Solve 10 problems daily on distributions, estimation and tests.
+3. **Make notes:** distribution tables, test conditions and formulas.
+4. **Avoid mistakes:** mixing up distributions and conditions; formula mistakes.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0068,roadmap,Give me a 4-year roadmap for Chemical engineering career. I already have some projects or internship experience.,"Here is a 4-year roadmap for **Chemical engineering career**.
+
+Since you already have some experience, use Phase 1 to fill gaps and spend more time on depth, applications and interviews.
+
+**Phase 1: Foundations (Year 1)**
+   - Build strong basics in maths, physics and your first core subjects
+   - Learn engineering drawing, lab skills and Excel; join one technical club
+   - Build a steady study routine and keep marks high
+   - Checkpoint: good first-year marks and one club role.
+
+**Phase 2: Core skills (Year 2)**
+   - Learn Aspen Plus or HYSYS, MATLAB and P&ID reading
+   - Build one mini project with a short report
+   - Attend a workshop or an industrial visit
+   - Checkpoint: a documented mini project.
+
+**Phase 3: Specialise and train (Year 3)**
+   - Choose a specialisation: process design, safety, polymers or environmental engineering
+   - Do an industrial training or internship
+   - Build a stronger project in a process simulation or treatment plant design
+   - Checkpoint: one internship and one strong project.
+
+**Phase 4: Launch (Year 4)**
+   - Finish the final-year project with data and a report
+   - Choose your route: placements, GATE/ESE/PSU, M.Tech, MBA or MS abroad
+   - Update your resume, apply early, and keep a backup plan
+   - Checkpoint: an offer, admission or exam plan in place.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Learning many tools without a project to show.
+- Leaving internships and applications for the last semester.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0069,college_academics,What should I do in the last 7 days before semester exams?,"Prioritise sharply.
+- Day 1: list units, mark must-do topics from previous papers, and sort them by marks and confidence.
+- Cover the most repeated and high-mark topics first; skip rare topics if time is short.
+- Revise by writing key answers and solving numericals; do not only read.
+- Sleep at least 5 to 6 hours; a tired mind loses more marks than extra hours gain.
+- Last night: formula sheet and diagrams only, and pack your hall ticket, ID and stationery.
+Plan better next semester, but do not panic now."
+B0070,subject_help,Give me a daily practice routine for Chemical Reaction Engineering.,"A daily routine for **Chemical Reaction Engineering** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Learn rate laws and reactor design equations, then ideal reactors and non-ideal flow.
+- **40 min:** practise. Solve design problems for each reactor type.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0071,roadmap,"Myra, make a 3-year plan for BA career. I'm just starting the course.","Here is a 3-year roadmap for **BA career**.
+
+**Phase 1: Foundations (Year 1)**
+   - Build reading, writing and research habits
+   - Choose electives wisely
+   - Learn basic data and digital skills
+   - Checkpoint: good marks and a writing sample.
+
+**Phase 2: Direction and skills (Year 2)**
+   - Choose a direction: civil services, teaching, media, policy or corporate
+   - Do internships and projects
+   - Start the relevant preparation (such as NCERTs for UPSC or NET basics)
+   - Checkpoint: one internship and a direction chosen.
+
+**Phase 3: Launch (Year 3)**
+   - Prepare exam forms or applications
+   - Build a portfolio or resume
+   - Keep a backup option such as a master's or a skill course
+   - Checkpoint: an exam, admission or job plan in place.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Choosing a direction by pressure and not exploring.
+- No portfolio or practical skills.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0072,roadmap,Give me a 6-month roadmap for SSC JE and state AE/JE exams. I have covered most of the syllabus once.,"Here is a 6-month roadmap for **SSC JE and state AE/JE exams**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Technical core (Month 1)**
+   - Revise your branch's core subjects from standard books
+   - Make short notes and formula sheets
+   - Start reasoning and general awareness
+   - Checkpoint: all technical topics covered once.
+
+**Phase 2: Practice (Months 2 to 4)**
+   - Solve previous papers topic-wise
+   - Daily timed reasoning and awareness practice
+   - Weekly sectional tests
+   - Checkpoint: sectional tests at target accuracy.
+
+**Phase 3: Mocks (Months 5 to 6)**
+   - Full mocks three times a week near the end
+   - Analyse mistakes
+   - Revise current affairs
+   - Checkpoint: mock scores above the expected cut-off trend.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring the technical paper.
+- Not checking the latest notification on the official site.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0073,subject_help,How do I make notes for Circuit Theory?,"For **Circuit Theory**, make notes with a purpose: a list of theorems with when to use each.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (sign errors in loop and node equations).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0074,timetable,How should I divide 4 hours of study daily for semester exams (Biotechnology)? I have about 6 months.,"Here is a realistic plan for **semester exams (Biotechnology)** with **4 hours of focused study a day** (after college) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Biochemistry + Molecular Biology: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Microbiology + Genetics: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Bioprocess + Bioinformatics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Labs + Reports: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Biochemistry + Molecular Biology 1 h, Microbiology + Genetics 1 h, Bioprocess + Bioinformatics 1 h, Labs + Reports 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0075,subject_help,Give me a daily practice routine for Strength of Materials.,"A daily routine for **Strength of Materials** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Understand stress, strain and the beam diagrams; derive formulas once.
+- **40 min:** practise. Draw shear force and bending moment diagrams daily and solve 6 to 8 problems.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0076,timetable,I have 9 months for semester exams (Biotechnology) and only 3 hours daily after college. What's the best timetable?,"Here is a realistic plan for **semester exams (Biotechnology)** with **3 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Biochemistry + Molecular Biology: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Microbiology + Genetics: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Bioprocess + Bioinformatics: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Labs + Reports: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Biochemistry + Molecular Biology 1 h, Microbiology + Genetics 1 h, Bioprocess + Bioinformatics 0.5 h, Labs + Reports 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0077,timetable,Make a 3-hour daily timetable for judicial services exams. I'm an LLB graduate and have 9 months left.,"Here is a realistic plan for **judicial services exams** with **3 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Constitution + Procedure laws: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Civil law: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Criminal law: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Language + General Knowledge: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Constitution + Procedure laws 1 h, Civil law 1 h, Criminal law 0.5 h, Language + General Knowledge 0.5 h.
+
+### Sunday
+- First half: timed paper + answer writing.
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0078,govt_jobs,Hi Myra! How do I prepare for GATE in Electrical or Electronics?,"Build strong fundamentals first.
+- EE: electric circuits, electromagnetic fields, signals and systems, machines, power systems, control systems, measurements, analog and digital electronics, power electronics.
+- ECE: networks, signals and systems, devices, analog and digital circuits, control, communications, electromagnetics.
+- Learn each subject from one trusted textbook or course, then solve topic-wise previous papers.
+- Practise Engineering Mathematics and Aptitude weekly.
+- Mocks and error-log revision in the last 3 months.
+Confirm the syllabus and paper code on the official GATE website."
+B0079,timetable,I have 9 months for semester exams (Electronics and Communication) and only 3 hours daily after college. What's the best timetable?,"Here is a realistic plan for **semester exams (Electronics and Communication)** with **3 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Analog + Digital Electronics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Signals + Communication: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Networks + Electromagnetics: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Labs + Mini project: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Analog + Digital Electronics 1 h, Signals + Communication 1 h, Networks + Electromagnetics 0.5 h, Labs + Mini project 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0080,subject_help,Give me a daily practice routine for Biochemistry and Molecular Biology.,"A daily routine for **Biochemistry and Molecular Biology** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Study pathways as flow diagrams with enzymes, regulation and energy yield.
+- **40 min:** practise. Draw pathways from memory and solve MCQs daily.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0081,timetable,"Myra, I'm a B.Pharm student. Build a study schedule for semester exams (B.Pharm) with 3 hours per day (9 months left).","Here is a realistic plan for **semester exams (B.Pharm)** with **3 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Pharmaceutics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Pharmacology: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Medicinal Chemistry + Pharmacognosy: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Analysis + Labs: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Pharmaceutics 1 h, Pharmacology 1 h, Medicinal Chemistry + Pharmacognosy 0.5 h, Analysis + Labs 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0082,roadmap,How should I plan the next 5 years for law career? I'm just starting the course.,"Here is a 5-year roadmap for **law career**.
+
+**Phase 1: Foundations (Year 1)**
+   - Read widely and learn the basic subjects well
+   - Practise legal writing
+   - Join a moot court or debate society
+   - Checkpoint: good marks and one moot or writing sample.
+
+**Phase 2: Skills (Years 2 to 3)**
+   - Learn drafting and research
+   - Do internships in different areas (litigation, corporate, policy)
+   - Publish or present a short paper
+   - Checkpoint: two internships and one drafting portfolio.
+
+**Phase 3: Specialise (Year 4)**
+   - Choose a path: litigation, corporate, judiciary or academia
+   - Prepare for the related exam (judicial services, CLAT-PG and so on)
+   - Work with a mentor
+   - Checkpoint: a path chosen with a preparation plan.
+
+**Phase 4: Launch (Year 5)**
+   - Apply to chambers, firms or exams
+   - Finalise your drafting and research portfolio
+   - Prepare for interviews
+   - Checkpoint: an offer, enrolment plan or admission.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Doing only one type of internship.
+- Leaving exam preparation to the end.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0083,subject_help,Why do I keep losing marks in Statistics?,"Common mistakes in **Statistics**:
+
+- Mixing up distributions and conditions.
+- Formula mistakes.
+- Wrong interpretation of results.
+
+**Fix:** Learn concepts through examples; practise formulas and interpretation. Then solve 10 problems daily on distributions, estimation and tests. Keep an error log so you see which mistake repeats and fix it first."
+B0084,govt_jobs,How do I prepare for SSC JE?,"SSC JE is a steady government option for diploma and degree holders in the stated branches (check eligibility on the official notice).
+- Parts typically include General Intelligence and Reasoning, General Awareness and the technical paper for your branch.
+- Spend more time on your technical subjects, since they carry significant marks.
+- Practise previous papers, make short notes and take timed mocks.
+- Keep a current-affairs routine for General Awareness.
+Check the latest pattern, eligibility and dates only on the official SSC website."
+B0085,core_skills,"Myra, how do I write a good technical report or lab record?","Clear structure wins marks and impresses interviewers.
+- Report: title, aim, theory, procedure, observations (tables and graphs), calculations, results, discussion of errors, conclusion.
+- Use consistent units and cite sources; keep figures labelled.
+- Presentation: 1 slide per message, big diagrams, little text; practise 8 to 10 minutes.
+- Viva: know your formulas, assumptions and limits; be ready for ""why did you choose this?""
+- Prepare 5 likely questions and answer them aloud with a friend."
+B0086,degree_career,"Hey Myra, what is NET and how do I qualify?","NET exams decide eligibility for Assistant Professor and, with a score threshold, research fellowships. Check the official notices for the latest details.
+- UGC NET: many subjects, such as arts, commerce and social sciences, with papers on teaching aptitude and the subject.
+- CSIR-UGC NET: science subjects, used for JRF and lectureship.
+- Prepare: read the syllabus and previous papers, make subject notes, and practise teaching-aptitude and research-aptitude questions.
+Many universities also need a master's degree and sometimes a PhD; check each institution."
+B0087,subject_help,What mistakes do students make in Thermodynamics?,"Common mistakes in **Thermodynamics**:
+
+- Mixing up system types and sign conventions.
+- Not using the property tables properly.
+- Forgetting unit conversions.
+
+**Fix:** Learn the laws and system definitions first, then use property tables and diagrams (P-v, T-s) to solve cycles. Then solve 8 to 10 problems daily from open and closed systems, cycles and entropy. Keep an error log so you see which mistake repeats and fix it first."
+B0088,subject_help,Give me a daily practice routine for Fluid Mechanics.,"A daily routine for **Fluid Mechanics** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Start with fluid statics, then continuity, Bernoulli and momentum; draw control volumes.
+- **40 min:** practise. Solve 8 to 10 problems per topic; draw a diagram for each.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0089,govt_jobs,GATE or placement for core branch students?,"Decide by goal and not by pressure.
+- Choose GATE if you want M.Tech from a good institute, PSU recruitment through GATE score, research or teaching.
+- Choose a job if you need income, found a good role, or want industry experience first.
+- You can combine: study GATE basics in the final year, and apply for jobs; many students work first and attempt GATE later.
+- Before deciding, list your goal, finances, and the PSUs or institutes you are targeting; check their official criteria and past score trends."
+B0090,timetable,"Time table please! GATE (ECE), 6 hrs/day because I'm preparing full-time, 6 months to go.","Here is a realistic plan for **GATE (ECE)** with **6 hours of focused study a day** (as a full-time student) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:00 AM | Analog + Digital: learn today's topic (concepts + short notes) | 1 h |
+| 7:00 AM - 7:15 AM | Break (walk, water, stretch) | 15 min |
+| 7:15 AM - 8:45 AM | Networks + Signals: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:30 AM | Communications + EM: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 10:30 AM - 10:45 AM | Break (walk, water, stretch) | 15 min |
+| 10:45 AM - 11:45 AM | Control + Maths + Aptitude: learn today's topic (concepts + short notes) | 1 h |
+| 11:45 AM - 12:00 PM | Break (walk, water, stretch) | 15 min |
+| 12:00 PM - 1:00 PM | Analog + Digital: practice questions on that topic | 1 h |
+| 1:00 PM - 1:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **6 h** (plus a 15-minute recap).
+
+### Subject split of the 6 hours
+Networks + Signals 1.5 h, Analog + Digital 2 h, Communications + EM 1.5 h, Control + Maths + Aptitude 1 h.
+
+### Sunday
+- First half: GATE-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0091,subject_help,Give me a quick revision plan for Geotechnical Engineering before the exam.,"A 15-day revision plan for **Geotechnical Engineering**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using formula sheets and test summaries.
+- **Days 6 to 10:** redo consolidation and bearing-capacity problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: mixing up soil parameters and symbols."
+B0092,subject_help,What mistakes do students make in Concrete and Steel Design?,"Common mistakes in **Concrete and Steel Design**:
+
+- Not reading the code clauses.
+- Skipping detailing and checks.
+- Unit mistakes.
+
+**Fix:** Know the limit state principles and code provisions; follow design steps in order. Then solve one full design daily using the code tables. Keep an error log so you see which mistake repeats and fix it first."
+B0093,college_academics,How important are internal assessments?,"Check the rules first, then act fast.
+- Read your university and college attendance rules and the condonation process; ask your class coordinator.
+- Attend every class from now, and bring medical or other valid documents for past absences.
+- Ask teachers what can improve internal marks: tests, assignments, labs, presentations.
+- Do not fake documents or sign proxies; the penalty is severe.
+Internals can lift your overall score, so give them real effort."
+B0094,timetable,"Myra, I'm a BBA student. Build a study schedule for semester exams (BBA) with 4 hours per day (9 months left).","Here is a realistic plan for **semester exams (BBA)** with **4 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Marketing: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Finance: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | HR + Organisational Behaviour: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | Business Statistics: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | Communication + Projects: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Marketing 1 h, Finance 1 h, HR + Organisational Behaviour 1 h, Business Statistics 0.5 h, Communication + Projects 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0095,timetable,Make a 3-hour daily timetable for semester exams (BBA). I'm a BBA student and have 3 months left.,"Here is a realistic plan for **semester exams (BBA)** with **3 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Finance: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | Marketing: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | HR + Organisational Behaviour: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Break (walk, water, stretch) | 15 min |
+| 7:45 PM - 8:15 PM | Business Statistics: learn today's topic (concepts + short notes) | 30 min |
+| 8:15 PM - 8:30 PM | Break (walk, water, stretch) | 15 min |
+| 8:30 PM - 9:00 PM | Communication + Projects: learn today's topic (concepts + short notes) | 30 min |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Marketing 0.5 h, Finance 1 h, HR + Organisational Behaviour 0.5 h, Business Statistics 0.5 h, Communication + Projects 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0096,roadmap,Give me a 6-month roadmap for GATE (ECE). I have covered most of the syllabus once.,"Here is a 6-month roadmap for **GATE (ECE)**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Core subjects (Month 1)**
+   - Cover Networks, Signals, Devices, Analog and Digital Circuits, Communications and Electromagnetics using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 2 to 3)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 4 to 5)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 6)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Leaving Electromagnetics and Communications to the end.
+- Taking mocks without analysing them.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0097,subject_help,How should I revise Electrical Machines in the last 15 days?,"A 15-day revision plan for **Electrical Machines**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using equivalent circuits, phasors and key formulas.
+- **Days 6 to 10:** redo efficiency, regulation and speed-control problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: not understanding equivalent circuits."
+B0098,timetable,How should I divide 4 hours of study daily for semester exams (Biotechnology)? I have about 3 months.,"Here is a realistic plan for **semester exams (Biotechnology)** with **4 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Biochemistry + Molecular Biology: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Microbiology + Genetics: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Bioprocess + Bioinformatics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Labs + Reports: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **4 h** (plus a 15-minute recap).
+
+### Subject split of the 4 hours
+Biochemistry + Molecular Biology 1 h, Microbiology + Genetics 1 h, Bioprocess + Bioinformatics 1 h, Labs + Reports 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0099,subject_help,What is the best strategy to score well in Heat and Mass Transfer exams?,"To score high in **Heat and Mass Transfer**:
+
+1. **Learn well:** Learn the three modes of heat transfer and the analogies to mass transfer; understand the resistance method.
+2. **Practise:** Solve numerical problems on conduction, convection and radiation.
+3. **Make notes:** formula sheet with correlation conditions and dimensionless numbers.
+4. **Avoid mistakes:** mixing up correlations and when they apply; not using consistent units.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0100,college_life,How do I plan my last year of degree?,"Use the last year to convert learning into outcomes.
+1. Decide the main path: job, GATE or other exams, MBA, or study abroad.
+2. Finish a strong final-year project and document it.
+3. Update your resume and LinkedIn; prepare for aptitude and technical interviews.
+4. Clear backlogs, and keep your CGPA steady.
+5. Apply early: campus and off-campus roles, exam forms, and university applications.
+6. Keep one backup plan and your health in check."
+B0101,degree_career,What is NET and how do I qualify?,"NET exams decide eligibility for Assistant Professor and, with a score threshold, research fellowships. Check the official notices for the latest details.
+- UGC NET: many subjects, such as arts, commerce and social sciences, with papers on teaching aptitude and the subject.
+- CSIR-UGC NET: science subjects, used for JRF and lectureship.
+- Prepare: read the syllabus and previous papers, make subject notes, and practise teaching-aptitude and research-aptitude questions.
+Many universities also need a master's degree and sometimes a PhD; check each institution."
+B0102,subject_help,I'm weak in Electrical Machines. How do I improve in 30 days?,"A 30-day plan for **Electrical Machines**:
+
+- **Days 1 to 7: Basics.** Understand the principle of each machine, then equivalent circuit and characteristics. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Draw phasor diagrams and solve problems on transformers, DC, induction and synchronous machines.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo efficiency, regulation and speed-control problems.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: not understanding equivalent circuits, and phasor mistakes.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0103,subject_help,I'm weak in Financial Accounting. How do I improve in 30 days?,"A 30-day plan for **Financial Accounting**:
+
+- **Days 1 to 7: Basics.** Understand debit and credit logic, then practise every format by hand. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve 5 to 8 full problems daily and check the totals.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo problems on final accounts, partnership and company accounts.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: learning without writing entries, and mixing up adjustments.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0104,govt_jobs,What are the important subjects in GATE civil?,"Cover the blocks and use weightage and previous papers to prioritise.
+- Blocks: Engineering Mathematics, Structural Engineering (mechanics, structural analysis, concrete, steel), Geotechnical, Water Resources, Environmental, Transportation and Geomatics.
+- Start with the largest subjects in your weak area, and keep Engineering Mathematics and Aptitude weekly.
+- Solve topic-wise previous year questions, including numerical-answer ones.
+- Keep formula and code-based notes (such as design provisions) as short sheets.
+- Take full mocks in the last 3 months and fix weak topics.
+Check the latest syllabus on the official GATE site."
+B0105,subject_help,How should I revise Geotechnical Engineering in the last 15 days?,"A 15-day revision plan for **Geotechnical Engineering**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using formula sheets and test summaries.
+- **Days 6 to 10:** redo consolidation and bearing-capacity problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: mixing up soil parameters and symbols."
+B0106,degree_career,How do I prepare for GPAT?,"Pharmacy has clinical, industrial, research and regulatory paths.
+- Registration: practising as a pharmacist needs registration under the relevant pharmacy council; check its official rules.
+- Industry: production, quality control and assurance, R&D, regulatory affairs, sales and marketing.
+- Hospital and community: dispensing, clinical pharmacy.
+- Higher studies: M.Pharm via GPAT or university tests, MBA, or abroad.
+- GPAT: study pharmaceutics, pharmacology, medicinal chemistry, pharmacognosy and analysis; solve previous papers; check the official GPAT notice for the latest pattern."
+B0107,subject_help,I'm weak in Machine Design. How do I improve in 30 days?,"A 30-day plan for **Machine Design**:
+
+- **Days 1 to 7: Basics.** Learn failure theories and design steps before problems; follow the design data book. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve a full design problem daily with each step written.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo shaft, gear and bolt design.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: skipping the factor of safety logic, and wrong use of data-book tables.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0108,roadmap,How should I plan the next 12 months for MS abroad for core engineering? My basics are weak.,"Here is a 12-month roadmap for **MS abroad for core engineering**.
+
+Since your basics are weak, Phase 1 is longer. Do not rush into mocks until the basics feel solid.
+
+**Phase 1: Plan and profile (Months 1 to 5)**
+   - Pick a specialisation and shortlist programmes and funding
+   - Check test requirements (English test, GRE only if needed)
+   - Start a project or research work to strengthen your profile
+   - Checkpoint: a shortlist with deadlines.
+
+**Phase 2: Tests and documents (Months 6 to 8)**
+   - Prepare and take the required tests
+   - Ask faculty for recommendation letters
+   - Draft your SOP and CV
+   - Checkpoint: scores and drafts ready.
+
+**Phase 3: Applications (Months 9 to 11)**
+   - Apply to a mix of ambitious, moderate and safe programmes
+   - Apply for scholarships and assistantships
+   - Prepare for interviews
+   - Checkpoint: all applications submitted before the deadlines.
+
+**Phase 4: Decision and visa (Month 12)**
+   - Compare offers and funding
+   - Arrange loan, documents and visa
+   - Plan travel and housing
+   - Checkpoint: visa and finances ready.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Using agents without verifying them.
+- Choosing a university only by name, not research fit.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0109,roadmap,Give me a 9-month roadmap for IIT JAM. My basics are weak.,"Here is a 9-month roadmap for **IIT JAM**.
+
+Since your basics are weak, Phase 1 is longer. Do not rush into mocks until the basics feel solid.
+
+**Phase 1: Subject depth (Months 1 to 5)**
+   - Study your B.Sc topics in depth from standard textbooks
+   - Make short notes and a formula or reaction sheet per unit
+   - Solve basic questions after each unit
+   - Checkpoint: each unit's practice set at 60 percent or more.
+
+**Phase 2: Practice by type (Months 6 to 7)**
+   - Solve topic-wise previous year questions, including numerical and multiple-select types
+   - Weekly sectional tests
+   - Rework the weakest units
+   - Checkpoint: section accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 8 to 9)**
+   - Full-length mocks weekly in exam time
+   - Analyse mistakes and revise the error log
+   - Revise formulas and key concepts
+   - Checkpoint: mock scores in your target range.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Preparing only in the style of university exams.
+- Ignoring numerical-answer and multiple-select practice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0110,core_skills,What is a graduate engineer trainee (GET) programme?,"Graduate engineer trainee programmes train freshers through a structured period.
+- Typical features: classroom training, plant or site rotation, mentoring and assessment, followed by a role.
+- First job expectations: learning on the shop floor or site, long hours at times, safety rules, reports and teamwork.
+- How to do well: arrive curious, ask questions, keep a notebook, respect operators and technicians, and volunteer for tasks.
+Read the terms (bond, location, pay structure) carefully before signing."
+B0111,roadmap,Give me a 3-year roadmap for B.Com career. I'm just starting the course.,"Here is a 3-year roadmap for **B.Com career**.
+
+**Phase 1: Foundations (Year 1)**
+   - Build accounting, economics and statistics basics
+   - Learn Excel and basic Tally
+   - Read business news daily
+   - Checkpoint: strong first-year marks and an Excel skill test passed.
+
+**Phase 2: Skills and course start (Year 2)**
+   - Learn GST, income-tax basics and financial statement analysis
+   - Begin a professional course (CA, CMA, CS, CFA) if it suits you
+   - Do a short internship in accounts or finance
+   - Checkpoint: one internship and a clear course plan.
+
+**Phase 3: Launch (Year 3)**
+   - Choose: professional course, MBA, banking or jobs
+   - Prepare resume, interviews and entrance tests
+   - Apply and keep a backup
+   - Checkpoint: an offer, admission or exam plan in place.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Starting a professional course without checking the workload.
+- Not building practical software skills.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0112,timetable,"Time table please! CA Intermediate, 6 hrs/day because I'm preparing full-time, 9 months to go.","Here is a realistic plan for **CA Intermediate** with **6 hours of focused study a day** (as a full-time student) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:00 AM | Advanced Accounting: learn today's topic (concepts + short notes) | 1 h |
+| 7:00 AM - 7:15 AM | Break (walk, water, stretch) | 15 min |
+| 7:15 AM - 8:15 AM | Corporate Laws: learn today's topic (concepts + short notes) | 1 h |
+| 8:15 AM - 8:30 AM | Break (walk, water, stretch) | 15 min |
+| 8:30 AM - 9:30 AM | Taxation: learn today's topic (concepts + short notes) | 1 h |
+| 9:30 AM - 9:45 AM | Break (walk, water, stretch) | 15 min |
+| 9:45 AM - 10:45 AM | Cost + Management Accounting: learn today's topic (concepts + short notes) | 1 h |
+| 10:45 AM - 11:00 AM | Break (walk, water, stretch) | 15 min |
+| 11:00 AM - 12:00 PM | Auditing + Ethics: learn today's topic (concepts + short notes) | 1 h |
+| 12:00 PM - 12:15 PM | Break (walk, water, stretch) | 15 min |
+| 12:15 PM - 1:15 PM | Financial + Strategic Management: learn today's topic (concepts + short notes) | 1 h |
+| 1:15 PM - 1:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **6 h** (plus a 15-minute recap).
+
+### Subject split of the 6 hours
+Advanced Accounting 1 h, Corporate Laws 1 h, Taxation 1 h, Cost + Management Accounting 1 h, Auditing + Ethics 1 h, Financial + Strategic Management 1 h.
+
+### Sunday
+- First half: CA-style paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0113,subject_help,What is the best strategy to score well in Analog Electronics exams?,"To score high in **Analog Electronics**:
+
+1. **Learn well:** Understand device behaviour first, then biasing, small-signal models and amplifiers.
+2. **Practise:** Solve amplifier and op-amp problems daily.
+3. **Make notes:** device models, formulas and op-amp circuits.
+4. **Avoid mistakes:** wrong bias point; incorrect small-signal models.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0114,subject_help,What is the best way to note down and revise Business Law?,"For **Business Law**, make notes with a purpose: section summaries and landmark cases.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (memorising sections without examples).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0115,subject_help,How should I practise Taxation (GST and Income Tax) every day?,"A daily routine for **Taxation (GST and Income Tax)** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Learn the heads of income and GST concepts with examples, then practise computations.
+- **40 min:** practise. Solve 4 or 5 computations daily with current-year rules.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0116,timetable,How should I divide 3 hours of study daily for semester exams (Law)? I have about 3 months.,"Here is a realistic plan for **semester exams (Law)** with **3 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Constitutional Law: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Contracts + Torts: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Criminal Law + Procedure: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Drafting + Moot court: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Constitutional Law 1 h, Contracts + Torts 1 h, Criminal Law + Procedure 0.5 h, Drafting + Moot court 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0117,degree_career,How do I build a career in nursing?,"Nursing and allied health are in steady demand.
+- Roles: staff nurse in hospitals, community health, specialisations (ICU, paediatric, surgical), teaching and administration.
+- Registration with the nursing council is required to practise; check its official rules.
+- Higher studies: post-basic and M.Sc Nursing, specialist courses, and public health.
+- Abroad: each country has its own licensing exams and language tests; verify requirements on that country's official nursing regulator and avoid agents who guarantee jobs."
+B0118,timetable,I'm a B.Sc student preparing for semester exams (B.Sc). I can study 5 hours a day after college. My exam is in 6 months. Can you make me a daily timetable?,"Here is a realistic plan for **semester exams (B.Sc)** with **5 hours of focused study a day** (after college) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 7:00 AM | Core paper 1: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:00 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:30 PM | Core paper 2: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 6:30 PM - 6:45 PM | Break (walk, water, stretch) | 15 min |
+| 6:45 PM - 7:45 PM | Core paper 3: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 PM - 8:00 PM | Break (walk, water, stretch) | 15 min |
+| 8:00 PM - 9:00 PM | Practicals + Records: learn today's topic (concepts + short notes) | 1 h |
+| 9:00 PM - 9:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Core paper 1 1.5 h, Core paper 2 1.5 h, Core paper 3 1 h, Practicals + Records 1 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0119,college_academics,Please help: how do I find a mentor in my field?,"Start small and be specific.
+- Ask seniors and alumni about their path and what they would do differently; most people enjoy sharing.
+- Send a short message: who you are, one clear question, and thanks. For example: ""I'm a third-year civil student interested in structural design. Could I ask 3 questions about how you started?""
+- Attend department talks, club events and alumni meets; speak to one new person at each.
+- Follow up with a thank-you and share what you did with their advice."
+B0120,timetable,"Time table please! UGC NET, 3 hrs/day after college, 9 months to go.","Here is a realistic plan for **UGC NET** with **3 hours of focused study a day** (after college) and **9 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Paper 1 (teaching + research aptitude): learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Subject Part A: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:30 PM | Subject Part B: learn today's topic (concepts + short notes) | 1 h |
+| 8:30 PM - 8:45 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Paper 1 (teaching + research aptitude) 1 h, Subject Part A 1 h, Subject Part B 1 h.
+
+### Sunday
+- First half: NET-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 9 months
+- Months 1 to 4: **Build concepts**
+- Months 5 to 7: **Practice and speed**
+- Months 8 to 9: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0121,govt_jobs,GATE CE preparation strategy,"Cover the blocks and use weightage and previous papers to prioritise.
+- Blocks: Engineering Mathematics, Structural Engineering (mechanics, structural analysis, concrete, steel), Geotechnical, Water Resources, Environmental, Transportation and Geomatics.
+- Start with the largest subjects in your weak area, and keep Engineering Mathematics and Aptitude weekly.
+- Solve topic-wise previous year questions, including numerical-answer ones.
+- Keep formula and code-based notes (such as design provisions) as short sheets.
+- Take full mocks in the last 3 months and fix weak topics.
+Check the latest syllabus on the official GATE site."
+B0122,roadmap,"Roadmap for GPAT for 6 months, please. I'm starting from zero.","Here is a 6-month roadmap for **GPAT**.
+
+**Phase 1: Core subjects (Months 1 to 2)**
+   - Study pharmaceutics, pharmacology, medicinal chemistry, analysis and pharmacognosy
+   - Make short notes and drug tables
+   - Solve unit-wise MCQs
+   - Checkpoint: unit tests at 60 percent or more.
+
+**Phase 2: Practice (Months 3 to 4)**
+   - Solve previous GPAT questions topic-wise
+   - Weekly tests
+   - Revise weak subjects
+   - Checkpoint: accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 5 to 6)**
+   - Full-length mocks weekly
+   - Analyse mistakes and revise drug classes and mechanisms
+   - Final notes revision
+   - Checkpoint: mock scores above your target.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Memorising drug names without mechanisms.
+- No mock practice.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0123,roadmap,Give me a 12-month roadmap for GATE (ECE). I have covered most of the syllabus once.,"Here is a 12-month roadmap for **GATE (ECE)**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Core subjects (Months 1 to 2)**
+   - Cover Networks, Signals, Devices, Analog and Digital Circuits, Communications and Electromagnetics using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 3 to 7)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 8 to 11)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 12)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Leaving Electromagnetics and Communications to the end.
+- Taking mocks without analysing them.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0124,roadmap,"Roadmap for SSC JE and state AE/JE exams for 9 months, please. I have covered most of the syllabus once.","Here is a 9-month roadmap for **SSC JE and state AE/JE exams**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Technical core (Months 1 to 2)**
+   - Revise your branch's core subjects from standard books
+   - Make short notes and formula sheets
+   - Start reasoning and general awareness
+   - Checkpoint: all technical topics covered once.
+
+**Phase 2: Practice (Months 3 to 5)**
+   - Solve previous papers topic-wise
+   - Daily timed reasoning and awareness practice
+   - Weekly sectional tests
+   - Checkpoint: sectional tests at target accuracy.
+
+**Phase 3: Mocks (Months 6 to 9)**
+   - Full mocks three times a week near the end
+   - Analyse mistakes
+   - Revise current affairs
+   - Checkpoint: mock scores above the expected cut-off trend.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring the technical paper.
+- Not checking the latest notification on the official site.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0125,degree_career,Quick question: what is the career path in psychology?,"Psychology offers many paths, and professional practice needs further study.
+- Typical route: BA/B.Sc, then a master's in psychology, then specialisation (clinical, counselling, organisational, educational).
+- Clinical and counselling practice requires specific qualifications and registrations; check the official bodies' requirements in your country.
+- Other careers: HR, research, user research, school counselling, NGOs.
+- Build experience: internships, supervised practice, research projects.
+Choose the master's and specialisation carefully by looking at fieldwork and recognition."
+B0126,safety,Predict my rank in the exam.,"I can't predict cut-offs, ranks or exact dates; they change every year and a wrong number could mislead you.
+- For dates, pattern and eligibility, use the official website and notification of the exam.
+- For cut-offs, study the past years' trends published by the conducting body or the institutes.
+- For your own chances, track your mock scores against recent years' trends.
+Tell me your mock scores and target, and I will help you plan how to improve."
+B0127,core_skills,How can I become industry-ready as a chemical engineer?,"Combine fundamentals and tools.
+- Fundamentals: material and energy balances, thermodynamics, fluid mechanics, heat and mass transfer, reaction engineering, process control.
+- Tools: Aspen Plus or HYSYS for simulation, MATLAB or Python for modelling, P&ID reading.
+- Safety and standards: HAZOP basics, process safety and environmental rules.
+- Practice: model a distillation column, a heat exchanger network or a reactor, and compare with textbook results.
+A plant internship plus a simulation project gives you the best interview stories."
+B0128,subject_help,How should I revise Control Systems in the last 15 days?,"A 15-day revision plan for **Control Systems**:
+
+- **Days 1 to 5:** list all chapters, mark each as strong, medium or weak; revise the weak ones first using rules for root locus, Bode and Nyquist, with examples.
+- **Days 6 to 10:** redo plots and stability problems.
+- **Days 11 to 13:** timed full papers and analysis.
+- **Days 14 to 15:** light revision of formulas or key points, and rest.
+
+Do not start new material now. Avoid: errors in transfer function reduction."
+B0129,subject_help,What mistakes do students make in Pharmacology?,"Common mistakes in **Pharmacology**:
+
+- Memorising names without mechanisms.
+- Mixing similar drugs.
+- Ignoring adverse effects.
+
+**Fix:** Learn drugs by class: mechanism, uses, side effects and interactions. Then make drug tables and solve MCQs daily. Keep an error log so you see which mistake repeats and fix it first."
+B0130,roadmap,I want to do well in GATE (Civil) over 9 months. I have covered most of the syllabus once. What should my plan be?,"Here is a 9-month roadmap for **GATE (Civil)**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Core subjects (Months 1 to 2)**
+   - Cover Structures, Geotechnical, Water Resources, Environmental and Transportation using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 3 to 5)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 6 to 8)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 9)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring numerical-answer practice.
+- Learning all topics equally without checking weightage.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0131,core_skills,Quick question: how do I find an internship in a core industry?,"Core internships come from effort and contacts more than portals.
+- Ask your training and placement cell, seniors and faculty for contacts.
+- Write a short, clear email to plants, firms, contractors and labs near you (name, college, branch, what you want to learn, dates).
+- Apply to government and public sector training programmes through their official sites.
+- Visit local industries in person with a printed resume.
+- Keep a daily log in the internship, and ask for a certificate and a recommendation letter.
+Never pay for an internship offer without checking the company."
+B0132,college_academics,What is the best strategy for university semester exams?,"University exams reward a pattern, so study to the pattern.
+- Collect the syllabus and the last 5 years' question papers; mark repeated topics by unit.
+- Attend classes and take short notes; clear doubts the same week.
+- Study unit by unit: understand, then solve problems and write answers.
+- Practise numericals and derivations by hand.
+- In the paper: write steps, draw neat diagrams, and use headings.
+A steady weekly routine beats a last-minute rush."
+B0133,branch_career,What is the scope of Biotechnology after B.Tech?,"Biotech is research-heavy; most good paths need specialisation or higher studies.
+- Industry: pharma, biologics, diagnostics, food and agri-biotech, bioinformatics, quality control and regulatory affairs.
+- Studies: M.Tech/M.Sc, MS abroad, PhD; entrances include GATE (BT), IIT JAM and university tests.
+- Skills: lab techniques (PCR, cell culture, chromatography), Python or R for biological data, statistics, documentation.
+- Experience: research internships at institutes and labs, and a final-year project with a paper or poster.
+Be honest about the job market: build both lab and data skills so you have more options."
+B0134,college_life,How do I manage money as a college student?,"Simple habits protect you.
+- Budget: write income (allowance, scholarship) and expenses; split into needs, wants and savings; track weekly.
+- Avoid overspending on trends; use student discounts.
+- Scams: never share OTP, PIN or passwords; avoid unknown ""instant loan"" apps and ""easy earning"" offers; verify any scholarship or job offer through official sites.
+- Save even a small amount monthly and keep an emergency fund.
+If you take a loan, compare banks and read the terms."
+B0135,core_skills,Hi Myra! What skills do chemical engineering students need?,"Combine fundamentals and tools.
+- Fundamentals: material and energy balances, thermodynamics, fluid mechanics, heat and mass transfer, reaction engineering, process control.
+- Tools: Aspen Plus or HYSYS for simulation, MATLAB or Python for modelling, P&ID reading.
+- Safety and standards: HAZOP basics, process safety and environmental rules.
+- Practice: model a distillation column, a heat exchanger network or a reactor, and compare with textbook results.
+A plant internship plus a simulation project gives you the best interview stories."
+B0136,roadmap,I want to do well in GATE (Civil) over 12 months. I have covered most of the syllabus once. What should my plan be?,"Here is a 12-month roadmap for **GATE (Civil)**.
+
+Since you have covered the syllabus once, Phase 1 is shorter: spend it finding gaps with a diagnostic test, then move to practice early.
+
+**Phase 1: Core subjects (Months 1 to 2)**
+   - Cover Structures, Geotechnical, Water Resources, Environmental and Transportation using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 3 to 7)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 8 to 11)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 12)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Ignoring numerical-answer practice.
+- Learning all topics equally without checking weightage.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0137,timetable,"Myra, I'm a commerce graduate. Build a study schedule for CFA Level I with 10 hours per day (3 months left).","Here is a realistic plan for **CFA Level I** with **10 hours of focused study a day** (as a full-time student) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Economics + Financial Reporting: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 8:45 AM | Ethics + Quant: learn today's topic (concepts + short notes) | 1 h |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:00 AM | Corporate + Equity: learn today's topic (concepts + short notes) | 1 h |
+| 10:00 AM - 10:15 AM | Break (walk, water, stretch) | 15 min |
+| 10:15 AM - 11:15 AM | Fixed Income + Derivatives: learn today's topic (concepts + short notes) | 1 h |
+| 11:15 AM - 11:30 AM | Break (walk, water, stretch) | 15 min |
+| 11:30 AM - 1:00 PM | Alternatives + Portfolio: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 1:00 PM - 1:15 PM | Break (walk, water, stretch) | 15 min |
+| 1:15 PM - 2:15 PM | Lunch + short rest | Recharge |
+| 2:15 PM - 3:15 PM | Economics + Financial Reporting: practice questions on that topic | 1 h |
+| 3:15 PM - 3:30 PM | Break (walk, water, stretch) | 15 min |
+| 3:30 PM - 4:30 PM | Ethics + Quant: practice questions on that topic | 1 h |
+| 4:30 PM - 4:45 PM | Break (walk, water, stretch) | 15 min |
+| 4:45 PM - 5:45 PM | Corporate + Equity: practice questions on that topic | 1 h |
+| 5:45 PM - 6:00 PM | Break (walk, water, stretch) | 15 min |
+| 6:00 PM - 7:00 PM | Fixed Income + Derivatives: practice questions on that topic | 1 h |
+| 7:00 PM - 7:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **10 h** (plus a 15-minute recap).
+
+### Subject split of the 10 hours
+Ethics + Quant 2 h, Economics + Financial Reporting 2.5 h, Corporate + Equity 2 h, Fixed Income + Derivatives 2 h, Alternatives + Portfolio 1.5 h.
+
+### Sunday
+- First half: CFA-style mock (4.5 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0138,subject_help,Can I improve my Electrical Machines in one month? Give me a plan.,"A 30-day plan for **Electrical Machines**:
+
+- **Days 1 to 7: Basics.** Understand the principle of each machine, then equivalent circuit and characteristics. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Draw phasor diagrams and solve problems on transformers, DC, induction and synchronous machines.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo efficiency, regulation and speed-control problems.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: not understanding equivalent circuits, and phasor mistakes.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0139,timetable,"Myra, I'm a B.Tech Electrical student. Build a study schedule for semester exams (Electrical Engineering) with 3 hours per day (12 months left).","Here is a realistic plan for **semester exams (Electrical Engineering)** with **3 hours of focused study a day** (after college) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Machines + Power Systems: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Circuits + Control + Signals: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Electronics + Measurements: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Labs + Assignments: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Machines + Power Systems 1 h, Circuits + Control + Signals 1 h, Electronics + Measurements 0.5 h, Labs + Assignments 0.5 h.
+
+### Sunday
+- First half: timed previous-year paper (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0140,subject_help,What is the best way to note down and revise Strength of Materials?,"For **Strength of Materials**, make notes with a purpose: a sheet of formulas, diagram patterns and section properties.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (wrong sign conventions in SFD and BMD).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0141,about_myra,Please help: can you help with non-CS branches too?,"Yes. I help students in every B.Tech branch and in degrees such as B.Sc, B.Com, BBA, BA, pharmacy, law, architecture, agriculture and more.
+I can build semester timetables and exam plans, create year-wise roadmaps, explain study methods for your subjects, and guide you on GATE, ESE, JAM, NET, CA/CMA, CAT, UPSC, MS abroad, internships and jobs.
+Tell me your course, year, goal, and the hours you can study daily, and I will make a plan for you."
+B0142,subject_help,What is the best strategy to score well in Constitutional Law exams?,"To score high in **Constitutional Law**:
+
+1. **Learn well:** Learn the articles and landmark cases together.
+2. **Practise:** Write short notes on one doctrine and one case daily.
+3. **Make notes:** article lists, doctrines and case summaries.
+4. **Avoid mistakes:** memorising articles without cases; ignoring amendments.
+5. **Test yourself:** take a timed paper every week and review it with an error log.
+
+Consistent daily practice for 45 to 90 minutes beats long irregular sessions."
+B0143,subject_help,I'm weak in Physical Chemistry. How do I improve in 30 days?,"A 30-day plan for **Physical Chemistry**:
+
+- **Days 1 to 7: Basics.** Learn the concepts, equations and units; practise numericals from every chapter. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve 10 numericals daily.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo numericals on thermodynamics, kinetics and equilibrium.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: unit mistakes, and formula confusion.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0144,subject_help,Why do I keep losing marks in Geotechnical Engineering?,"Common mistakes in **Geotechnical Engineering**:
+
+- Mixing up soil parameters and symbols.
+- Wrong use of formulas for saturated versus dry soil.
+- Skipping diagrams.
+
+**Fix:** Learn soil classification, phase relations, then stress, consolidation, shear strength and bearing capacity. Then solve soil-mechanics numericals daily, drawing phase diagrams. Keep an error log so you see which mistake repeats and fix it first."
+B0145,timetable,I have 12 months for IIT JAM (Chemistry) and only 8 hours daily because I'm preparing full-time. What's the best timetable?,"Here is a realistic plan for **IIT JAM (Chemistry)** with **8 hours of focused study a day** (as a full-time student) and **12 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:30 AM | Physical Chemistry: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 7:30 AM - 7:45 AM | Break (walk, water, stretch) | 15 min |
+| 7:45 AM - 9:15 AM | Organic Chemistry: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 9:15 AM - 9:30 AM | Break (walk, water, stretch) | 15 min |
+| 9:30 AM - 11:00 AM | Inorganic Chemistry: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 11:00 AM - 11:15 AM | Break (walk, water, stretch) | 15 min |
+| 11:15 AM - 12:45 PM | Physical Chemistry: practice questions on that topic | 1 h 30 min |
+| 12:45 PM - 1:00 PM | Break (walk, water, stretch) | 15 min |
+| 1:00 PM - 2:00 PM | Lunch + short rest | Recharge |
+| 2:00 PM - 3:00 PM | Organic Chemistry: practice questions on that topic | 1 h |
+| 3:00 PM - 3:15 PM | Break (walk, water, stretch) | 15 min |
+| 3:15 PM - 4:15 PM | Inorganic Chemistry: practice questions on that topic | 1 h |
+| 4:15 PM - 4:30 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **8 h** (plus a 15-minute recap).
+
+### Subject split of the 8 hours
+Physical Chemistry 3 h, Organic Chemistry 2.5 h, Inorganic Chemistry 2.5 h.
+
+### Sunday
+- First half: JAM-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 12 months
+- Months 1 to 6: **Build concepts**
+- Months 7 to 10: **Practice and speed**
+- Months 11 to 12: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0146,core_skills,"How do I learn SolidWorks, AutoCAD, CATIA or ANSYS?","Learn tools in a sequence, and attach each to a project.
+1. 2D and 3D CAD: AutoCAD, then SolidWorks, Creo, Fusion or CATIA (choose one deeply).
+2. Analysis (CAE): ANSYS or similar for structural and thermal analysis; start with simple beams and plates.
+3. Manufacturing: basics of CNC, GD&T and drawing standards.
+4. MATLAB or Python for calculations and plots.
+Practise by modelling a real object, running an analysis, and writing a report. A portfolio with 3 documented projects shows more than a certificate list."
+B0147,subject_help,What mistakes do students make in Engineering Mechanics?,"Common mistakes in **Engineering Mechanics**:
+
+- No free-body diagram.
+- Mixing up force directions.
+- Skipping units and checks.
+
+**Fix:** Master free-body diagrams and equilibrium before dynamics. Then solve 10 problems daily, with a diagram for each. Keep an error log so you see which mistake repeats and fix it first."
+B0148,subject_help,I'm weak in Cost and Management Accounting. How do I improve in 30 days?,"A 30-day plan for **Cost and Management Accounting**:
+
+- **Days 1 to 7: Basics.** Learn each costing method with a standard format and its use. Find your weak topics with a 20-question test.
+- **Days 8 to 15: Targeted practice.** Solve 4 to 6 numericals daily and practise cost sheets.
+- **Days 16 to 23: Mixed practice.** Solve mixed questions in a timer, 45 to 60 minutes a day, and log every mistake.
+- **Days 24 to 30: Test and fix.** Take 2 full tests, analyse them, and redo costing, variance and budget problems.
+
+Daily time: about 60 to 90 minutes. Common traps to avoid: mixing cost types, and formula confusion.
+
+Tell me your exam and the topics you find hardest, and I will adjust the plan."
+B0149,subject_help,How should I practise Thermodynamics every day?,"A daily routine for **Thermodynamics** (about 90 minutes):
+
+- **10 min:** revise yesterday's topic from your notes (recall, not reading).
+- **30 min:** learn today's topic. Learn the laws and system definitions first, then use property tables and diagrams (P-v, T-s) to solve cycles.
+- **40 min:** practise. Solve 8 to 10 problems daily from open and closed systems, cycles and entropy.
+- **10 min:** write mistakes in your error log and list tomorrow's topic.
+
+Take a 5 to 10 minute break halfway if you need it, and keep one test per week."
+B0150,roadmap,How should I plan the next 12 months for MS abroad for core engineering? I'm starting from zero.,"Here is a 12-month roadmap for **MS abroad for core engineering**.
+
+**Phase 1: Plan and profile (Months 1 to 3)**
+   - Pick a specialisation and shortlist programmes and funding
+   - Check test requirements (English test, GRE only if needed)
+   - Start a project or research work to strengthen your profile
+   - Checkpoint: a shortlist with deadlines.
+
+**Phase 2: Tests and documents (Months 4 to 7)**
+   - Prepare and take the required tests
+   - Ask faculty for recommendation letters
+   - Draft your SOP and CV
+   - Checkpoint: scores and drafts ready.
+
+**Phase 3: Applications (Months 8 to 11)**
+   - Apply to a mix of ambitious, moderate and safe programmes
+   - Apply for scholarships and assistantships
+   - Prepare for interviews
+   - Checkpoint: all applications submitted before the deadlines.
+
+**Phase 4: Decision and visa (Month 12)**
+   - Compare offers and funding
+   - Arrange loan, documents and visa
+   - Plan travel and housing
+   - Checkpoint: visa and finances ready.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Using agents without verifying them.
+- Choosing a university only by name, not research fit.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0151,timetable,"Time table please! GPAT, 3 hrs/day after college, 6 months to go.","Here is a realistic plan for **GPAT** with **3 hours of focused study a day** (after college) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:00 PM - 6:00 PM | Pharmaceutics: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 7:15 PM | Pharmacology: learn today's topic (concepts + short notes) | 1 h |
+| 7:15 PM - 7:30 PM | Break (walk, water, stretch) | 15 min |
+| 7:30 PM - 8:00 PM | Medicinal Chemistry + Analysis: learn today's topic (concepts + short notes) | 30 min |
+| 8:00 PM - 8:15 PM | Break (walk, water, stretch) | 15 min |
+| 8:15 PM - 8:45 PM | Pharmacognosy + others: learn today's topic (concepts + short notes) | 30 min |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **3 h** (plus a 15-minute recap).
+
+### Subject split of the 3 hours
+Pharmaceutics 1 h, Pharmacology 1 h, Medicinal Chemistry + Analysis 0.5 h, Pharmacognosy + others 0.5 h.
+
+### Sunday
+- First half: GPAT-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0152,safety,How can I copy in semester exams without being caught?,"I can't help with cheating. It risks a ban or a zero, and it will not help you later when you need the skill.
+If you are short of time, I can help you prioritise the most important topics from the previous papers, make a quick revision plan and practise likely questions with you.
+Tell me the subject, the exam date and what you have covered so far."
+B0153,govt_jobs,"Myra, should I do GATE or take a job after B.Tech?","Decide by goal and not by pressure.
+- Choose GATE if you want M.Tech from a good institute, PSU recruitment through GATE score, research or teaching.
+- Choose a job if you need income, found a good role, or want industry experience first.
+- You can combine: study GATE basics in the final year, and apply for jobs; many students work first and attempt GATE later.
+- Before deciding, list your goal, finances, and the PSUs or institutes you are targeting; check their official criteria and past score trends."
+B0154,timetable,How should I divide 5 hours of study daily for semester exams (Architecture)? I have about 3 months.,"Here is a realistic plan for **semester exams (Architecture)** with **5 hours of focused study a day** (after college) and **3 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 5:30 AM - 6:30 AM | Design studio: learn today's topic (concepts + short notes) | 1 h |
+| 6:30 AM - 6:45 AM | Break (walk, water, stretch) | 15 min |
+| 6:45 AM - 7:45 AM | Building construction: learn today's topic (concepts + short notes) | 1 h |
+| 7:45 AM - 5:00 PM | School/college hours, travel, meals, rest | - |
+| 5:00 PM - 6:00 PM | Structures: learn today's topic (concepts + short notes) | 1 h |
+| 6:00 PM - 6:15 PM | Break (walk, water, stretch) | 15 min |
+| 6:15 PM - 6:45 PM | History + Theory: learn today's topic (concepts + short notes) | 30 min |
+| 6:45 PM - 7:00 PM | Break (walk, water, stretch) | 15 min |
+| 7:00 PM - 7:30 PM | Software + Drawing: learn today's topic (concepts + short notes) | 30 min |
+| 7:30 PM - 7:45 PM | Break (walk, water, stretch) | 15 min |
+| 7:45 PM - 8:45 PM | Design studio: practice questions on that topic | 1 h |
+| 8:45 PM - 9:00 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **5 h** (plus a 15-minute recap).
+
+### Subject split of the 5 hours
+Design studio 2 h, Building construction 1 h, Structures 1 h, History + Theory 0.5 h, Software + Drawing 0.5 h.
+
+### Sunday
+- First half: design review + timed theory paper.
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 3 months
+- Month 1: **Build concepts**
+- Month 2: **Practice and speed**
+- Month 3: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0155,roadmap,How should I plan the next 6 months for GATE (ECE)? I'm starting from zero.,"Here is a 6-month roadmap for **GATE (ECE)**.
+
+**Phase 1: Core subjects (Month 1)**
+   - Cover Networks, Signals, Devices, Analog and Digital Circuits, Communications and Electromagnetics using one standard source per subject
+   - Make a one-page formula sheet for each subject
+   - Solve basic questions after every topic
+   - Checkpoint: every subject's topic test at 60 percent or more.
+
+**Phase 2: Question practice (Months 2 to 3)**
+   - Solve topic-wise previous year GATE questions, including numerical-answer type
+   - Practise Engineering Mathematics and Aptitude weekly
+   - Rework the 3 weakest subjects
+   - Checkpoint: topic accuracy at 70 percent or more.
+
+**Phase 3: Mocks and revision (Months 4 to 5)**
+   - One full-length mock a week, with the virtual calculator
+   - Analyse every mistake and update the error log
+   - Revise formula sheets and short notes
+   - Checkpoint: mock scores above your target range for 3 weeks.
+
+**Phase 4: Final polish (Month 6)**
+   - Light mocks and quick revision only
+   - Fix sleep and the exam-day routine
+   - No new topics in the last week
+   - Checkpoint: calm, complete revision.
+
+**Weekly habits**
+- Weekly review every Sunday: what did I finish, what slipped, what changes next week?
+- Keep an error log and revise it every weekend.
+
+**Common mistakes to avoid**
+- Leaving Electromagnetics and Communications to the end.
+- Taking mocks without analysing them.
+
+Check the official website for the latest syllabus, eligibility and dates. Tell me your current level and target date, and I will turn this into a week-by-week plan."
+B0156,subject_help,What is the best way to note down and revise Constitutional Law?,"For **Constitutional Law**, make notes with a purpose: article lists, doctrines and case summaries.
+
+- Write after you understand, not while reading.
+- Keep each chapter to one page and add 3 to 5 self-test questions.
+- Revise with recall: cover the page and rewrite from memory.
+- Keep a separate sheet of mistakes (memorising articles without cases).
+
+If your notes are too long to revise in 10 minutes per chapter, shrink them."
+B0157,timetable,I have 6 months for IIT JAM (Mathematics) and only 6 hours daily because I'm preparing full-time. What's the best timetable?,"Here is a realistic plan for **IIT JAM (Mathematics)** with **6 hours of focused study a day** (as a full-time student) and **6 months** left. I assumed you sleep about 7 hours and study on 6 days a week.
+
+### Daily timetable (Monday to Saturday)
+| Time | Activity | Duration |
+| --- | --- | --- |
+| 6:00 AM - 7:00 AM | Calculus: learn today's topic (concepts + short notes) | 1 h |
+| 7:00 AM - 7:15 AM | Break (walk, water, stretch) | 15 min |
+| 7:15 AM - 8:45 AM | Linear Algebra: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 8:45 AM - 9:00 AM | Break (walk, water, stretch) | 15 min |
+| 9:00 AM - 10:30 AM | Real Analysis: learn today's topic (concepts + short notes) | 1 h 30 min |
+| 10:30 AM - 10:45 AM | Break (walk, water, stretch) | 15 min |
+| 10:45 AM - 11:45 AM | Differential Equations + Statistics: learn today's topic (concepts + short notes) | 1 h |
+| 11:45 AM - 12:00 PM | Break (walk, water, stretch) | 15 min |
+| 12:00 PM - 1:00 PM | Calculus: practice questions on that topic | 1 h |
+| 1:00 PM - 1:15 PM | Daily recap: 5 questions from memory + plan tomorrow | 15 min |
+
+Total focused study: **6 h** (plus a 15-minute recap).
+
+### Subject split of the 6 hours
+Calculus 2 h, Linear Algebra 1.5 h, Real Analysis 1.5 h, Differential Equations + Statistics 1 h.
+
+### Sunday
+- First half: JAM-style full mock (3 h).
+- Second half: analyse it (wrong answers, silly mistakes, time lost) and add each mistake to your error log.
+- Evening: rest. Keep at least 3 hours completely free.
+
+### Plan for the 6 months
+- Months 1 to 2: **Build concepts**
+- Months 3 to 4: **Practice and speed**
+- Months 5 to 6: **Revise and test**
+
+### Rules that make it work
+- Keep sleep at 7 hours; do not cut it to add study time.
+- Phone away during blocks; one subject per block.
+- If you miss a block, drop the lowest-priority one and never double up the next day.
+- Review every Sunday night and adjust the next week.
+
+Tell me your weak subjects and exact exam date and I will tweak the split and phases."
+B0158,roadmap,How should I plan the next 6 months for IIT JAM? My basics are weak.,"Here

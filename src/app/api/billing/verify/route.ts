@@ -1,8 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as crypto from "crypto";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit, getClientIp } from "@/lib/rate-limiter";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
+  const requestId = req.headers.get("x-request-id") || `req-${Date.now()}`;
+  const log = logger.child({ request_id: requestId, route: "/api/billing/verify", service: "billing" });
+
+  // Rate limit: 10 payment verification attempts per IP per minute
+  const ip = getClientIp(req);
+  const rl = rateLimit(`billing-verify:${ip}`, { limit: 10, windowMs: 60_000 });
+  if (!rl.allowed) {
+    log.warn("Billing verify rate limit exceeded", { ip });
+    return NextResponse.json(
+      { error: "Too many payment requests. Please wait before retrying." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.reset - Date.now()) / 1000)),
+          "x-request-id": requestId,
+        },
+      }
+    );
+  }
+
   try {
     const supabase = createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -20,7 +42,17 @@ export async function POST(req: NextRequest) {
     } = await req.json();
 
     const plan = requestedPlan === "premium" ? "premium" : "pro";
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || "rzp_test_mock_secret_key_12345";
+
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keySecret) {
+      // Payment verification is impossible without the real secret key.
+      // Never fall back to a mock value — that would allow any signature to pass.
+      console.error("[billing/verify] RAZORPAY_KEY_SECRET is not configured.");
+      return NextResponse.json(
+        { error: "Payment verification is temporarily unavailable. Please contact support." },
+        { status: 503 }
+      );
+    }
 
     // Strict constant-time HMAC-SHA256 signature verification (prevents timing side-channels)
     const generatedSignature = crypto

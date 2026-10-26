@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Video, 
   VideoOff, 
@@ -10,26 +10,25 @@ import {
   Square, 
   RotateCcw, 
   Send, 
-  Loader2,
   Sparkles,
   Volume2,
   VolumeX,
   AlertCircle,
-  HelpCircle,
-  ShieldCheck,
-  CheckCircle2,
   Clock,
   Radio,
-  RefreshCw,
-  Maximize2,
-  Minimize2,
-  Edit3,
+  CheckCircle2,
   Check,
   Activity,
-  ChevronRight
+  ChevronRight,
+  Keyboard,
+  ArrowRight,
+  ShieldCheck,
+  Flame,
+  HelpCircle
 } from "lucide-react";
 import MyraInterviewerAvatar, { MyraState } from "./MyraInterviewerAvatar";
 import FullScreenLockdownModal from "./FullScreenLockdownModal";
+import { VoiceChoice } from "@/lib/interview/voice-profiles";
 
 interface MediaRecorderStudioProps {
   questionText: string;
@@ -42,12 +41,19 @@ interface MediaRecorderStudioProps {
   currentQuestionIndex?: number;
   totalQuestions?: number;
   adaptiveFocus?: string;
+  targetRole?: string;
+  resumeContext?: string;
+  voiceChoice?: VoiceChoice;
+  speakingSpeed?: number;
+  audioOptIn?: boolean;
+  initialUseKeyboardFallback?: boolean;
   onSubmitSession: (sessionData: {
     audioBase64?: string;
     videoUrl?: string;
     transcript: string;
     durationSeconds: number;
     isAudioOnly?: boolean;
+    voiceOptIn?: boolean;
     fullscreenExitEvents?: Array<{ timestamp: string; questionIndex: number }>;
   }) => Promise<void>;
 }
@@ -63,39 +69,71 @@ export default function MediaRecorderStudio({
   currentQuestionIndex = 1,
   totalQuestions = 3,
   adaptiveFocus,
+  targetRole = "Software Engineer",
+  resumeContext = "",
+  voiceChoice = "myra-neutral",
+  speakingSpeed = 1.0,
+  audioOptIn = false,
+  initialUseKeyboardFallback = false,
   onSubmitSession,
 }: MediaRecorderStudioProps) {
+  // Media streams & modes
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isAudioOnly, setIsAudioOnly] = useState(false);
   const [micEnabled, setMicEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
-  const [recordingState, setRecordingState] = useState<"idle" | "prep_countdown" | "recording" | "recorded" | "submitting">("idle");
-  const [prepSecondsRemaining, setPrepSecondsRemaining] = useState(5);
-  const [secondsElapsed, setSecondsElapsed] = useState(0);
-  
-  // Real Speech Recognition & Live Transcript State
-  const [liveTranscript, setLiveTranscript] = useState<string>("");
-  const [isEditingTranscript, setIsEditingTranscript] = useState<boolean>(false);
-  const [recognitionFailed, setRecognitionFailed] = useState<boolean>(false);
-  const [recognitionActive, setRecognitionActive] = useState<boolean>(false);
+  const [useKeyboardMode, setUseKeyboardMode] = useState(initialUseKeyboardFallback);
 
-  // Myra Avatar Voice State
+  // Active question & follow-up state
+  const [activePromptText, setActivePromptText] = useState(questionText);
+  const [isFollowUpRound, setIsFollowUpRound] = useState(false);
+  const [followUpReference, setFollowUpReference] = useState<string | null>(null);
+
+  // Continuous Live Voice Loop State
+  const [recordingState, setRecordingState] = useState<"idle" | "speaking_question" | "recording" | "evaluating_turn" | "submitting">("idle");
+  const [secondsElapsed, setSecondsElapsed] = useState(0);
+  const [liveTranscript, setLiveTranscript] = useState<string>("");
+  const [silenceCountdown, setSilenceCountdown] = useState<number | null>(null);
+
+  // Myra Voice Avatar State
   const [isMyraVoiceMuted, setIsMyraVoiceMuted] = useState(false);
   const [isMyraSpeaking, setIsMyraSpeaking] = useState(false);
+  const [bargeInDetected, setBargeInDetected] = useState(false);
 
   // Fullscreen Lockdown State
   const [isLockdownActive, setIsLockdownActive] = useState(true);
   const [fullscreenExitEvents, setFullscreenExitEvents] = useState<Array<{ timestamp: string; questionIndex: number }>>([]);
 
+  // Refs
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const prepTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const recognitionRef = useRef<any>(null);
+  const lastSpokenTimestampRef = useRef<number>(Date.now());
+  const activePromptRef = useRef<string>(questionText);
+
+  // Keep activePromptRef in sync
+  useEffect(() => {
+    activePromptRef.current = activePromptText;
+  }, [activePromptText]);
+
+  // Update prompt whenever incoming base question changes
+  useEffect(() => {
+    setActivePromptText(questionText);
+    setIsFollowUpRound(false);
+    setFollowUpReference(null);
+    setLiveTranscript("");
+    setSecondsElapsed(0);
+    // Begin vocalizing new question
+    triggerQuestionSpeech(questionText);
+  }, [questionText]);
 
   // 1. Initialize Camera & Mic
   useEffect(() => {
+    if (useKeyboardMode) return;
+
     async function startMedia() {
       try {
         const userMedia = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -109,6 +147,7 @@ export default function MediaRecorderStudio({
           setIsAudioOnly(true);
         } catch (e) {
           console.warn("[Media Permissions Note]:", e);
+          setUseKeyboardMode(true);
         }
       }
     }
@@ -120,12 +159,14 @@ export default function MediaRecorderStudio({
         try { recognitionRef.current.stop(); } catch (e) {}
       }
       if (timerRef.current) clearInterval(timerRef.current);
-      if (prepTimerRef.current) clearInterval(prepTimerRef.current);
+      if (silenceTimerRef.current) clearInterval(silenceTimerRef.current);
     };
-  }, []);
+  }, [useKeyboardMode]);
 
-  // 2. Setup Speech Recognition (Web Speech API)
+  // 2. Setup Web Speech Recognition
   useEffect(() => {
+    if (useKeyboardMode) return;
+
     if (typeof window !== "undefined") {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
@@ -139,136 +180,192 @@ export default function MediaRecorderStudio({
           for (let i = 0; i < event.results.length; i++) {
             fullText += event.results[i][0].transcript + " ";
           }
-          setLiveTranscript(fullText.trim());
+          const trimmed = fullText.trim();
+          setLiveTranscript(trimmed);
+          lastSpokenTimestampRef.current = Date.now();
+
+          // BARGE-IN: If user speaks while Myra is speaking, halt Myra immediately
+          if (isMyraSpeaking) {
+            handleBargeIn();
+          }
+
+          // Reset silence detection
+          resetSilenceDetection();
         };
 
         recog.onerror = (err: any) => {
-          console.warn("[Speech Recognition Note]:", err?.error);
-          setRecognitionFailed(true);
+          console.warn("[Speech Recognition Event Note]:", err?.error);
         };
 
         recog.onend = () => {
-          if (recordingState === "recording") {
+          if (recordingState === "recording" && !useKeyboardMode) {
             try { recog.start(); } catch (e) {}
-          } else {
-            setRecognitionActive(false);
           }
         };
 
         recognitionRef.current = recog;
       } else {
-        setRecognitionFailed(true);
+        console.warn("[Web Speech Not Supported - Switching to Typed Mode]");
+        setUseKeyboardMode(true);
       }
     }
-  }, [recordingState]);
+  }, [isMyraSpeaking, recordingState, useKeyboardMode]);
 
-  // Trigger Myra question speech whenever question changes
-  useEffect(() => {
+  // 3. Trigger Question Speech by Myra
+  const triggerQuestionSpeech = (promptToSpeak: string) => {
     setIsMyraSpeaking(true);
-    setRecordingState("idle");
-    setLiveTranscript("");
-  }, [questionText]);
+    setRecordingState("speaking_question");
+    setSilenceCountdown(null);
 
-  // 3. Recording & Timer Controls
-  const startPrepCountdown = () => {
-    setIsMyraSpeaking(false);
-    setRecordingState("prep_countdown");
-    setPrepSecondsRemaining(5);
-    setLiveTranscript("");
-    setRecognitionFailed(false);
-    setIsEditingTranscript(false);
-
-    prepTimerRef.current = setInterval(() => {
-      setPrepSecondsRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(prepTimerRef.current!);
-          startRecording();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    // Cancel any previous Web Speech recognition during Myra prompt
+    if (recognitionRef.current) {
+      try { recognitionRef.current.stop(); } catch (e) {}
+    }
   };
 
-  const startRecording = () => {
-    setRecordingState("recording");
-    setSecondsElapsed(0);
-    chunksRef.current = [];
-
-    // Start Audio/Video MediaRecorder
-    if (stream) {
-      try {
-        const mr = new MediaRecorder(stream);
-        mr.ondataavailable = (e) => {
-          if (e.data.size > 0) chunksRef.current.push(e.data);
-        };
-        mr.start(500);
-        mediaRecorderRef.current = mr;
-      } catch (e) {
-        console.warn("MediaRecorder start note:", e);
-      }
+  // 4. Handle Barge-In: Candidate speaks over Myra
+  const handleBargeIn = () => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
     }
+    setIsMyraSpeaking(false);
+    setBargeInDetected(true);
+    if (recordingState !== "recording") {
+      startListeningToCandidate();
+    }
+    setTimeout(() => setBargeInDetected(false), 2000);
+  };
 
-    // Start Speech Recognition
-    if (recognitionRef.current) {
+  // 5. Speech Finished -> Open Mic & Start Listening
+  const handleMyraSpeechEnd = () => {
+    setIsMyraSpeaking(false);
+    startListeningToCandidate();
+  };
+
+  const startListeningToCandidate = () => {
+    setRecordingState("recording");
+    lastSpokenTimestampRef.current = Date.now();
+
+    // Start Web Speech Recognition
+    if (recognitionRef.current && !useKeyboardMode) {
       try {
         recognitionRef.current.start();
-        setRecognitionActive(true);
-      } catch (e) {
-        console.warn("Speech recognition note:", e);
-      }
+      } catch (e) {}
     }
 
+    // Start Timer
+    if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setSecondsElapsed((s) => s + 1);
+      setSecondsElapsed((prev) => prev + 1);
     }, 1000);
+
+    // Reset silence timer
+    resetSilenceDetection();
   };
 
-  const stopRecording = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (prepTimerRef.current) clearInterval(prepTimerRef.current);
+  // 6. Silence Detection Timer (~2.5s of silence after speech)
+  const resetSilenceDetection = useCallback(() => {
+    if (silenceTimerRef.current) clearInterval(silenceTimerRef.current);
+    setSilenceCountdown(null);
 
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-      mediaRecorderRef.current.stop();
-    }
+    // Only activate silence countdown if candidate has spoken at least 5 words
+    silenceTimerRef.current = setInterval(() => {
+      const elapsedSinceSpoken = Date.now() - lastSpokenTimestampRef.current;
+      const wordCount = liveTranscript.trim().split(/\s+/).filter(Boolean).length;
+
+      if (wordCount >= 5 && elapsedSinceSpoken >= 1800) {
+        // Show 1-second countdown
+        setSilenceCountdown(1);
+        if (elapsedSinceSpoken >= 2800) {
+          clearInterval(silenceTimerRef.current!);
+          setSilenceCountdown(null);
+          handleFinishAnswer();
+        }
+      }
+    }, 500);
+  }, [liveTranscript]);
+
+  // 7. Candidate Finishes Answer (Automatic Silence or Manual Click)
+  const handleFinishAnswer = async () => {
+    if (silenceTimerRef.current) clearInterval(silenceTimerRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
 
     if (recognitionRef.current) {
       try { recognitionRef.current.stop(); } catch (e) {}
-      setRecognitionActive(false);
     }
 
-    setRecordingState("recorded");
+    setRecordingState("evaluating_turn");
+
+    const answerText = liveTranscript.trim() || "I have completed my response for this question.";
+
+    // Autosave transcript state
+    try {
+      const savedSession = JSON.parse(localStorage.getItem(`edworld_active_session_${userId}`) || "{}");
+      savedSession[currentQuestionIndex] = answerText;
+      localStorage.setItem(`edworld_active_session_${userId}`, JSON.stringify(savedSession));
+    } catch (e) {}
+
+    try {
+      // Call interactive turn handler
+      const res = await fetch("/api/interview/turn", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          questionText: activePromptRef.current,
+          candidateTranscript: answerText,
+          isFollowUp: isFollowUpRound,
+          questionIndex: currentQuestionIndex,
+          totalQuestions,
+          targetRole,
+          category,
+          resumeContext,
+          userId,
+          sessionId,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.action === "repeat") {
+        // Re-speak current question
+        triggerQuestionSpeech(activePromptRef.current);
+        return;
+      }
+
+      if (data.action === "follow_up" && data.followUpQuestion && !isFollowUpRound) {
+        // One grounded follow-up from Myra
+        setIsFollowUpRound(true);
+        setFollowUpReference(data.referencedPhrase || null);
+        setActivePromptText(data.followUpQuestion);
+        setLiveTranscript("");
+        triggerQuestionSpeech(data.followUpQuestion);
+        return;
+      }
+
+      // Action is "next" or follow-up is complete -> Submit turn
+      await submitCurrentQuestion(answerText);
+    } catch (turnErr) {
+      console.warn("[Turn Evaluation Fallback]:", turnErr);
+      await submitCurrentQuestion(answerText);
+    }
   };
 
-  const retryQuestion = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (prepTimerRef.current) clearInterval(prepTimerRef.current);
-    setRecordingState("idle");
-    setLiveTranscript("");
-    setSecondsElapsed(0);
-    setIsMyraSpeaking(true);
-  };
-
-  const handleSubmit = async () => {
+  const submitCurrentQuestion = async (finalTranscript: string) => {
     setRecordingState("submitting");
-
-    const finalTranscript = liveTranscript.trim() || 
-      "I have implemented this using the STAR method, focusing on scalable architecture, clean code practices, and measurable performance results.";
-
     await onSubmitSession({
       transcript: finalTranscript,
       durationSeconds: Math.max(15, secondsElapsed),
       isAudioOnly,
+      voiceOptIn: audioOptIn,
       fullscreenExitEvents,
     });
   };
 
-  // Derive Myra State
+  // Derive Myra State for Avatar
   const getMyraState = (): MyraState => {
-    if (recordingState === "submitting") return "thinking";
+    if (recordingState === "submitting" || recordingState === "evaluating_turn") return "thinking";
     if (recordingState === "recording") return "listening";
-    if (recordingState === "recorded") return "feedback";
-    if (isMyraSpeaking || recordingState === "prep_countdown") return "speaking";
+    if (isMyraSpeaking || recordingState === "speaking_question") return "speaking";
     return "idle";
   };
 
@@ -276,9 +373,9 @@ export default function MediaRecorderStudio({
   const currentPaceWpm = secondsElapsed > 0 ? Math.round((currentWordCount / secondsElapsed) * 60) : 0;
 
   return (
-    <div className="relative bg-[#0E1017] rounded-3xl overflow-hidden border border-white/10 shadow-2xl text-white font-sans">
+    <div className="relative bg-white rounded-3xl overflow-hidden border border-neutral-200 shadow-sm text-black select-none font-sans">
       
-      {/* Fullscreen Lockdown Controller & Focus Guard */}
+      {/* Fullscreen Lockdown Controller */}
       <FullScreenLockdownModal
         isActive={isLockdownActive}
         onExitConfirmed={() => {
@@ -293,213 +390,196 @@ export default function MediaRecorderStudio({
         }}
       />
 
-      {/* Top Header & Telemetry Bar */}
-      <div className="p-4 sm:p-5 bg-[#13141B] border-b border-white/10 flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-2.5">
-          <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#00D2B4]/20 text-[#00D2B4] border border-[#00D2B4]/30">
+      {/* Top Header & Telemetry Bar (Feature 27 Monochrome) */}
+      <div className="p-4 sm:p-5 bg-neutral-50 border-b border-neutral-200 flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-black text-white">
             Question {currentQuestionIndex} of {totalQuestions}
           </span>
-          {adaptiveFocus && (
-            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5 hidden sm:flex">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>{adaptiveFocus}</span>
+          {isFollowUpRound && (
+            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-neutral-200 text-black border border-neutral-300 flex items-center gap-1.5 animate-in fade-in">
+              <Sparkles className="w-3.5 h-3.5 text-black" />
+              <span>Grounded Follow-Up {followUpReference ? `("${followUpReference}")` : ""}</span>
+            </span>
+          )}
+          {bargeInDetected && (
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 text-black border border-neutral-300 animate-pulse">
+              Barge-in detected: Myra paused
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="text-xs font-mono font-bold bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-[#00D2B4]" />
+        <div className="flex items-center gap-2.5">
+          <div className="text-xs font-mono font-bold bg-white px-3 py-1.5 rounded-xl border border-neutral-200 flex items-center gap-1.5 text-black">
+            <Clock className="w-3.5 h-3.5 text-black" />
             <span>
               {recordingState === "recording" ? `${secondsElapsed}s / ${suggestedDurationSeconds}s` : `${suggestedDurationSeconds}s Target`}
             </span>
           </div>
 
           <button
-            onClick={() => setIsMyraSpeaking(true)}
-            disabled={isMyraSpeaking || recordingState === "recording"}
-            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold flex items-center gap-1.5 transition-all text-gray-200 disabled:opacity-40"
+            type="button"
+            onClick={() => triggerQuestionSpeech(activePromptText)}
+            disabled={isMyraSpeaking || recordingState === "evaluating_turn"}
+            className="px-3 py-1.5 rounded-xl bg-white hover:bg-neutral-100 border border-neutral-200 text-xs font-bold flex items-center gap-1.5 transition-all text-neutral-800 disabled:opacity-40 cursor-pointer"
           >
-            <Volume2 className="w-3.5 h-3.5 text-[#00D2B4]" />
-            <span>Replay Question</span>
+            <Volume2 className="w-3.5 h-3.5 text-black" />
+            <span>Repeat Question</span>
           </button>
         </div>
       </div>
 
-      {/* Main Dual-Panel Studio Grid: Myra (Left) + Candidate Video (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 sm:p-6 items-stretch">
+      {/* Main Dual-Panel Grid: Myra Avatar (Left) + Candidate Video/Mic (Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 p-4 sm:p-6 items-stretch">
         
-        {/* LEFT PANEL: Myra AI Lead Interviewer Avatar */}
-        <div className="lg:col-span-5 h-[360px] sm:h-[440px]">
+        {/* LEFT PANEL: Myra AI Lead Interviewer */}
+        <div className="lg:col-span-5 min-h-[380px] sm:min-h-[460px]">
           <MyraInterviewerAvatar
             state={getMyraState()}
-            questionText={questionText}
+            questionText={activePromptText}
             isAudioMuted={isMyraVoiceMuted}
+            voiceChoice={voiceChoice}
+            speakingSpeed={speakingSpeed}
             onToggleMute={() => setIsMyraVoiceMuted(!isMyraVoiceMuted)}
-            onSpeechEnd={() => setIsMyraSpeaking(false)}
+            onSpeechEnd={handleMyraSpeechEnd}
           />
         </div>
 
-        {/* RIGHT PANEL: Candidate Live Video & Transcript Studio */}
-        <div className="lg:col-span-7 relative h-[360px] sm:h-[440px] bg-[#13141B] rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between p-4 sm:p-5 shadow-2xl">
+        {/* RIGHT PANEL: Candidate Live Speech & Video Workspace */}
+        <div className="lg:col-span-7 relative min-h-[380px] sm:min-h-[460px] bg-neutral-50 rounded-3xl overflow-hidden border border-neutral-200 flex flex-col justify-between p-4 sm:p-5 shadow-xs">
           
-          {/* Candidate Video Stream or Audio Placeholder */}
-          {!isAudioOnly && stream ? (
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="absolute inset-0 w-full h-full object-cover opacity-80"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#13141B] to-[#1E202B]">
-              <div className="text-center space-y-2 text-gray-400">
-                <Mic className="w-12 h-12 text-[#00D2B4] mx-auto animate-pulse" />
-                <div className="text-xs font-bold">Audio Microphone Active</div>
+          {/* Candidate Stream or Audio Placeholder */}
+          {!useKeyboardMode && !isAudioOnly && stream ? (
+            <div className="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-900 shadow-inner">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[10px] font-bold text-white flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${recordingState === "recording" ? "bg-red-500 animate-ping" : "bg-neutral-400"}`} />
+                <span>{recordingState === "recording" ? "Live Recording" : "Camera Ready"}</span>
               </div>
             </div>
-          )}
-
-          {/* Top Status & Rec Indicator */}
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-xs font-bold flex items-center gap-2">
-              <span className={`w-2 h-2 rounded-full ${recordingState === "recording" ? "bg-red-500 animate-ping" : "bg-emerald-400"}`} />
-              <span>{recordingState === "recording" ? "Live Recording" : "Candidate Video"}</span>
+          ) : !useKeyboardMode ? (
+            <div className="p-4 rounded-2xl bg-white border border-neutral-200 text-center space-y-2">
+              <Mic className="w-8 h-8 text-black mx-auto animate-pulse" />
+              <div className="text-xs font-bold text-black">Microphone Active &bull; Audio-Only Mode</div>
+              <p className="text-[11px] text-neutral-500">Speak clearly into your microphone when answering.</p>
             </div>
+          ) : null}
 
-            {recordingState === "recording" && (
-              <div className="px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-xs font-bold text-emerald-300 flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5 animate-pulse" />
-                <span>{currentWordCount} words • ~{currentPaceWpm} WPM</span>
-              </div>
-            )}
+          {/* Prompt Banner */}
+          <div className="p-3.5 rounded-2xl bg-white border border-neutral-200 space-y-1 mt-3">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-500 block">
+              {isFollowUpRound ? "Myra's Grounded Follow-Up" : "Current Question"}
+            </span>
+            <p className="text-xs sm:text-sm font-bold text-black leading-snug">
+              {activePromptText}
+            </p>
           </div>
 
-          {/* Prep Countdown Center Overlay */}
-          {recordingState === "prep_countdown" && (
-            <div className="relative z-20 flex flex-col items-center justify-center p-6 bg-black/80 backdrop-blur-md rounded-3xl border border-[#00D2B4]/40 max-w-xs mx-auto text-center space-y-1 animate-in zoom-in-95">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#00D2B4]">Prepare Thoughts</span>
-              <div className="text-5xl font-black text-white font-mono">{prepSecondsRemaining}</div>
-              <p className="text-[11px] text-gray-300">Myra is listening. Recording begins in a few seconds...</p>
-            </div>
-          )}
-
-          {/* Live Transcript Bubble during recording */}
-          {recordingState === "recording" && (
-            <div className="relative z-10 bg-black/75 backdrop-blur-md rounded-2xl p-3.5 border border-white/15 max-h-32 overflow-y-auto space-y-1">
-              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#00D2B4] flex items-center gap-1">
-                <Mic className="w-3 h-3" />
-                <span>Live Speech-to-Text</span>
-              </div>
-              <p className="text-xs text-gray-200 leading-relaxed italic">
-                "{liveTranscript || "Speak clearly into your mic... Myra is capturing your response."}"
-              </p>
-            </div>
-          )}
-
-          {/* Captured Transcript Review & Edit */}
-          {recordingState === "recorded" && (
-            <div className="relative z-10 bg-black/85 backdrop-blur-md rounded-2xl p-4 border border-white/15 space-y-2.5 animate-in fade-in">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Captured Spoken Answer</span>
+          {/* KEYBOARD / TYPED MODE FALLBACK */}
+          {useKeyboardMode ? (
+            <div className="space-y-3 mt-3">
+              <div className="flex items-center justify-between text-xs font-bold text-black">
+                <span className="flex items-center gap-1.5">
+                  <Keyboard className="w-4 h-4 text-black" />
+                  <span>Type Your Response:</span>
                 </span>
-                <button
-                  onClick={() => setIsEditingTranscript(!isEditingTranscript)}
-                  className="text-[11px] text-[#00D2B4] hover:underline font-bold flex items-center gap-1"
-                >
-                  <Edit3 className="w-3 h-3" />
-                  <span>{isEditingTranscript ? "Save" : "Edit"}</span>
-                </button>
+                <span className="text-[11px] font-mono text-neutral-500">
+                  {currentWordCount} words
+                </span>
+              </div>
+              <textarea
+                rows={5}
+                value={liveTranscript}
+                onChange={(e) => setLiveTranscript(e.target.value)}
+                placeholder="Type your answer using the STAR method (Situation, Task, Action, Result)..."
+                className="w-full p-3 rounded-2xl bg-white border border-neutral-200 text-xs text-black focus:outline-none focus:ring-2 focus:ring-black transition-all"
+              />
+            </div>
+          ) : (
+            /* LIVE SPEECH-TO-TEXT STREAM */
+            <div className="space-y-2 mt-3">
+              <div className="flex items-center justify-between text-[11px] font-bold text-neutral-600">
+                <span className="flex items-center gap-1.5">
+                  <Mic className="w-3.5 h-3.5 text-black" />
+                  <span>Live Speech-to-Text:</span>
+                </span>
+                {recordingState === "recording" && (
+                  <span className="font-mono text-black">
+                    {currentWordCount} words &bull; ~{currentPaceWpm} WPM
+                  </span>
+                )}
               </div>
 
-              {isEditingTranscript ? (
-                <textarea
-                  value={liveTranscript}
-                  onChange={(e) => setLiveTranscript(e.target.value)}
-                  placeholder="Edit your transcript before submitting..."
-                  rows={3}
-                  className="w-full p-2.5 rounded-xl bg-black/50 border border-white/20 text-xs text-gray-200 focus:outline-none focus:border-[#00D2B4]"
-                />
-              ) : (
-                <p className="text-xs text-gray-200 leading-relaxed bg-white/5 p-2.5 rounded-xl border border-white/10 max-h-24 overflow-y-auto">
-                  "{liveTranscript || "Spoken answer captured."}"
+              <div className="p-3.5 rounded-2xl bg-white border border-neutral-200 min-h-[90px] max-h-36 overflow-y-auto">
+                <p className="text-xs text-neutral-800 leading-relaxed italic">
+                  {liveTranscript || (
+                    <span className="text-neutral-400 not-italic">
+                      {recordingState === "recording"
+                        ? "Listening... speak your response aloud."
+                        : isMyraSpeaking
+                        ? "Listen to Myra's question above."
+                        : "Ready to answer."}
+                    </span>
+                  )}
                 </p>
+              </div>
+
+              {/* Silence Detection Countdown Indicator */}
+              {silenceCountdown !== null && (
+                <div className="p-2 rounded-xl bg-neutral-100 border border-neutral-300 text-[11px] font-bold text-neutral-800 text-center animate-pulse">
+                  Silence detected &bull; Advancing in {silenceCountdown}s... (or click &ldquo;I'm Done&rdquo; below)
+                </div>
               )}
             </div>
           )}
 
-        </div>
-      </div>
-
-      {/* Bottom Full-Width Question Card & Action Controls */}
-      <div className="p-4 sm:p-6 bg-[#13141B] border-t border-white/10 space-y-4">
-        
-        {/* Question Banner */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-          <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#00D2B4] flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Myra's Question</span>
-          </div>
-          <h2 className="text-sm sm:text-base font-bold text-white leading-relaxed">
-            "{questionText}"
-          </h2>
-        </div>
-
-        {/* Action Controls Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          
-          <div className="flex items-center gap-2">
-            {recordingState === "recorded" && (
+          {/* Action Button Controls */}
+          <div className="pt-3 border-t border-neutral-200 flex items-center justify-between flex-wrap gap-2 mt-3">
+            {!useKeyboardMode && (
               <button
-                onClick={retryQuestion}
-                className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1.5 transition-colors border border-white/10"
+                type="button"
+                onClick={() => setUseKeyboardMode(true)}
+                className="text-[11px] font-bold text-neutral-500 hover:text-black transition-colors cursor-pointer"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Retry Answer</span>
-              </button>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            {recordingState === "idle" && (
-              <button
-                onClick={startPrepCountdown}
-                className="px-6 py-3 rounded-xl bg-[#00D2B4] hover:bg-[#00BF9F] text-[#13141B] font-black text-xs flex items-center gap-2 transition-all shadow-lg hover:scale-105"
-              >
-                <Play className="w-4 h-4 fill-[#13141B]" />
-                <span>Start Answer (5s Countdown)</span>
+                Switch to Typing
               </button>
             )}
 
-            {recordingState === "recording" && (
+            <div className="flex items-center gap-2 ml-auto">
               <button
-                onClick={stopRecording}
-                className="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs flex items-center gap-2 transition-all shadow-lg animate-pulse"
+                type="button"
+                onClick={() => submitCurrentQuestion(liveTranscript || "[Skipped question]")}
+                disabled={recordingState === "submitting" || recordingState === "evaluating_turn"}
+                className="px-3.5 py-2 rounded-xl border border-neutral-200 text-neutral-600 hover:text-black text-xs font-bold transition-all cursor-pointer"
               >
-                <Square className="w-4 h-4 fill-white" />
-                <span>Finish Answer ({secondsElapsed}s)</span>
+                Skip Question
               </button>
-            )}
 
-            {recordingState === "recorded" && (
               <button
-                onClick={handleSubmit}
-                className="px-6 py-3 rounded-xl bg-[#00D2B4] hover:bg-[#00BF9F] text-[#13141B] font-black text-xs flex items-center gap-2 transition-all shadow-lg hover:scale-105"
+                type="button"
+                onClick={handleFinishAnswer}
+                disabled={recordingState === "submitting" || recordingState === "evaluating_turn" || isMyraSpeaking}
+                className="px-5 py-2 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
               >
-                <span>Submit &amp; Next Question</span>
-                <ChevronRight className="w-4 h-4" />
+                {recordingState === "evaluating_turn" ? (
+                  <>
+                    <Sparkles className="w-3.5 h-3.5 animate-spin text-white" />
+                    <span>Myra is evaluating...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>I'm Done Answering</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
               </button>
-            )}
-
-            {recordingState === "submitting" && (
-              <div className="px-6 py-3 rounded-xl bg-white/10 text-white font-bold text-xs flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin text-[#00D2B4]" />
-                <span>Myra is evaluating your answer...</span>
-              </div>
-            )}
+            </div>
           </div>
 
         </div>

@@ -4,8 +4,8 @@ import { SEED_SECTOR_DATA } from "@/lib/services/landing-sector-service";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Career Track (College & Working Professionals) | EdWorld Co.",
-  description: "The unified career acceleration OS for students and working professionals. ATS resume maker, STAR mock interviews, GitHub project studio, and salary benchmarks.",
+  title: "Career Acceleration Track (Class 12th & Higher Education) | EdWorld Co.",
+  description: "The unified career acceleration OS for Class 12th and College students. ATS resume maker, STAR mock interviews, GitHub project studio, and campus placement benchmarks.",
   alternates: {
     canonical: "https://edworldco.in/for-career",
   },

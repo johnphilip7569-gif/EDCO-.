@@ -26,6 +26,7 @@ import {
   Zap,
   X
 } from "lucide-react";
+import StudioSticker from "@/components/studio/StudioSticker";
 
 export const dynamic = "force-dynamic";
 
@@ -164,29 +165,34 @@ export default function EdFixPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-[calc(100vh-4rem)] bg-[#FCFCFB] text-[#13141B] py-8 px-4 sm:px-6 lg:px-8 xl:px-10 font-sans selection:bg-[#00D2B4]/20 selection:text-[#0A5245]">
+      <div className="min-h-[calc(100vh-4rem)] bg-[#FFF8EE] text-[#1B1B2F] py-8 px-4 sm:px-6 lg:px-8 xl:px-10 font-sans selection:bg-[#8E6CEF] selection:text-white">
         <div className="max-w-[1536px] mx-auto space-y-8 animate-in fade-in">
           
           {/* Header Banner */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-[#EBECEF] shadow-xs">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-[#13141B] text-[#00D2B4] flex items-center gap-1.5 shadow-2xs">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>EdFix Problem Board</span>
-                </span>
-                <span className="text-xs font-mono text-[#5E6573] bg-[#FCFCFB] px-2 py-0.5 rounded-md border border-[#EBECEF]">
-                  Live Curation
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-2xl border-2 border-[#1B1B2F] shadow-[6px_6px_0px_#1B1B2F]">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                <StudioSticker bgColor="#8E6CEF" textColor="#FFFFFF" rotate="slight-left" size="sm">
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-white" />
+                    EdFix Engineering Labs
+                  </span>
+                </StudioSticker>
+                <span className="text-xs font-bold text-[#1B1B2F] bg-[#FFF8EE] px-3 py-1 rounded-lg border-2 border-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F]">
+                  Curated Engineering Scenarios
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#13141B]">
-                EdFix
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1B1B2F]">
+                Practice &amp; Engineering Problems
               </h1>
+              <p className="text-xs sm:text-sm text-[#1B1B2F]/75 max-w-2xl leading-relaxed font-medium">
+                Master algorithmic data structures, systems architecture, and engineering interview challenges with integrated Myra AI guidance.
+              </p>
             </div>
 
             {successMessage && (
-              <div className="px-4 py-3 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-2 animate-in fade-in shadow-2xs self-start md:self-auto">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="px-4 py-3 rounded-xl bg-[#6BCB77]/20 text-[#1B1B2F] border-2 border-[#1B1B2F] text-xs font-bold flex items-center gap-2 shadow-[3px_3px_0px_#1B1B2F] self-start md:self-auto">
+                <CheckCircle2 className="w-4 h-4 text-[#1B1B2F] shrink-0" />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -199,11 +205,12 @@ export default function EdFixPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
+                  type="button"
                   onClick={() => setCategoryFilter(cat.id)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`btn-squishy px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border-2 border-[#1B1B2F] ${
                     categoryFilter === cat.id
-                      ? "bg-[#13141B] text-white shadow-2xs"
-                      : "bg-white text-[#5E6573] border border-[#EBECEF] hover:bg-slate-50 hover:text-[#13141B]"
+                      ? "bg-[#8E6CEF] text-white shadow-[3px_3px_0px_#1B1B2F]"
+                      : "bg-white text-[#1B1B2F] hover:bg-[#FFF8EE] shadow-[2px_2px_0px_#1B1B2F]"
                   }`}
                 >
                   {cat.label}
@@ -212,38 +219,38 @@ export default function EdFixPage() {
             </div>
 
             {/* Search Input */}
-            <div className="relative min-w-[240px] sm:w-72">
-              <Search className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="relative min-w-[240px] sm:w-80">
+              <Search className="w-4 h-4 text-[#1B1B2F]/60 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search problems, skills, tags..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-white border border-[#EBECEF] text-xs text-[#13141B] placeholder:text-[#8F9CAE] focus:outline-none focus:ring-2 focus:ring-[#00D2B4] shadow-xs"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-white border-2 border-[#1B1B2F] text-xs font-medium text-[#1B1B2F] placeholder:text-[#1B1B2F]/40 focus:outline-none shadow-[3px_3px_0px_#1B1B2F]"
               />
             </div>
           </div>
 
-          {/* User's Submitted Solutions Strip (if any) */}
+          {/* User's Submitted Solutions Strip */}
           {solutions.length > 0 && (
-            <div className="bg-white p-5 rounded-2xl border border-[#EBECEF] shadow-xs space-y-3">
+            <div className="bg-white p-6 rounded-2xl border-2 border-[#1B1B2F] shadow-[5px_5px_0px_#1B1B2F] space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-[#00D2B4]" />
-                  <h3 className="text-xs font-bold text-[#13141B] uppercase tracking-wider">
+                  <Award className="w-4 h-4 text-[#8E6CEF]" />
+                  <h3 className="text-xs font-extrabold text-[#1B1B2F] uppercase tracking-wider">
                     My Active Problem Solutions ({solutions.length})
                   </h3>
                 </div>
-                <span className="text-[11px] font-mono text-[#5E6573]">Portfolio Verified</span>
+                <span className="text-[11px] font-bold text-[#1B1B2F]/60">Portfolio Verified</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {solutions.map((sol) => (
-                  <div key={sol.id} className="p-3.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] flex items-center justify-between">
+                  <div key={sol.id} className="p-4 rounded-xl bg-[#FFF8EE] border-2 border-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] flex items-center justify-between">
                     <div className="space-y-0.5 min-w-0 pr-2">
-                      <p className="text-xs font-bold text-[#13141B] truncate">{sol.title}</p>
-                      <p className="text-[10px] text-[#5E6573]">{sol.status === "submitted" ? "Submitted for Review" : "In Progress"}</p>
+                      <p className="text-xs font-bold text-[#1B1B2F] truncate">{sol.title}</p>
+                      <p className="text-[10px] font-medium text-[#1B1B2F]/70">{sol.status === "submitted" ? "Submitted for Review" : "In Progress"}</p>
                     </div>
-                    <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#00D2B4]/10 text-[#0A5245] border border-[#00D2B4]/20 shrink-0">
+                    <span className="px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-white text-[#1B1B2F] border-2 border-[#1B1B2F] shrink-0 shadow-[1px_1px_0px_#1B1B2F]">
                       {sol.status === "submitted" ? "Active" : "Draft"}
                     </span>
                   </div>
@@ -254,39 +261,39 @@ export default function EdFixPage() {
 
           {/* Problems Grid */}
           {loading ? (
-            <div className="py-16 text-center text-xs font-medium text-[#5E6573]">
+            <div className="py-16 text-center text-xs font-bold text-[#1B1B2F]/60">
               Loading curated EdFix problems...
             </div>
           ) : filteredProblems.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center space-y-3 border border-[#EBECEF] shadow-xs max-w-md mx-auto">
-              <Sparkles className="w-8 h-8 text-[#8F9CAE] mx-auto" />
-              <p className="text-xs font-bold text-[#13141B]">No problems found matching this filter.</p>
-              <p className="text-[11px] text-[#5E6573]">Try selecting a different category or clearing your search keywords.</p>
+            <div className="bg-white rounded-2xl p-12 text-center space-y-3 border-2 border-[#1B1B2F] shadow-[6px_6px_0px_#1B1B2F] max-w-md mx-auto">
+              <Sparkles className="w-8 h-8 text-[#8E6CEF] mx-auto" />
+              <p className="text-sm font-extrabold text-[#1B1B2F]">No problems found matching this filter.</p>
+              <p className="text-xs text-[#1B1B2F]/70">Try selecting a different category or clearing your search keywords.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProblems.map((prob) => {
                 const diffLabel = prob.difficulty_level >= 3 ? "Advanced" : prob.difficulty_level === 2 ? "Intermediate" : "Foundational";
                 const diffColor = prob.difficulty_level >= 3 
-                  ? "bg-rose-50 text-rose-700 border-rose-200" 
+                  ? "bg-[#FF6B6B]/20 text-[#1B1B2F]" 
                   : prob.difficulty_level === 2 
-                    ? "bg-amber-50 text-amber-800 border-amber-200" 
-                    : "bg-emerald-50 text-emerald-800 border-emerald-200";
+                    ? "bg-[#FFC93C]/30 text-[#1B1B2F]" 
+                    : "bg-[#6BCB77]/20 text-[#1B1B2F]";
 
                 return (
                   <div
                     key={prob.id}
-                    className="bg-white rounded-3xl p-6 sm:p-7 border border-[#EBECEF] shadow-xs hover:border-[#D1D5DC] transition-all flex flex-col justify-between space-y-4 group"
+                    className="bg-white rounded-2xl p-6 border-2 border-[#1B1B2F] shadow-[5px_5px_0px_#1B1B2F] hover:shadow-[7px_7px_0px_#1B1B2F] hover:-translate-y-0.5 transition-all flex flex-col justify-between space-y-4 group"
                   >
                     <div className="space-y-3">
                       {/* Top Badges */}
                       <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${diffColor}`}>
+                        <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-extrabold border-2 border-[#1B1B2F] ${diffColor}`}>
                           {diffLabel}
                         </span>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-mono font-bold text-[#00D2B4] bg-[#00D2B4]/10 border border-[#00D2B4]/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <Zap className="w-3 h-3" />
+                          <span className="text-[10px] font-extrabold text-[#1B1B2F] bg-[#8E6CEF]/20 border-2 border-[#1B1B2F] px-2 py-0.5 rounded-md flex items-center gap-1">
+                            <Zap className="w-3 h-3 text-[#8E6CEF]" />
                             +{prob.points || 100} pts
                           </span>
                         </div>
@@ -294,10 +301,10 @@ export default function EdFixPage() {
 
                       {/* Title & Description */}
                       <div className="space-y-1.5">
-                        <h3 className="text-base font-extrabold text-[#13141B] group-hover:text-[#00D2B4] transition-colors line-clamp-2">
+                        <h3 className="text-base font-black text-[#1B1B2F] group-hover:text-[#8E6CEF] transition-colors leading-snug line-clamp-2">
                           {prob.title}
                         </h3>
-                        <p className="text-xs text-[#5E6573] line-clamp-3 leading-relaxed">
+                        <p className="text-xs text-[#1B1B2F]/75 line-clamp-3 leading-relaxed font-medium">
                           {prob.description}
                         </p>
                       </div>
@@ -305,10 +312,10 @@ export default function EdFixPage() {
                       {/* Company & Source */}
                       {prob.companies && prob.companies.length > 0 && (
                         <div className="flex items-center gap-1.5 flex-wrap pt-1">
-                          <Building2 className="w-3 h-3 text-[#8F9CAE]" />
-                          <span className="text-[10px] font-mono text-[#5E6573]">Citing:</span>
+                          <Building2 className="w-3.5 h-3.5 text-[#1B1B2F]/60" />
+                          <span className="text-[10px] font-bold text-[#1B1B2F]/60">Citing:</span>
                           {prob.companies.slice(0, 3).map((comp) => (
-                            <span key={comp} className="px-2 py-0.5 rounded-md bg-[#FCFCFB] border border-[#EBECEF] text-[10px] font-bold text-[#13141B]">
+                            <span key={comp} className="px-2 py-0.5 rounded-md bg-[#FFF8EE] border border-[#1B1B2F] text-[10px] font-bold text-[#1B1B2F]">
                               {comp}
                             </span>
                           ))}
@@ -319,7 +326,7 @@ export default function EdFixPage() {
                       {prob.interest_tags && prob.interest_tags.length > 0 && (
                         <div className="flex items-center gap-1.5 flex-wrap pt-1">
                           {prob.interest_tags.slice(0, 4).map((tag) => (
-                            <span key={tag} className="text-[10px] font-mono text-[#8F9CAE] bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                            <span key={tag} className="text-[10px] font-bold text-[#1B1B2F]/70 bg-[#FFF8EE] px-2 py-0.5 rounded-md border border-[#1B1B2F]/30">
                               #{tag}
                             </span>
                           ))}
@@ -327,19 +334,29 @@ export default function EdFixPage() {
                       )}
                     </div>
 
-                    {/* Footer: Last Reviewed Timestamp & Submit Action */}
-                    <div className="pt-3 border-t border-[#EBECEF] flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#5E6573]">
-                        <Clock className="w-3 h-3 text-[#8F9CAE]" />
-                        <span>Last reviewed: {prob.last_reviewed_at || "Sept 2026"}</span>
-                      </div>
+                    {/* Footer: Hint & Solve Action */}
+                    <div className="pt-3 border-t-2 border-[#1B1B2F]/10 flex items-center justify-between gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("open-myra-copilot"));
+                          }
+                        }}
+                        className="text-xs font-bold text-[#1B1B2F] hover:text-[#8E6CEF] flex items-center gap-1 transition-colors cursor-pointer"
+                        title="Ask Myra for guidance"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-[#8E6CEF]" />
+                        <span>Ask Myra Hint</span>
+                      </button>
 
                       <button
+                        type="button"
                         onClick={() => setSelectedProblem(prob)}
-                        className="px-3.5 py-1.5 rounded-xl bg-[#13141B] hover:bg-black text-white text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+                        className="btn-squishy text-xs font-bold py-2 px-4 cursor-pointer flex items-center gap-1.5 bg-[#8E6CEF] text-white border-2 border-[#1B1B2F] rounded-xl shadow-[3px_3px_0px_#1B1B2F]"
                       >
                         <span>Solve Problem</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#00D2B4]" />
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -350,29 +367,30 @@ export default function EdFixPage() {
 
           {/* Solution Submission Modal */}
           {selectedProblem && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-              <div className="max-w-lg w-full bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1B1B2F]/60 backdrop-blur-xs animate-in fade-in">
+              <div className="max-w-lg w-full bg-white rounded-2xl p-6 sm:p-7 shadow-[10px_10px_0px_#1B1B2F] border-2 border-[#1B1B2F] space-y-5 text-[#1B1B2F]">
                 
                 {/* Modal Header */}
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center justify-between border-b-2 border-[#1B1B2F]/10 pb-3">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-[#00D2B4]" />
-                    <h3 className="text-base font-bold text-slate-900">
-                      Submit Solution &bull; EdFix
+                    <Sparkles className="w-4 h-4 text-[#8E6CEF]" />
+                    <h3 className="text-base font-extrabold text-[#1B1B2F]">
+                      Submit Problem Solution
                     </h3>
                   </div>
                   <button
+                    type="button"
                     onClick={() => setSelectedProblem(null)}
-                    className="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                    className="p-1 rounded-lg text-[#1B1B2F]/60 hover:text-[#1B1B2F] hover:bg-[#FFF8EE] transition-colors cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 {/* Problem Context Pill */}
-                <div className="p-3.5 rounded-2xl bg-[#FCFCFB] border border-[#EBECEF] space-y-1">
-                  <span className="text-[10px] font-mono uppercase text-[#00D2B4] font-bold">Target Challenge</span>
-                  <p className="text-xs font-bold text-[#13141B]">{selectedProblem.title}</p>
+                <div className="p-3.5 rounded-xl bg-[#FFF8EE] border-2 border-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] space-y-1">
+                  <span className="text-[10px] uppercase text-[#1B1B2F]/60 font-bold">Target Challenge</span>
+                  <p className="text-xs font-black text-[#1B1B2F]">{selectedProblem.title}</p>
                 </div>
 
                 {/* Submission Form */}
@@ -384,7 +402,7 @@ export default function EdFixPage() {
                   className="space-y-4 text-xs"
                 >
                   <div>
-                    <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="block font-bold text-[#1B1B2F] uppercase tracking-wider mb-1.5">
                       Solution / Architecture Title *
                     </label>
                     <input
@@ -393,12 +411,12 @@ export default function EdFixPage() {
                       value={solutionTitle}
                       onChange={(e) => setSolutionTitle(e.target.value)}
                       placeholder="e.g. Distributed Lock Manager with Redis Redlock & Failover"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00D2B4]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#1B1B2F] text-xs font-medium text-[#1B1B2F] bg-[#FFF8EE] focus:outline-none shadow-[2px_2px_0px_#1B1B2F]"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="block font-bold text-[#1B1B2F] uppercase tracking-wider mb-1.5">
                       Technical Explanation &amp; Approach *
                     </label>
                     <textarea
@@ -407,20 +425,20 @@ export default function EdFixPage() {
                       value={solutionDescription}
                       onChange={(e) => setSolutionDescription(e.target.value)}
                       placeholder="Explain your approach, design decisions, trade-offs, and how you validated the solution..."
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00D2B4]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#1B1B2F] text-xs font-medium text-[#1B1B2F] bg-[#FFF8EE] focus:outline-none shadow-[2px_2px_0px_#1B1B2F]"
                     />
                   </div>
 
                   {!isMinor && projects.length > 0 && (
                     <div>
-                      <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <FolderGit2 className="w-3.5 h-3.5 text-[#00D2B4]" />
+                      <label className="block font-bold text-[#1B1B2F] uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <FolderGit2 className="w-3.5 h-3.5 text-[#8E6CEF]" />
                         <span>Link Project Studio Repository (Optional)</span>
                       </label>
                       <select
                         value={linkedProjectId}
                         onChange={(e) => setLinkedProjectId(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#00D2B4]"
+                        className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#1B1B2F] text-xs font-bold text-[#1B1B2F] bg-white focus:outline-none shadow-[2px_2px_0px_#1B1B2F]"
                       >
                         <option value="">-- Select a project from Studio --</option>
                         {projects.map((p) => (
@@ -430,11 +448,11 @@ export default function EdFixPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between pt-3 border-t-2 border-[#1B1B2F]/10">
                     <button
                       type="button"
                       onClick={() => setSelectedProblem(null)}
-                      className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold hover:bg-slate-50 transition-colors"
+                      className="btn-squishy text-xs font-bold py-2 px-4 rounded-xl border-2 border-[#1B1B2F] bg-white text-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -443,16 +461,16 @@ export default function EdFixPage() {
                         type="button"
                         onClick={() => handleSubmitSolution("in_progress")}
                         disabled={submitting}
-                        className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors disabled:opacity-50"
+                        className="btn-squishy text-xs font-bold py-2 px-4 rounded-xl border-2 border-[#1B1B2F] bg-[#FFF8EE] text-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] disabled:opacity-50 cursor-pointer"
                       >
                         Save Draft
                       </button>
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="px-5 py-2 rounded-xl bg-[#13141B] hover:bg-black text-white font-bold flex items-center gap-1.5 shadow-md transition-all disabled:opacity-50"
+                        className="btn-squishy text-xs font-bold py-2 px-5 rounded-xl border-2 border-[#1B1B2F] bg-[#8E6CEF] text-white shadow-[3px_3px_0px_#1B1B2F] disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                       >
-                        <Send className="w-3.5 h-3.5 text-[#00D2B4]" />
+                        <Send className="w-3.5 h-3.5" />
                         <span>{submitting ? "Submitting..." : "Submit Solution"}</span>
                       </button>
                     </div>

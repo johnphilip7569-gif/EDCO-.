@@ -201,7 +201,7 @@ export default function SectorLandingPage({
         {/* Visual background accents */}
         {isMaximalist ? (
           <>
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-purple-200/50 via-teal-200/40 to-amber-100/50 rounded-full blur-3xl -z-10 pointer-events-none" />
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-neutral-200/40 rounded-full blur-3xl -z-10 pointer-events-none" />
           </>
         ) : (
           <>

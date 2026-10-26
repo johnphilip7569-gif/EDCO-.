@@ -25,7 +25,13 @@ import {
   Layers, 
   ShieldCheck,
   Building2,
-  RefreshCw
+  RefreshCw,
+  CheckSquare,
+  Square,
+  Check,
+  AlertCircle,
+  UserCheck,
+  ShieldAlert
 } from "lucide-react";
 import { downloadUsersAsExcel, downloadUsersAsCsv } from "@/lib/excel-export";
 
@@ -67,6 +73,12 @@ export default function AdminUsersDirectoryPage() {
   const [onboardingFilter, setOnboardingFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState<AdminUserDossier | null>(null);
 
+  // Batch actions state
+  const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
+  const [batchLoading, setBatchLoading] = useState(false);
+  const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -85,6 +97,81 @@ export default function AdminUsersDirectoryPage() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const toggleSelectUser = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelectedUserIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedUserIds.size === filteredUsers.length && filteredUsers.length > 0) {
+      setSelectedUserIds(new Set());
+    } else {
+      setSelectedUserIds(new Set(filteredUsers.map((u) => u.id)));
+    }
+  };
+
+  const handleBatchRoleUpdate = async (newRole: "STUDENT" | "EMPLOYER" | "ADMIN") => {
+    if (selectedUserIds.size === 0) return;
+    setBatchLoading(true);
+    setActionError(null);
+    try {
+      const ids = Array.from(selectedUserIds);
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids, role: newRole }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionSuccess(`Updated ${ids.length} user(s) to ${newRole}.`);
+        setSelectedUserIds(new Set());
+        fetchUsers();
+        setTimeout(() => setActionSuccess(null), 3500);
+      } else {
+        setActionError(data.error || "Failed to update user roles.");
+      }
+    } catch (err: any) {
+      setActionError(err.message || "Failed to batch update users.");
+    } finally {
+      setBatchLoading(false);
+    }
+  };
+
+  const handleBatchAdminToggle = async (isAdmin: boolean) => {
+    if (selectedUserIds.size === 0) return;
+    setBatchLoading(true);
+    setActionError(null);
+    try {
+      const ids = Array.from(selectedUserIds);
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids, is_admin: isAdmin }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionSuccess(`${isAdmin ? "Granted" : "Revoked"} admin privileges for ${ids.length} user(s).`);
+        setSelectedUserIds(new Set());
+        fetchUsers();
+        setTimeout(() => setActionSuccess(null), 3500);
+      } else {
+        setActionError(data.error || "Failed to toggle admin status.");
+      }
+    } catch (err: any) {
+      setActionError(err.message || "Failed to update users.");
+    } finally {
+      setBatchLoading(false);
+    }
+  };
 
   // Filtered Users
   const filteredUsers = useMemo(() => {
@@ -115,6 +202,8 @@ export default function AdminUsersDirectoryPage() {
       downloadUsersAsCsv(filteredUsers as any);
     }
   };
+
+  const allSelected = filteredUsers.length > 0 && selectedUserIds.size === filteredUsers.length;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -161,6 +250,21 @@ export default function AdminUsersDirectoryPage() {
           </div>
         </div>
 
+        {/* Notifications */}
+        {actionSuccess && (
+          <div className="mt-4 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+            <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{actionSuccess}</span>
+          </div>
+        )}
+
+        {actionError && (
+          <div className="mt-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <span>{actionError}</span>
+          </div>
+        )}
+
         {/* Search & Filter Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 mt-6 pt-6 border-t border-neutral-100">
           <div className="sm:col-span-6 relative">
@@ -202,6 +306,69 @@ export default function AdminUsersDirectoryPage() {
         </div>
       </div>
 
+      {/* Batch Operations Toolbar */}
+      {selectedUserIds.size > 0 && (
+        <div className="bg-neutral-900 text-white rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg animate-in slide-in-from-top-2">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleSelectAll}
+              className="p-1 rounded text-white hover:text-neutral-300 transition-colors cursor-pointer"
+              title={allSelected ? "Deselect All" : "Select All"}
+            >
+              {allSelected ? (
+                <CheckSquare className="w-5 h-5 text-blue-400" />
+              ) : (
+                <Square className="w-5 h-5" />
+              )}
+            </button>
+            <span className="text-xs font-mono font-bold">
+              {selectedUserIds.size} of {filteredUsers.length} user(s) selected
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => handleBatchRoleUpdate("STUDENT")}
+              disabled={batchLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <UserCheck className="w-3.5 h-3.5 text-blue-400" />
+              <span>Set as Student</span>
+            </button>
+            <button
+              onClick={() => handleBatchRoleUpdate("EMPLOYER")}
+              disabled={batchLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <Building2 className="w-3.5 h-3.5 text-amber-400" />
+              <span>Set as Recruiter</span>
+            </button>
+            <button
+              onClick={() => handleBatchAdminToggle(true)}
+              disabled={batchLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Grant Admin</span>
+            </button>
+            <button
+              onClick={() => handleBatchAdminToggle(false)}
+              disabled={batchLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <ShieldAlert className="w-3.5 h-3.5 text-neutral-400" />
+              <span>Revoke Admin</span>
+            </button>
+            <button
+              onClick={() => setSelectedUserIds(new Set())}
+              className="px-2.5 py-1.5 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Users Count Summary */}
       <div className="flex items-center justify-between text-xs text-neutral-500 font-mono px-2">
         <span>Showing {filteredUsers.length} of {users.length} registered users</span>
@@ -226,6 +393,19 @@ export default function AdminUsersDirectoryPage() {
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-neutral-200 bg-neutral-50/70 text-neutral-600 font-mono text-[11px] uppercase tracking-wider">
+                  <th className="py-3.5 px-3 w-10 text-center">
+                    <button
+                      onClick={toggleSelectAll}
+                      className="p-1 rounded text-neutral-400 hover:text-black cursor-pointer"
+                      title={allSelected ? "Deselect All" : "Select All"}
+                    >
+                      {allSelected ? (
+                        <CheckSquare className="w-4 h-4 text-blue-600" />
+                      ) : (
+                        <Square className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
                   <th className="py-3.5 px-4 font-bold">User Identity</th>
                   <th className="py-3.5 px-4 font-bold">Stage &amp; Role</th>
                   <th className="py-3.5 px-4 font-bold">Onboarding Status</th>
@@ -243,19 +423,38 @@ export default function AdminUsersDirectoryPage() {
                     .join("")
                     .substring(0, 2)
                     .toUpperCase();
+                  const isSelected = selectedUserIds.has(u.id);
 
                   return (
                     <tr 
                       key={u.id}
-                      className="hover:bg-neutral-50/80 transition-colors group cursor-pointer"
+                      className={`hover:bg-neutral-50/80 transition-colors group cursor-pointer ${
+                        isSelected ? "bg-blue-50/40" : ""
+                      }`}
                       onClick={() => setSelectedUser(u)}
                     >
+                      {/* Checkbox */}
+                      <td className="py-3.5 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          type="button"
+                          onClick={(e) => toggleSelectUser(u.id, e)}
+                          className="p-1 text-neutral-400 hover:text-black cursor-pointer"
+                        >
+                          {isSelected ? (
+                            <CheckSquare className="w-4 h-4 text-blue-600" />
+                          ) : (
+                            <Square className="w-4 h-4" />
+                          )}
+                        </button>
+                      </td>
+
                       {/* Name & Email */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-xl bg-black text-white font-black text-xs flex items-center justify-center shrink-0">
                             {initials}
                           </div>
+
                           <div>
                             <div className="font-extrabold text-black text-sm group-hover:underline">
                               {u.name}

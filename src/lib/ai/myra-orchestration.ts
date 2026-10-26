@@ -15,11 +15,13 @@ export interface MyraExecutionRequest {
   userId?: string;
   featureContext: MyraFeatureContext;
   prompt: string;
+  rawQuery?: string;
   systemPromptOverride?: string;
   temperature?: number;
   maxTokens?: number;
   responseFormat?: "text" | "json";
   metadata?: Record<string, any>;
+  clientProfile?: any;
   bypassEntitlementCheck?: boolean;
 }
 
@@ -106,14 +108,42 @@ export class MyraOrchestrator {
       }
     }
 
-    // 3. Assemble System Prompt with Injected Scoped Context & HF Dataset Grounding
+    if (!userContext) {
+      userContext = {
+        userId,
+        featureContext: request.featureContext,
+      };
+    }
+
+    if (!userContext.profileSnapshot && request.clientProfile) {
+      const cp = request.clientProfile;
+      userContext.profileSnapshot = {
+        name: cp.name || undefined,
+        targetRole: cp.targetRole || "Software Engineer",
+        careerStage: cp.careerStage || "STUDENT",
+        institution: cp.institution,
+        degree: cp.degree || cp.gradeLevel,
+        fieldOfStudy: cp.field_of_study,
+        graduationYear: cp.graduation_year,
+        cgpa: cp.cgpa,
+        skills: cp.resumeSkills || (Array.isArray(cp.interests) ? cp.interests.map((i: any) => i.name || "") : []),
+        interests: cp.interests,
+        primaryGoal: cp.primaryGoal,
+        dailyStudyHours: cp.dailyStudyHours || 2,
+      };
+    }
+
+    const cleanUserQuery = (request.rawQuery || MyraNeuralEngine.extractRawQuery(request.prompt)).trim();
+
+    // 3. Assemble System Prompt with Injected Scoped Context & Academic Guidance Dataset
     const contextBlock = userContext ? formatContextPromptBlock(userContext) : "";
-    const datasetGrounding = MyraDatasetService.formatDatasetGroundingPrompt(request.prompt);
+    const studentStage = userContext?.profileSnapshot?.degree || "";
+    const datasetGrounding = MyraDatasetService.formatDatasetGroundingPrompt(cleanUserQuery, studentStage);
     const baseSystemPrompt = request.systemPromptOverride || MYRA_SYSTEM_PROMPT;
     const finalSystemPrompt = `${baseSystemPrompt}\n${contextBlock}\n${datasetGrounding}`.trim();
 
     // 4. Content Safety Filter (Basic sanity check)
-    const lowerPrompt = request.prompt.toLowerCase();
+    const lowerPrompt = cleanUserQuery.toLowerCase();
     const isHarmful = [
       "how to hack",
       "exploit database",
@@ -122,7 +152,7 @@ export class MyraOrchestrator {
     ].some((phrase) => lowerPrompt.includes(phrase));
 
     if (isHarmful) {
-      const refusalText = "I'm Myra, your academic and engineering mentor. I can only assist with legitimate software engineering, career preparation, and learning topics.";
+      const refusalText = "I'm Myra, your study and career mentor from EdWorld Co. I can only assist with legitimate academic preparation, career planning, and learning topics.";
       const latencyMs = Date.now() - startTime;
 
       await this.logInteraction({
@@ -153,8 +183,8 @@ export class MyraOrchestrator {
       const aiResponse = await UniversalAI.complete({
         systemPrompt: finalSystemPrompt,
         prompt: request.prompt,
-        temperature: request.temperature ?? 0.5,
-        maxTokens: request.maxTokens ?? 2000,
+        temperature: request.temperature ?? 0.4,
+        maxTokens: request.maxTokens ?? 900,
         responseFormat: request.responseFormat ?? "text",
       });
 
@@ -167,16 +197,21 @@ export class MyraOrchestrator {
       status = "fallback";
     }
 
-    // 6. Neural Knowledge Engine Fallback if LLM unavailable
+    // 6. Neural Knowledge Engine Fallback if LLM unavailable (Strictly pass cleanUserQuery with real userContext)
     if (!replyText) {
       status = "fallback";
       const neuralResult = MyraNeuralEngine.synthesizeResponse(
-        request.prompt,
+        cleanUserQuery,
         userContext?.profileSnapshot as any,
-        null
+        null,
+        userContext
       );
       replyText = neuralResult.text;
       actualModel = `Myra Neural Engine (${neuralResult.topicDetected})`;
+    }
+
+    if (request.responseFormat !== "json") {
+      replyText = MyraNeuralEngine.cleanText(replyText);
     }
 
     // 7. Parse JSON if requested

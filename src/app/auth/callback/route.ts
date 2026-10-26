@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { sendSignupWelcomeEmail } from "@/lib/email-service";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,14 @@ export async function GET(req: NextRequest) {
               updated_at: new Date().toISOString(),
             });
             onboardingCompleted = false;
+
+            // Send custom branded welcome email for first-time Google sign-up
+            if (user.email) {
+              sendSignupWelcomeEmail({
+                email: user.email,
+                name: userName,
+              }).catch((e) => console.warn("[OAuth Welcome Email Warning]:", e));
+            }
           } catch (profileErr) {
             console.warn("[OAuth Profile Insert Note]:", profileErr);
           }

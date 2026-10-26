@@ -7,12 +7,17 @@ export async function GET(req: NextRequest) {
   const startTime = Date.now();
   const requestId = req.headers.get("x-request-id") || `req-${Date.now()}`;
 
-  // 1. Secrets check
+  // Internal token check — detailed health info only for authorized internal consumers
+  const healthToken = process.env.HEALTH_CHECK_TOKEN;
+  const providedToken = req.headers.get("x-health-token");
+  const isInternalRequest = !!healthToken && providedToken === healthToken;
+
+  // 1. Secrets check (only computed — not exposed publicly)
   const criticalSecrets = [
     "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
   ];
-  const missingSecrets = criticalSecrets.filter(s => !process.env[s]);
+  const missingSecrets = criticalSecrets.filter((s) => !process.env[s]);
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NODE_ENV === "production") {
     missingSecrets.push("SUPABASE_SERVICE_ROLE_KEY");
   }
@@ -50,35 +55,38 @@ export async function GET(req: NextRequest) {
 
   const statusCode = overallStatus === "unhealthy" ? 503 : 200;
 
-  const responsePayload = {
+  // Public response payload with safe operational checks
+  const publicPayload = {
     status: overallStatus,
+    service: "edworld",
     timestamp: new Date().toISOString(),
     version: process.env.NEXT_PUBLIC_APP_VERSION || process.env.npm_package_version || "1.0.0",
     uptime_seconds: Math.round(process.uptime ? process.uptime() : 0),
-    total_latency_ms: Date.now() - startTime,
     request_id: requestId,
+    total_latency_ms: Date.now() - startTime,
     checks: {
       database: {
         status: dbStatus,
         latency_ms: dbLatency,
-        ...(dbErrorMessage ? { error: dbErrorMessage } : {})
+        ...(isInternalRequest && dbErrorMessage ? { error: dbErrorMessage } : {}),
       },
       cache: {
         status: cacheStatus,
-        latency_ms: 0
+        latency_ms: 0,
       },
       secrets: {
         status: missingSecrets.length === 0 ? "pass" : "fail",
-        missing: missingSecrets
-      }
-    }
+        missing: isInternalRequest ? missingSecrets : [],
+      },
+    },
   };
 
-  return NextResponse.json(responsePayload, {
+  return NextResponse.json(publicPayload, {
     status: statusCode,
     headers: {
       "x-request-id": requestId,
-      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
-    }
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
   });
 }
+

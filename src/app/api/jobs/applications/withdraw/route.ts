@@ -1,34 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { Pool } from "pg";
+import { getDbPool } from "@/lib/db-server";
 
-let pool: Pool | null = null;
-function getDbPool() {
-  if (!pool) {
-    const connStr =
-      process.env.DATABASE_URL ||
-      process.env.POSTGRES_URL ||
-      "postgresql://postgres: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@db.wgyscapdywroefsjenno.supabase.co:5432/postgres";
-    pool = new Pool({
-      connectionString: connStr,
-      ssl: { rejectUnauthorized: false },
-    });
-  }
-  return pool;
-}
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    const body = await req.json();
-    const { applicationId, mockUserId } = body;
-
-    const applicantId = user?.id || mockUserId;
-    if (!applicantId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized: Active login session required." }, { status: 401 });
     }
+
+    const applicantId = user.id;
+    const body = await req.json();
+    const { applicationId } = body;
 
     if (!applicationId) {
       return NextResponse.json({ error: "Application ID is required" }, { status: 400 });

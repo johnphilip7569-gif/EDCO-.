@@ -6,22 +6,26 @@ export async function POST(req: NextRequest) {
   try {
     const signature = req.headers.get("x-razorpay-signature");
     const rawBody = await req.text();
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET || "rzp_test_mock_webhook_secret_12345";
+    if (!signature) {
+      return NextResponse.json({ error: "Missing x-razorpay-signature header." }, { status: 400 });
+    }
+
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      console.error("[billing/webhook] RAZORPAY_WEBHOOK_SECRET is not configured.");
+      return NextResponse.json({ error: "Webhook verification unavailable." }, { status: 500 });
+    }
 
     // Strict constant-time Webhook HMAC-SHA256 signature verification
-    if (signature) {
-      const expectedSignature = crypto
-        .createHmac("sha256", webhookSecret)
-        .update(rawBody)
-        .digest("hex");
+    const expectedSignature = crypto
+      .createHmac("sha256", webhookSecret)
+      .update(rawBody)
+      .digest("hex");
 
-      const expBuf = Buffer.from(expectedSignature, "utf8");
-      const sigBuf = Buffer.from(signature, "utf8");
-      if (expBuf.length !== sigBuf.length || !crypto.timingSafeEqual(expBuf, sigBuf)) {
-        return NextResponse.json({ error: "Invalid webhook signature" }, { status: 400 });
-      }
-    } else if (process.env.NODE_ENV === "production") {
-      return NextResponse.json({ error: "Missing webhook signature header" }, { status: 400 });
+    const expBuf = Buffer.from(expectedSignature, "utf8");
+    const sigBuf = Buffer.from(signature, "utf8");
+    if (expBuf.length !== sigBuf.length || !crypto.timingSafeEqual(expBuf, sigBuf)) {
+      return NextResponse.json({ error: "Invalid webhook signature." }, { status: 400 });
     }
 
     const payload = JSON.parse(rawBody || "{}");

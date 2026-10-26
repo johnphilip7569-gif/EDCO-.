@@ -1,0 +1,30 @@
+Chapter 2: Polynomials (Class 10 Mathematics - CBSE/NCERT Syllabus)
+
+A polynomial p(x) in one variable x is an algebraic expression of the form:
+p(x) = a_n * x^n + a_(n-1) * x^(n-1) + ... + a_1 * x + a_0
+where a_n is not zero, and the exponents are non-negative integers.
+The highest exponent of x in p(x) is called the degree of the polynomial.
+- A polynomial of degree 1 is called a linear polynomial. Example: 2x - 3.
+- A polynomial of degree 2 is called a quadratic polynomial. Example: 2x^2 + 3x - 5.
+- A polynomial of degree 3 is called a cubic polynomial. Example: x^3 - 3x^2 + 5x - 3.
+
+Geometrical Meaning of the Zeroes of a Polynomial:
+A real number k is said to be a zero of a polynomial p(x) if p(k) = 0.
+Graphically, the zeroes of a polynomial p(x) are precisely the x-coordinates of the points where the graph of y = p(x) intersects the x-axis.
+- For a linear polynomial ax + b (where a is not zero), the graph is a straight line intersecting the x-axis at exactly one point: (-b/a, 0).
+- For a quadratic polynomial ax^2 + bx + c (where a is not zero), the graph is a parabola opening upwards (if a > 0) or downwards (if a < 0). It can intersect the x-axis at at most 2 points, meaning a quadratic polynomial has at most 2 zeroes.
+- In general, a polynomial of degree n has at most n real zeroes.
+
+Relationship Between Zeroes and Coefficients of a Polynomial:
+Let alpha and beta be the zeroes of the quadratic polynomial p(x) = ax^2 + bx + c, where a is not zero.
+Sum of zeroes:
+alpha + beta = - (coefficient of x) / (coefficient of x^2) = -b / a.
+Product of zeroes:
+alpha * beta = (constant term) / (coefficient of x^2) = c / a.
+If alpha and beta are given zeroes, the quadratic polynomial can be formed using:
+k * [ x^2 - (alpha + beta)x + alpha * beta ], where k is any non-zero constant.
+
+For a cubic polynomial p(x) = ax^3 + bx^2 + cx + d with zeroes alpha, beta, and gamma:
+Sum of zeroes: alpha + beta + gamma = -b / a.
+Sum of product of zeroes taken two at a time: alpha*beta + beta*gamma + gamma*alpha = c / a.
+Product of zeroes: alpha * beta * gamma = -d / a.

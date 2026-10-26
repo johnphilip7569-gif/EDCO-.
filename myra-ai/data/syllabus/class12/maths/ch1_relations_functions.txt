@@ -1,0 +1,34 @@
+Chapter 1: Relations and Functions (Class 12 Mathematics - CBSE/NCERT Syllabus)
+
+A relation R in a set A is a subset of the Cartesian product A x A. That is, R is a subset of {(a, b) : a in A, b in A}.
+
+Types of Relations:
+1. Empty Relation: A relation R in a set A is called empty relation if no element of A is related to any element of A, i.e., R = empty set (Phi).
+2. Universal Relation: A relation R in a set A is called universal relation if each element of A is related to every element of A, i.e., R = A x A.
+3. Reflexive Relation: A relation R in A is reflexive if (a, a) belongs to R for every a in A.
+4. Symmetric Relation: A relation R in A is symmetric if (a, b) in R implies that (b, a) in R for all a, b in A.
+5. Transitive Relation: A relation R in A is transitive if (a, b) in R and (b, c) in R implies that (a, c) in R for all a, b, c in A.
+6. Equivalence Relation: A relation R in a set A is said to be an equivalence relation if R is reflexive, symmetric, and transitive.
+
+Equivalence Classes:
+Given an arbitrary equivalence relation R in an arbitrary set X, R divides X into mutually disjoint subsets A_i called partitions or subdivisions of X satisfying:
+1. All elements of A_i are related to each other for each i.
+2. No element of A_i is related to any element of A_j, i != j.
+3. Union of all A_i equals X and intersection of distinct A_i, A_j is empty.
+The subset [a] = {x in X : (x, a) in R} is called the equivalence class containing a.
+
+Types of Functions:
+Let f: X -> Y be a function.
+1. One-to-One (Injective):
+A function f: X -> Y is defined to be one-to-one (or injective) if the images of distinct elements of X under f are distinct.
+Formally: f(x1) = f(x2) implies x1 = x2 for all x1, x2 in X.
+Otherwise, f is called many-to-one.
+2. Onto (Surjective):
+A function f: X -> Y is said to be onto (or surjective) if every element of Y is the image of some element of X under f.
+Formally: For every y in Y, there exists an element x in X such that f(x) = y.
+In other words, range of f equals the codomain Y.
+3. Bijective Function:
+A function f: X -> Y is said to be bijective if f is both one-to-one (injective) and onto (surjective).
+A bijective function possesses a unique inverse function f^(-1): Y -> X such that f^(-1)(f(x)) = x and f(f^(-1)(y)) = y.
+Composition of Functions:
+Let f: A -> B and g: B -> C be two functions. The composition of f and g, denoted by gof, is defined as the function gof: A -> C given by (gof)(x) = g(f(x)) for each x in A.

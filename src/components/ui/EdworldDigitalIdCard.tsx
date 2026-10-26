@@ -95,16 +95,16 @@ export default function EdworldDigitalIdCard({
       {/* Digital ID Card Surface */}
       <div
         id="edworld-digital-id-card"
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-900 via-stone-900 to-stone-950 text-white p-6 sm:p-8 border border-stone-800 shadow-xl"
+        className="relative overflow-hidden rounded-3xl bg-black text-white p-6 sm:p-8 border border-neutral-800 shadow-xl"
       >
-        {/* Subtle Decorative Geometric Accents (Editorial, Non-Neon) */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-teal-500/5 rounded-full blur-2xl pointer-events-none" />
+        {/* Subtle Decorative Geometric Accents (Monochrome) */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-neutral-800/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 bg-neutral-900/30 rounded-full blur-2xl pointer-events-none" />
 
         {/* Card Header: Brand Logo + ID Badge */}
-        <div className="relative z-10 flex items-center justify-between gap-4 border-b border-stone-800 pb-5">
+        <div className="relative z-10 flex items-center justify-between gap-4 border-b border-neutral-800 pb-5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-stone-800 border border-stone-700/60 p-1 flex items-center justify-center shrink-0 shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-900 border border-neutral-800 p-1 flex items-center justify-center shrink-0 shadow-xs">
               <Image
                 src="/images/edworld-logo.png"
                 alt="Edworld Logo"
@@ -116,17 +116,17 @@ export default function EdworldDigitalIdCard({
             </div>
             <div>
               <span className="text-sm font-black tracking-tight text-white flex items-center gap-1 font-sans leading-none">
-                Edworld <span className="text-emerald-400 font-extrabold">Co.</span>
+                Edworld <span className="text-white font-extrabold">Co.</span>
               </span>
-              <span className="text-[9px] font-bold text-stone-400 uppercase tracking-widest mt-1 block">
+              <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest mt-1 block">
                 Digital Career Identity
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800/80 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="px-3 py-1 rounded-full bg-neutral-900 text-white text-[10px] font-bold border border-neutral-700 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-white" />
               <span>Verified Member</span>
             </span>
           </div>
@@ -135,7 +135,7 @@ export default function EdworldDigitalIdCard({
         {/* Card Body: User Avatar + Name + Headline + Metadata */}
         <div className="relative z-10 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4 sm:gap-5">
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-serif font-bold text-2xl flex items-center justify-center shadow-lg shrink-0 border border-emerald-400/20">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-neutral-900 text-white font-serif font-bold text-2xl flex items-center justify-center shadow-md shrink-0 border border-neutral-700">
               {userInitial}
             </div>
 

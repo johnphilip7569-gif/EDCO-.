@@ -57,6 +57,13 @@ export const ALL_DASHBOARD_SECTIONS: DashboardSectionConfig[] = [
     defaultVisible: true,
   },
   {
+    id: "continue_dsa",
+    label: "Continue DSA Practice",
+    description: "Your active Data Structures & Algorithms progression and next recommended topic.",
+    category: "core",
+    defaultVisible: true,
+  },
+  {
     id: "connection_birthdays",
     label: "Connection Birthdays",
     description: "Upcoming birthdays of your opted-in connections with 1-click one-way wishes.",
@@ -67,6 +74,13 @@ export const ALL_DASHBOARD_SECTIONS: DashboardSectionConfig[] = [
     id: "verified_identity",
     label: "Verified Identity Badge",
     description: "Digital verified profile ID, target role, and public portfolio status.",
+    category: "career",
+    defaultVisible: true,
+  },
+  {
+    id: "featured_events",
+    label: "Featured Hackathons & Events",
+    description: "National hackathons, case competitions, and innovation challenges.",
     category: "career",
     defaultVisible: true,
   },
@@ -101,6 +115,7 @@ export function getSmartDefaultLayout(
   if (isProfessional) {
     // Working professionals: Prioritize Career Plan, Score/Readiness Matrix, Continue Learning, followed by Timetable & Curriculum
     prioritizedOrder = [
+      "featured_events",
       "my_career_plan",
       "continue_learning",
       "score_readiness_matrix",
@@ -112,8 +127,9 @@ export function getSmartDefaultLayout(
       "skill_calibration",
     ];
   } else {
-    // College / Students: Prioritize Study Timetable, Continue Learning, Daily Sprints, Career Plan & Matrix
+    // College / Students: Prioritize Featured Competitions, Study Timetable, Continue Learning, Daily Sprints, Career Plan & Matrix
     prioritizedOrder = [
+      "featured_events",
       "personalized_timetable",
       "continue_learning",
       "my_career_plan",
@@ -138,19 +154,28 @@ export function getSmartDefaultLayout(
 }
 
 /**
- * Resolves the active layout order by applying user customizations or smart defaults.
+ * Resolves the active layout order by applying career-path dynamic priority, user customizations, or smart defaults.
  */
 export function resolveDashboardLayout(
   careerStage: string = "college",
   targetRole?: string,
   interests?: string[],
-  customPreference?: DashboardLayoutPreference | null
+  customPreference?: DashboardLayoutPreference | null,
+  priorityWidgets?: string[]
 ): { orderedSections: DashboardSectionConfig[]; hiddenIds: string[] } {
-  const smartDefault = getSmartDefaultLayout(careerStage, targetRole, interests);
+  let activeOrder: string[];
 
-  const activeOrder = (customPreference?.order && customPreference.order.length > 0)
-    ? customPreference.order
-    : smartDefault.order;
+  if (customPreference?.order && customPreference.order.length > 0) {
+    activeOrder = customPreference.order;
+  } else if (priorityWidgets && priorityWidgets.length > 0) {
+    const allIds = ALL_DASHBOARD_SECTIONS.map((s) => s.id);
+    const validPriority = priorityWidgets.filter((id) => allIds.includes(id));
+    const remaining = allIds.filter((id) => !validPriority.includes(id));
+    activeOrder = [...validPriority, ...remaining];
+  } else {
+    const smartDefault = getSmartDefaultLayout(careerStage, targetRole, interests);
+    activeOrder = smartDefault.order;
+  }
 
   const hiddenIds = customPreference?.hidden || [];
 

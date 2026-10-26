@@ -1,3 +1,4 @@
+"use client";
 import React, { ButtonHTMLAttributes, InputHTMLAttributes, forwardRef } from "react";
 import { Loader2, AlertCircle, AlertTriangle, CheckCircle2, Info, ArrowRight, FolderPlus } from "lucide-react";
 

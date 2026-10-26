@@ -1,0 +1,84 @@
+{
+  "generator": "EdWorld Student Career OS Intelligence & Academic Frameworks",
+  "dataset_name": "Myra Student Guidance & Academic Mentorship Dataset",
+  "version": "2026.1",
+  "record_count": 6,
+  "updated_at": "2026-10-20T20:57:00.000Z",
+  "records": [
+    {
+      "id": "guidance_gpa_management_01",
+      "category": "Academic Excellence & GPA Management",
+      "topic": "Balancing College GPA with Daily Coding and DSA",
+      "question": "How do I maintain a high GPA (8.0+ / 8.5+) without sacrificing practical programming and DSA preparation?",
+      "ideal_approach": "1. Understand the 80/20 Academic Rule: 80% of university exam questions stem from standard past 5-year question papers, lab manuals, and professor lecture notes. Focus intensive coursework study into structured 3-week sprints prior to mid-semester and end-semester exams.\n2. Non-Negotiable Coding Block: Treat your daily 1.5 to 2 hours of coding/DSA like a scheduled college lecture. Protect this time in the morning or late evening.\n3. Never Drop Below 7.5 CGPA: Many students mistakenly abandon college academics, only to get disqualified from Tier-1 product placement drives that enforce strict 7.0 or 7.5 CGPA cutoffs.\n4. Maximize Internal Assessment Marks: High attendance, timely assignment submissions, and active lab participation secure effortless 20-30% internal marks, taking pressure off final written exams.",
+      "target_stages": ["College / Undergraduate", "Pre-Final Year", "2nd Year"],
+      "key_pitfalls": [
+        "Ignoring semester exams until the final night and failing or dropping GPA below 7.0",
+        "Stopping all coding for 2 months during exams and losing problem-solving momentum",
+        "Believing GPA does not matter in campus placements when companies use it as the first screening filter"
+      ]
+    },
+    {
+      "id": "guidance_campus_placements_cutoffs_02",
+      "category": "Placement Strategy & Eligibility",
+      "topic": "Campus Placement Tiers, CGPA Cutoffs & Shortlisting Criteria",
+      "question": "What are the exact CGPA cutoffs and selection criteria for campus placements across different company tiers?",
+      "ideal_approach": "1. Service & IT Giants (TCS Ninja, Infosys SE, Wipro, Cognizant): Cutoff typically 60% or 6.0 CGPA. Focus is Quantitative Aptitude, Logical Reasoning, and basic coding.\n2. High-Capacity Digital Tiers (TCS Digital, Accenture Prime, Infosys SP): Cutoff strictly 7.0 or 7.5 CGPA. Requires medium-level DSA (trees, graphs, DP) and strong OOP fundamentals.\n3. Product Companies & Tech Unicorns (Amazon, Microsoft, Atlassian, Swiggy, Zomato): Cutoffs generally 7.0 - 7.5+ CGPA, with zero active backlogs. Round 1 is an online coding assessment (2-3 DSA problems in 90 mins), followed by 3-4 rounds of technical problem-solving, CS fundamentals (OS, DBMS, CN), and project architecture.\n4. FinTech & Quant Firms (Goldman Sachs, Morgan Stanley, DE Shaw): Strict 7.5 - 8.5+ CGPA cutoffs. Heavy emphasis on Advanced DSA, System Design, and Discrete Math.\n5. If your CGPA is below 7.0: Focus heavily on open-source contributions, high-signal GitHub projects, hackathons, and direct recruiter outreach on LinkedIn for off-campus roles where proof-of-work supersedes college cutoffs.",
+      "target_stages": ["3rd Year", "Pre-Final Year", "Final Year"],
+      "key_pitfalls": [
+        "Assuming all product companies have the same cutoff",
+        "Having active backlogs during the final year placement registration",
+        "Neglecting Core CS fundamentals (OS, DBMS, SQL, Networking) which are asked in every technical interview"
+      ]
+    },
+    {
+      "id": "guidance_btech_cse_roadmap_03",
+      "category": "Curriculum & Career Roadmap",
+      "topic": "Semester-by-Semester B.Tech Computer Science Career Roadmap",
+      "question": "How should a B.Tech Computer Science student plan their preparation semester by semester from 1st to 8th semester?",
+      "ideal_approach": "1. 1st & 2nd Semester (Freshman Year): Master one programming language deeply (C++ or Java for DSA, or Python). Build strong fundamentals in discrete math and logic. Keep your 1st-year CGPA above 8.5, as this provides a buffer for harder upper-level subjects.\n2. 3rd & 4th Semester (Sophomore Year): Complete foundational Data Structures (Arrays, Strings, Linked Lists, Stacks, Queues, Binary Trees). Learn full-stack web basics (HTML, CSS, modern JavaScript/TypeScript, React). Build and deploy your first full-stack CRUD application.\n3. 5th & 6th Semester (Pre-Final Year - Most Critical): Solve 150-250 curated DSA problems (Blind 75 or Striver SDE sheet) covering Heaps, Graphs, and Dynamic Programming. Build 2 production-grade projects with authentication, database indexing, and external APIs. Apply for summer internships. Master Core CS: OS (concurrency, paging), DBMS (indexing, ACID, normal forms), and SQL.\n4. 7th & 8th Semester (Final Year): On-campus drives start. Revise Aptitude, participate in mock behavioral interviews (STAR method), and practice live whiteboard/screen-share coding.",
+      "target_stages": ["B.Tech / B.E.", "College / Undergraduate"],
+      "key_pitfalls": [
+        "Tutorial hell: Watching videos for 6 months without typing code or solving problems on LeetCode",
+        "Leaving DSA preparation until 7th semester when companies arrive",
+        "Listing 10 clone projects on resume instead of 2 original, deployed, high-signal apps"
+      ]
+    },
+    {
+      "id": "guidance_class_12_preparation_04",
+      "category": "High School Academic & Career Guidance",
+      "topic": "Class 12th Board Exams, Entrance Tests and Coding Balance",
+      "question": "I am in Class 12th. How should I prepare for my future tech career while managing school boards and entrance exams?",
+      "ideal_approach": "1. Priority 1 is Board & Entrance Exams: Dedicate 75-80% of your academic time to Mathematics, Physics, Chemistry, and school curriculum. A strong foundation in Calculus, Vectors, and Algebra is directly correlated with higher-level computer science, cryptography, and AI.\n2. Minimum Cutoff Safety: Many top universities and even corporate campus placement drives enforce a minimum 60% or 75% criteria in 10th and 12th board marks. Never jeopardize your board score.\n3. Weekend Coding Routine (3-4 hours total): Use Saturday or Sunday mornings to learn foundational Python or C++. Focus on logic building: loops, conditional branches, functions, and elementary algorithms.\n4. Explore Degree Pathways: Research the differences between B.Tech CSE, BCA + MCA, and B.Sc Data Science to make an informed college application decision.",
+      "target_stages": ["Class 12th / Pre-College (Entrance & Board Stage)", "High School"],
+      "key_pitfalls": [
+        "Ditching board exam study to build websites, resulting in low 12th percentage that permanently hurts admission/placement criteria",
+        "Memorizing programming code instead of developing mathematical and algorithmic thinking"
+      ]
+    },
+    {
+      "id": "guidance_bca_non_btech_05",
+      "category": "Alternative Degree Acceleration",
+      "topic": "BCA and Non-B.Tech Student Roadmap to Top Tier Software Roles",
+      "question": "How can a BCA or B.Sc student compete with B.Tech graduates and land high-paying software engineering jobs?",
+      "ideal_approach": "1. Build Undeniable Proof-of-Work: Because some campus drives restrict eligibility to B.Tech, your GitHub portfolio must speak louder than a degree certificate. Build 2 full-stack applications with production features: JWT/OAuth, PostgreSQL with optimized queries, Redis caching, and real-time WebSockets.\n2. High CGPA (8.5+): A high academic score in BCA shows consistency and discipline, opening doors for top MCA entrance exams (NIMCET) and progressive product startups that care about performance.\n3. Competitive Problem Solving: Achieve 1600+ rating on LeetCode or CodeChef. Strong algorithmic skills level the playing field across all technical screening rounds.\n4. Off-Campus Strategy: Target high-growth startups and tech consultancies via GitHub, LinkedIn referral networks, and hackathons (Smart India Hackathon, Unstop, Devpost).",
+      "target_stages": ["B.Sc / BCA", "MCA / M.Sc"],
+      "key_pitfalls": [
+        "Relying solely on college campus placement which may only attract low-tier mass recruiters",
+        "Skipping Data Structures and Algorithms under the misconception that BCA students only need basic web design"
+      ]
+    },
+    {
+      "id": "guidance_time_budgeting_06",
+      "category": "Productivity & Time Management",
+      "topic": "Daily Timetable and Study Scheduling for College Students",
+      "question": "How should I structure my daily schedule between college classes, DSA practice, project building, and rest?",
+      "ideal_approach": "1. If you have 2 Hours Daily: Use the 60-45-15 split:\n   - 60 mins: Data Structures & Algorithms (1-2 targeted problems, understanding patterns like Two Pointers or Sliding Window).\n   - 45 mins: Project Building / Technical Skill (writing code, implementing a feature, committing to GitHub).\n   - 15 mins: Revision / Notes (jotting down key takeaways or CS theory definitions).\n2. If you have 3-4 Hours Daily: Add a 60-minute block for college coursework / semester exam prep to safeguard your GPA, and expand project development.\n3. Weekend Sprint (4 Hours on Saturday & Sunday): Dedicate uninterrupted 3-hour blocks for hackathons, building complex project features, or taking a timed LeetCode biweekly contest.\n4. Time-Block Protection: Complete your coding block before 9:00 AM or after 8:00 PM to eliminate interruptions from college classes and social commitments.",
+      "target_stages": ["All Students", "College / Undergraduate", "Class 12th"],
+      "key_pitfalls": [
+        "Inconsistent burst studying: studying 8 hours on Sunday and 0 hours from Monday to Friday",
+        "Multitasking: watching YouTube tutorials while chatting or scrolling social media"
+      ]
+    }
+  ]
+}

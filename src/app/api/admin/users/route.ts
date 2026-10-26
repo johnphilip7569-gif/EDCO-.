@@ -126,3 +126,98 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    let isAuthorized = false;
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        const allowedRoles = ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"];
+        if (profile && allowedRoles.includes(profile.role)) {
+          isAuthorized = true;
+        }
+      }
+    } catch {}
+
+    if (!isAuthorized) {
+      const sessionCookie = req.cookies.get("edworld_session")?.value;
+      const authHeader = req.headers.get("authorization")?.replace("Bearer ", "");
+      const token = sessionCookie || authHeader;
+      if (token) {
+        const roleCheck = await verifyUserRole(token, [
+          "ADMIN",
+          "SUPER_ADMIN",
+          "FOUNDER",
+          "EXECUTIVE",
+        ]);
+        if (roleCheck.authorized) isAuthorized = true;
+      }
+    }
+
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Platform administrator clearance required." },
+        { status: 403 }
+      );
+    }
+
+    const body = await req.json();
+    const { ids, role, is_admin, is_employer } = body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json({ error: "User IDs array is required." }, { status: 400 });
+    }
+
+    const pool = getDbPool();
+
+    if (role) {
+      const upperRole = role.toUpperCase();
+      const isAdminFlag = upperRole === "ADMIN" || upperRole === "SUPER_ADMIN";
+      const isEmployerFlag = upperRole === "EMPLOYER";
+
+      await pool.query(
+        `UPDATE public.profiles 
+         SET role = $1, is_admin = $2 
+         WHERE id = ANY($3::uuid[])`,
+        [upperRole, isAdminFlag, ids]
+      );
+
+      await pool.query(
+        `UPDATE public.users 
+         SET is_admin = $1, is_employer = $2 
+         WHERE id = ANY($3::uuid[])`,
+        [isAdminFlag, isEmployerFlag, ids]
+      );
+    } else if (typeof is_admin === "boolean") {
+      await pool.query(
+        `UPDATE public.profiles SET is_admin = $1 WHERE id = ANY($2::uuid[])`,
+        [is_admin, ids]
+      );
+      await pool.query(
+        `UPDATE public.users SET is_admin = $1 WHERE id = ANY($2::uuid[])`,
+        [is_admin, ids]
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Updated permissions for ${ids.length} user(s).`,
+      count: ids.length,
+    });
+  } catch (err: any) {
+    console.error("[Admin Users PATCH Error]:", err);
+    return NextResponse.json(
+      { error: err.message || "Failed to batch update users." },
+      { status: 500 }
+    );
+  }
+}
+

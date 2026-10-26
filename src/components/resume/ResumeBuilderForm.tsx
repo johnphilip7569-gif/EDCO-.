@@ -26,8 +26,12 @@ import {
   RefreshCw,
   ShieldCheck,
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  Mic,
+  Volume2,
+  Square
 } from "lucide-react";
+import { VoiceDictationModal, useTextToSpeech } from "./VoiceAssistModal";
 
 interface ResumeBuilderFormProps {
   content: ResumeContent;
@@ -60,6 +64,20 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
   const [tailorResult, setTailorResult] = useState<any | null>(null);
   const [tailorError, setTailorError] = useState<string | null>(null);
   const [acceptedItems, setAcceptedItems] = useState<Record<string, boolean>>({});
+
+  // ATS Voice Assist: Dictation & Read-Aloud
+  const [dictationConfig, setDictationConfig] = useState<{
+    isOpen: boolean;
+    fieldLabel: string;
+    initialText: string;
+    onApply: (text: string) => void;
+  }>({
+    isOpen: false,
+    fieldLabel: "",
+    initialText: "",
+    onApply: () => {},
+  });
+  const tts = useTextToSpeech();
 
   const handleRunTailor = async () => {
     if (!tailorRoleInput.trim() || !tailorJdInput.trim()) {
@@ -496,7 +514,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? "text-emerald-700" : "text-slate-400"}`} />
                 <span>{tab.label}</span>
-                <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ml-0.5 ${
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full tabular-nums font-medium ml-0.5 ${
                   score === 100 
                     ? "bg-emerald-100 text-emerald-800" 
                     : score > 0 
@@ -512,15 +530,15 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
 
         <div className="flex items-center gap-1.5 shrink-0 mr-1">
           {/* Overall Completeness Pill */}
-          <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-xs">
-            <span className="text-[10px] uppercase font-bold text-slate-500">Completeness:</span>
-            <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+          <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 bg-white rounded-lg border border-neutral-200 text-xs">
+            <span className="text-xs font-medium text-[#6B7280]">Completeness:</span>
+            <div className="w-12 h-1.5 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
               <div 
-                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-300" 
+                className="h-full bg-black rounded-full transition-all duration-300" 
                 style={{ width: `${sectionScores.overall}%` }} 
               />
             </div>
-            <span className="font-mono font-black text-emerald-700 text-xs">{sectionScores.overall}%</span>
+            <span className="tabular-nums font-semibold text-[#111827] text-xs">{sectionScores.overall}%</span>
           </div>
           
           <button
@@ -638,16 +656,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Personal & Contact Info</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.contact}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Personal & Contact Info</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.contact}% complete
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleAskMyraForSection("Contact Info", content.contact)}
-                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Sparkles className="w-3 h-3 text-amber-300" />
                   <span>Ask Myra to improve</span>
@@ -655,16 +673,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 <button
                   type="button"
                   onClick={handleSyncFromProfile}
-                  className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-medium text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3 h-3" />
-                  <span>Sync from Profile</span>
+                  <span>Sync from profile</span>
                 </button>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Full Name</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">Full Name</label>
                 <input
                   type="text"
                   value={content.contact.fullName}
@@ -674,7 +692,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Email</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">Email</label>
                 <input
                   type="email"
                   value={content.contact.email}
@@ -684,7 +702,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Phone</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">Phone</label>
                 <input
                   type="text"
                   value={content.contact.phone}
@@ -694,7 +712,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Location</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">Location</label>
                 <input
                   type="text"
                   value={content.contact.location}
@@ -704,7 +722,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">LinkedIn URL</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">LinkedIn URL</label>
                 <input
                   type="text"
                   value={content.contact.linkedin || ""}
@@ -714,7 +732,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">GitHub / Portfolio</label>
+                <label className="block text-xs font-medium text-[#111827] mb-1">GitHub / Portfolio</label>
                 <input
                   type="text"
                   value={content.contact.github || ""}
@@ -732,21 +750,55 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-3">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Professional Summary</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.summary}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Professional Summary</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.summary}% complete
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setDictationConfig({
+                    isOpen: true,
+                    fieldLabel: "Professional Summary",
+                    initialText: content.summary,
+                    onApply: (text) => updateSummary(text),
+                  })}
+                  className="px-2.5 py-1 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-800 font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                >
+                  <Mic className="w-3 h-3 text-black" />
+                  <span>Dictate</span>
+                </button>
+
+                {content.summary?.trim() && (
+                  <button
+                    type="button"
+                    onClick={() => tts.isPlaying ? tts.stop() : tts.speak(content.summary)}
+                    className="px-2.5 py-1 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-800 font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  >
+                    {tts.isPlaying ? (
+                      <>
+                        <Square className="w-3 h-3 fill-current text-black animate-pulse" />
+                        <span>Stop</span>
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 className="w-3 h-3 text-black" />
+                        <span>Listen</span>
+                      </>
+                    )}
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => handleAskMyraForSection("Summary", content.summary)}
-                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Sparkles className="w-3 h-3 text-amber-300" />
                   <span>Ask Myra to improve</span>
                 </button>
-                <span className="text-[10px] text-slate-400">2-4 sentences recommended</span>
+                <span className="text-xs text-slate-400">2–4 sentences recommended</span>
               </div>
             </div>
             <textarea
@@ -764,16 +816,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Work & Leadership Experience</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.experience}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Work &amp; Leadership Experience</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.experience}% complete
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleAskMyraForSection("Experience", content.experience)}
-                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Sparkles className="w-3 h-3 text-amber-300" />
                   <span>Ask Myra to improve</span>
@@ -781,7 +833,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 <button
                   type="button"
                   onClick={addExperience}
-                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-[#2563EB] text-xs font-medium flex items-center gap-1 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Position</span>
@@ -792,7 +844,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
             {content.experience.map((exp, expIdx) => (
               <div key={exp.id || expIdx} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700">Position #{expIdx + 1}</span>
+                  <span className="text-xs font-medium text-slate-700">Position #{expIdx + 1}</span>
                   <button
                     type="button"
                     onClick={() => removeExperience(expIdx)}
@@ -845,11 +897,11 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 {/* Bullets */}
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold text-slate-500 uppercase">Accomplishment Bullets</label>
+                    <label className="text-xs font-medium text-[#6B7280]">Accomplishment bullets</label>
                     <button
                       type="button"
                       onClick={() => addExpBullet(expIdx)}
-                      className="text-[11px] font-bold text-brand-600 hover:underline"
+                      className="text-xs font-medium text-[#2563EB] hover:underline"
                     >
                       + Add Bullet
                     </button>
@@ -866,8 +918,21 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                       />
                       <button
                         type="button"
+                        onClick={() => setDictationConfig({
+                          isOpen: true,
+                          fieldLabel: `Experience Bullet #${bIdx + 1}`,
+                          initialText: b,
+                          onApply: (text) => updateExpBullet(expIdx, bIdx, text),
+                        })}
+                        title="Dictate accomplishment bullet"
+                        className="text-neutral-500 hover:text-black mt-2 p-1 rounded hover:bg-neutral-100 transition-colors cursor-pointer"
+                      >
+                        <Mic className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => removeExpBullet(expIdx, bIdx)}
-                        className="text-slate-400 hover:text-rose-500 mt-2 p-1"
+                        className="text-slate-400 hover:text-rose-500 mt-2 p-1 cursor-pointer"
                       >
                         <Trash2 className="w-3 h-3" />
                       </button>
@@ -884,16 +949,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Education & Coursework</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.education}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Education &amp; Coursework</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.education}% complete
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleAskMyraForSection("Education", content.education)}
-                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Sparkles className="w-3 h-3 text-amber-300" />
                   <span>Ask Myra to improve</span>
@@ -901,7 +966,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 <button
                   type="button"
                   onClick={addEducation}
-                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-[#2563EB] text-xs font-medium flex items-center gap-1 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add School</span>
@@ -912,7 +977,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
             {content.education.map((edu, eduIdx) => (
               <div key={edu.id || eduIdx} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700">Education #{eduIdx + 1}</span>
+                  <span className="text-xs font-medium text-slate-700">Education #{eduIdx + 1}</span>
                   <button
                     type="button"
                     onClick={() => removeEducation(eduIdx)}
@@ -971,22 +1036,22 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Skills & Technologies</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.skills}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Skills &amp; Technologies</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.skills}% complete
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => handleAskMyraForSection("Skills", content.skills)}
-                className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-medium text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
               >
                 <Sparkles className="w-3 h-3 text-amber-300" />
                 <span>Ask Myra to improve</span>
               </button>
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+              <label className="block text-xs font-medium text-[#111827] mb-1">
                 Technical Skills (Comma-separated)
               </label>
               <input
@@ -998,8 +1063,8 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
               />
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                Tools & Platforms (Comma-separated)
+              <label className="block text-xs font-medium text-[#111827] mb-1">
+                Tools &amp; Platforms (Comma-separated)
               </label>
               <input
                 type="text"
@@ -1010,8 +1075,8 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
               />
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                Soft & Leadership Skills (Comma-separated)
+              <label className="block text-xs font-medium text-[#111827] mb-1">
+                Soft &amp; Leadership Skills (Comma-separated)
               </label>
               <input
                 type="text"
@@ -1029,16 +1094,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900">Key Projects</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-bold text-slate-700">
-                  {sectionScores.projects}% Complete
+                <h3 className="text-sm font-semibold text-slate-900">Key Projects</h3>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] tabular-nums">
+                  {sectionScores.projects}% complete
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleAskMyraForSection("Projects", content.projects)}
-                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Sparkles className="w-3 h-3 text-amber-300" />
                   <span>Ask Myra to improve</span>
@@ -1136,9 +1201,9 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 <div key={proj.id || pIdx} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-700">Project #{pIdx + 1}</span>
+                      <span className="text-xs font-medium text-slate-700">Project #{pIdx + 1}</span>
                       {proj.projectStudioId && (
-                        <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-mono font-bold flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-xs font-medium flex items-center gap-1">
                           <FolderGit2 className="w-3 h-3" />
                           Linked to Project Studio
                         </span>
@@ -1174,7 +1239,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                           };
                           onChange({ ...content, projects: updated });
                         }}
-                        className="font-bold underline text-amber-950 ml-2 hover:text-amber-700"
+                        className="font-medium underline text-amber-950 ml-2 hover:text-amber-700"
                       >
                         Refresh?
                       </button>
@@ -1215,11 +1280,11 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                   {/* Bullets */}
                   <div className="space-y-2 pt-1">
                     <div className="flex items-center justify-between">
-                      <label className="text-[11px] font-bold text-slate-500 uppercase">Impact & Details</label>
+                      <label className="text-xs font-medium text-[#6B7280]">Impact &amp; details</label>
                       <button
                         type="button"
                         onClick={() => addProjBullet(pIdx)}
-                        className="text-[11px] font-bold text-brand-600 hover:underline"
+                        className="text-xs font-medium text-[#2563EB] hover:underline"
                       >
                         + Add Bullet
                       </button>
@@ -1256,12 +1321,12 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
         {activeTab === "certifications" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
-              <h3 className="text-sm font-bold text-slate-900">Certifications &amp; Licenses</h3>
+              <h3 className="text-sm font-semibold text-slate-900">Certifications &amp; Licenses</h3>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={importCertsFromProfile}
-                  className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1 shadow-sm"
+                  className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium flex items-center gap-1 shadow-sm"
                 >
                   <Award className="w-3.5 h-3.5 text-[#D7FC51]" />
                   <span>Import from Profile</span>
@@ -1269,7 +1334,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                 <button
                   type="button"
                   onClick={addCertification}
-                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold flex items-center gap-1"
+                  className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-[#2563EB] text-xs font-medium flex items-center gap-1"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Manual</span>
@@ -1281,14 +1346,14 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
               <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl space-y-2">
                 <Award className="w-8 h-8 text-slate-300 mx-auto" />
                 <p className="text-xs text-slate-500 font-medium">No certifications listed yet.</p>
-                <p className="text-[11px] text-slate-400">Click &quot;Import from Profile&quot; to pull your verified licenses or add them manually.</p>
+                <p className="text-xs text-slate-400">Click &quot;Import from Profile&quot; to pull your verified licenses or add them manually.</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {content.certifications.map((cert, cIdx) => (
                   <div key={cert.id || cIdx} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-700">Certification #{cIdx + 1}</span>
+                      <span className="text-xs font-medium text-slate-700">Certification #{cIdx + 1}</span>
                       <button
                         type="button"
                         onClick={() => removeCertification(cIdx)}
@@ -1348,16 +1413,16 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                   <Wand2 className="w-5 h-5 text-[#D7FC51]" />
                 </div>
                 <div>
-                  <h3 className="font-black text-sm text-white flex items-center gap-2">
+                  <h3 className="font-semibold text-sm text-white flex items-center gap-2">
                     <span>AI Job Description Tailoring</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Claude AI</span>
+                    <span className="text-xs px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Claude AI</span>
                   </h3>
-                  <p className="text-[11px] text-slate-400">Optimize summary and bullets for your target role with side-by-side accept/reject controls</p>
+                  <p className="text-xs text-slate-400">Optimize summary and bullets for your target role with side-by-side accept/reject controls</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowTailorModal(false)}
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center font-bold text-sm transition-colors"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center font-medium text-sm transition-colors"
               >
                 ✕
               </button>
@@ -1367,7 +1432,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
               <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
                 <div className="grid grid-cols-1 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="block text-xs font-medium text-slate-700 mb-1.5">
                       Target Role Title
                     </label>
                     <input
@@ -1379,7 +1444,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="block text-xs font-medium text-slate-700 mb-1.5">
                       Paste Job Description (JD)
                     </label>
                     <textarea
@@ -1387,7 +1452,7 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                       placeholder="Paste the key responsibilities, requirements, and tech stack from the job posting..."
                       value={tailorJdInput}
                       onChange={(e) => setTailorJdInput(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 font-mono text-[11px]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
                     />
                   </div>
                 </div>
@@ -1469,7 +1534,24 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
                             Rejected
                           </span>
                         ) : (
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <button
+                              type="button"
+                              onClick={() => tts.isPlaying ? tts.stop() : tts.speak(tailorResult.summarySuggestion.suggested)}
+                              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold flex items-center gap-1 border border-slate-300 cursor-pointer"
+                            >
+                              {tts.isPlaying ? (
+                                <>
+                                  <Square className="w-3 h-3 fill-current text-slate-800 animate-pulse" />
+                                  <span>Stop</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Volume2 className="w-3 h-3 text-slate-800" />
+                                  <span>Listen</span>
+                                </>
+                              )}
+                            </button>
                             <button
                               type="button"
                               onClick={handleAcceptSummary}
@@ -1584,6 +1666,15 @@ export default function ResumeBuilderForm({ content, onChange }: ResumeBuilderFo
           </div>
         </div>
       )}
+
+      {/* ATS Voice Dictation Modal */}
+      <VoiceDictationModal
+        isOpen={dictationConfig.isOpen}
+        fieldLabel={dictationConfig.fieldLabel}
+        initialText={dictationConfig.initialText}
+        onApply={dictationConfig.onApply}
+        onClose={() => setDictationConfig((prev) => ({ ...prev, isOpen: false }))}
+      />
 
     </div>
   );

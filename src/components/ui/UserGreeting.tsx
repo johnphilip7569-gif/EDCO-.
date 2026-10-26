@@ -24,8 +24,8 @@ export const UserGreeting: React.FC<UserGreetingProps> = ({
   if (loading) {
     return (
       <div className={`space-y-1 animate-pulse ${className}`}>
-        <div className="h-7 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg" />
-        {subtitle && <div className="h-4 w-72 bg-slate-100 dark:bg-slate-900 rounded-md" />}
+        <div className="h-7 w-48 bg-neutral-200 rounded-lg" />
+        {subtitle && <div className="h-4 w-72 bg-neutral-100 rounded-md" />}
       </div>
     );
   }
@@ -36,11 +36,11 @@ export const UserGreeting: React.FC<UserGreetingProps> = ({
   return (
     <div className={`space-y-1 ${className}`}>
       <div className="flex items-center gap-2">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-ink">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-black">
           {greetingText}
         </h1>
         {showBadge && (
-          <span className="text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
+          <span className="text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full bg-neutral-100 text-black border border-neutral-200">
             {badgeText || user?.careerStage || "VERIFIED"}
           </span>
         )}

@@ -219,23 +219,23 @@ export default function PersonalizedTimetableWidget() {
   const progressPct = slots.length > 0 ? Math.round((completedCount / slots.length) * 100) : 0;
 
   return (
-    <div className="bg-white border border-[#EBECEF] rounded-2xl p-6 sm:p-7 shadow-xs">
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-7 shadow-xs">
       
       {/* Widget Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#EBECEF]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E5E7EB]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 text-[#2563EB] flex items-center justify-center font-bold">
               <Calendar className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#13141B] tracking-tight flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-[#111827] tracking-tight flex items-center gap-2 flex-wrap">
                 Personalized Study Timetable
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#F7F8FA] text-[#111827] border border-[#E5E7EB]">
                   Calibrated for {numericCgpa ? `CGPA ${numericCgpa}` : "Target Role"}
                 </span>
               </h2>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-[#6B7280] font-normal mt-0.5">
                 Daily smart curriculum calibrated to your academic metrics, available study hours, and target role.
               </p>
             </div>
@@ -243,19 +243,19 @@ export default function PersonalizedTimetableWidget() {
         </div>
 
         {/* Study Hours Selector */}
-        <div className="flex items-center gap-2 self-start sm:self-auto bg-[#F4F6FB] border border-[#E8ECF2] p-1 rounded-xl">
-          <span className="text-[11px] font-bold text-gray-500 px-2 flex items-center gap-1">
-            <Clock className="w-3 h-3 text-gray-400" />
+        <div className="flex items-center gap-1.5 self-start sm:self-auto bg-[#F7F8FA] border border-[#E5E7EB] p-1.5 rounded-xl">
+          <span className="text-[11px] font-medium text-[#6B7280] px-2 flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-[#111827]" />
             Study Time:
           </span>
           {[2, 3, 4.5].map((hrs) => (
             <button
               key={hrs}
               onClick={() => handleHoursChange(hrs)}
-              className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+              className={`px-3 py-1 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
                 dailyHours === hrs
-                  ? "bg-[#13141B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#13141B] hover:bg-white"
+                  ? "bg-[#111827] text-white border-[#111827]"
+                  : "bg-white text-[#6B7280] border-transparent hover:border-[#E5E7EB]"
               }`}
             >
               {hrs}h/day
@@ -265,30 +265,30 @@ export default function PersonalizedTimetableWidget() {
       </div>
 
       {/* Progress & Milestone Bar */}
-      <div className="mt-5 p-4 rounded-xl bg-[#FAF8F5] border border-[#EBECEF] flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="mt-5 p-4 rounded-xl bg-[#F8F9FA] border border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="w-full sm:w-auto flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 flex items-center justify-center font-black text-xs shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center font-bold text-xs shrink-0">
             {progressPct}%
           </div>
           <div>
-            <div className="text-xs font-bold text-[#13141B] flex items-center gap-2">
+            <div className="text-xs font-bold text-[#111827] flex items-center gap-2">
               <span>Today's Task Completion</span>
-              <span className="text-[11px] text-gray-500 font-normal">
+              <span className="text-[11px] text-[#6B7280] font-normal">
                 ({completedCount} of {slots.length} tasks completed)
               </span>
             </div>
-            <p className="text-[11px] text-gray-500 mt-0.5">
+            <p className="text-[11px] text-[#6B7280] font-normal mt-0.5">
               {progressPct === 100 
-                ? "🎉 Fantastic job! You have conquered all your scheduled milestones for today." 
+                ? "Fantastic job! You have conquered all your scheduled milestones for today." 
                 : "Check off each slot as you complete it to build your consistency streak."}
             </p>
           </div>
         </div>
 
         <div className="w-full sm:w-48 flex items-center gap-2">
-          <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-emerald-500 to-[#00D2B4] rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-emerald-600 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -296,9 +296,9 @@ export default function PersonalizedTimetableWidget() {
             <button
               onClick={handleResetChecklist}
               title="Reset today's checklist"
-              className="text-gray-400 hover:text-gray-600 p-1"
+              className="text-[#6B7280] hover:text-[#111827] p-1 cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -312,47 +312,47 @@ export default function PersonalizedTimetableWidget() {
           return (
             <div
               key={slot.id}
-              className={`p-4 rounded-xl border transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 ${
+              className={`p-4 rounded-xl border transition-all duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 ${
                 isDone
-                  ? "bg-emerald-50/40 border-emerald-200/80 text-gray-700"
-                  : "bg-white border-[#EBECEF] hover:border-gray-300 hover:shadow-xs"
+                  ? "bg-emerald-50/40 border-emerald-200"
+                  : "bg-white border-[#E5E7EB] hover:border-gray-300 shadow-xs"
               }`}
             >
               {/* Checkbox and Details */}
               <div className="flex items-start gap-3.5 min-w-0">
                 <button
                   onClick={() => toggleSlot(slot.id)}
-                  className="mt-0.5 text-gray-400 hover:text-emerald-700 transition-colors shrink-0 focus:outline-none"
+                  className="mt-0.5 text-gray-400 hover:text-[#111827] transition-colors shrink-0 focus:outline-none cursor-pointer"
                   aria-label={`Mark ${slot.title} as ${isDone ? "incomplete" : "complete"}`}
                 >
                   {isDone ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-700 fill-emerald-100" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 fill-emerald-100" />
                   ) : (
-                    <Circle className="w-5 h-5 text-gray-300 hover:text-emerald-700" />
+                    <Circle className="w-5 h-5 text-gray-300 hover:text-gray-500" />
                   )}
                 </button>
 
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#F4F6FB] text-gray-600 border border-[#E8ECF2]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#F7F8FA] text-[#111827] border border-[#E5E7EB]">
                       {slot.timeOfDay} • {slot.duration}
                     </span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-100">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
                       {slot.category}
                     </span>
-                    <span className="text-[10px] font-medium text-gray-500">
-                      Focus: <strong className="text-gray-700">{slot.recommendedFocus}</strong>
+                    <span className="text-[10px] text-[#6B7280]">
+                      Focus: <strong className="text-[#111827] font-semibold">{slot.recommendedFocus}</strong>
                     </span>
                   </div>
 
                   <h3
                     className={`text-sm font-bold mt-1.5 leading-snug ${
-                      isDone ? "line-through text-gray-500" : "text-[#13141B]"
+                      isDone ? "line-through text-gray-400" : "text-[#111827]"
                     }`}
                   >
                     {slot.title}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">
                     {slot.description}
                   </p>
                 </div>
@@ -362,14 +362,14 @@ export default function PersonalizedTimetableWidget() {
               <div className="flex items-center gap-2 shrink-0 self-end sm:self-center pl-8 sm:pl-0">
                 <Link
                   href={slot.actionHref}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-xs ${
                     isDone
-                      ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      : "bg-[#13141B] hover:bg-[#252632] text-white shadow-xs"
+                      ? "bg-gray-100 text-[#111827] hover:bg-gray-200 border border-[#E5E7EB]"
+                      : "bg-[#111827] hover:bg-black text-white"
                   }`}
                 >
                   <span>{slot.actionLabel}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#00D2B4]" />
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
@@ -378,14 +378,14 @@ export default function PersonalizedTimetableWidget() {
       </div>
 
       {/* Footer Guidance */}
-      <div className="mt-5 pt-4 border-t border-[#EBECEF] flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+      <div className="mt-5 pt-4 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between text-xs text-[#6B7280] font-normal gap-2">
         <div className="flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Have doubts in any topic? Click the floating <strong>Myra AI</strong> at the bottom-right!</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <span>Have questions about your schedule? Open <strong>Myra AI</strong> anytime for custom revisions.</span>
         </div>
         <Link
           href="/practice"
-          className="text-emerald-700 font-bold hover:underline inline-flex items-center gap-1"
+          className="text-[#2563EB] font-semibold hover:underline inline-flex items-center gap-1"
         >
           <span>Explore All Question Banks</span>
           <ArrowRight className="w-3 h-3" />

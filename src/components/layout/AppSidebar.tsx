@@ -205,39 +205,6 @@ export default function AppSidebar() {
                       roleRequired: "admin" as const
                     }
                   ]
-                : []),
-              ...(isHR || isAdmin || isSuperAdmin
-                ? [
-                    {
-                      href: "/hr",
-                      label: "HR Command",
-                      shortLabel: "HR",
-                      icon: Users,
-                      roleRequired: "hr" as const
-                    }
-                  ]
-                : []),
-              ...(isFounder || isAdmin || isSuperAdmin
-                ? [
-                    {
-                      href: "/founder",
-                      label: "Founder Suite",
-                      shortLabel: "Founder",
-                      icon: Building2,
-                      roleRequired: "founder" as const
-                    }
-                  ]
-                : []),
-              ...(isEmployee || isAdmin || isSuperAdmin
-                ? [
-                    {
-                      href: "/employee",
-                      label: "Employee Hub",
-                      shortLabel: "Employee",
-                      icon: Briefcase,
-                      roleRequired: "employee" as const
-                    }
-                  ]
                 : [])
             ]
           }

@@ -117,14 +117,14 @@ export default function PerformanceIntelligenceWidget({
         return <Brain className="w-4 h-4 text-blue-500" />;
       case "coding":
       case "problem_solving":
-        return <Code2 className="w-4 h-4 text-emerald-500" />;
+        return <Code2 className="w-4 h-4 text-black" />;
       case "resume":
-        return <FileText className="w-4 h-4 text-amber-500" />;
+        return <FileText className="w-4 h-4 text-black" />;
       case "projects":
-        return <Target className="w-4 h-4 text-indigo-500" />;
+        return <Target className="w-4 h-4 text-black" />;
       case "interview":
       default:
-        return <Sparkles className="w-4 h-4 text-teal-500" />;
+        return <Sparkles className="w-4 h-4 text-black" />;
     }
   };
 

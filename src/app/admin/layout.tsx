@@ -2,179 +2,268 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import AuthGuard from "@/components/auth/AuthGuard";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import EdworldLogo from "@/components/ui/EdworldLogo";
 import { useAuth } from "@/lib/auth-context";
 import { 
+  LayoutDashboard,
+  Hammer,
   Users, 
   Briefcase, 
   Award, 
   Mail, 
-  ArrowLeft, 
   ShieldCheck, 
+  Activity,
+  ArrowLeft, 
+  LogOut,
   Menu, 
   X,
-  ExternalLink,
-  Activity
+  ExternalLink
 } from "lucide-react";
 
 const ADMIN_NAV_LINKS = [
   {
+    href: "/admin",
+    label: "Overview",
+    icon: LayoutDashboard,
+    exact: true,
+  },
+  {
+    href: "/admin/edbuild",
+    label: "EdBuild Reviews",
+    icon: Hammer,
+  },
+  {
     href: "/admin/users",
-    label: "Users & Onboarding",
+    label: "Users & Dossiers",
     icon: Users,
-    desc: "All signups, tech tracks, goals, and onboarding dossier"
   },
   {
     href: "/admin/jobs",
-    label: "Jobs & Internships",
+    label: "Jobs & Openings",
     icon: Briefcase,
-    desc: "Add and delete job & internship roles"
   },
   {
     href: "/admin/ambassadors",
-    label: "Campus Ambassadors",
+    label: "Ambassadors",
     icon: Award,
-    desc: "Student requests, accepted leaders & 1-click mailer"
   },
   {
     href: "/admin/bulk-mail",
-    label: "Bulk Mail Sender",
+    label: "Bulk Mailer",
     icon: Mail,
-    desc: "Broadcast emails to all students via Resend"
   },
   {
     href: "/admin/security",
-    label: "Security Office",
+    label: "Security SOC",
     icon: ShieldCheck,
-    desc: "Live database, RLS audit, auth security & compliance console"
   },
   {
     href: "/admin/system-health",
-    label: "System Health & Uptime",
+    label: "System Health",
     icon: Activity,
-    desc: "Real-time telemetry, microservices health, and probe latency"
   },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, role } = useAuth();
+  const router = useRouter();
+  const { user, profile, role, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const adminName = profile?.name || user?.name || user?.email?.split("@")[0] || "Administrator";
+  const adminRole = role || "ADMIN";
+
+  const handleSignOut = async () => {
+    await logout();
+    router.replace("/login");
+  };
 
   return (
     <AuthGuard allowedRoles={["ADMIN", "SUPER_ADMIN", "FOUNDER"]}>
       <ErrorBoundary moduleName="Admin Operations Portal" fallbackTitle="Admin Hub Notice">
-        <div className="min-h-screen bg-white text-black flex flex-col font-sans selection:bg-black selection:text-white">
+        <div className="min-h-screen bg-[#F7F8FA] text-[#111827] flex flex-col font-sans selection:bg-[#2563EB] selection:text-white">
           
-          {/* Top Admin Architectural Navigation Header */}
-          <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200">
-            <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
+          {/* Top Dedicated Admin Navigation Header (Pure SaaS Minimal) */}
+          <header className="sticky top-0 z-40 bg-white border-b border-[#E5E7EB] shadow-2xs">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16 gap-4">
                 
-                {/* Brand & Admin Shield */}
-                <div className="flex items-center gap-4">
-                  <EdworldLogo size="md" href="/admin" />
-                  
-                  <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-neutral-200">
-                    <span className="text-[10px] font-black tracking-widest uppercase bg-black text-white px-2 py-0.5 rounded">
-                      ADMIN OS
-                    </span>
-                    <span className="text-xs font-semibold text-neutral-500 font-mono">
-                      Hyderabad HQ
-                    </span>
-                  </div>
+                {/* Brand & Admin Badge */}
+                <div className="flex items-center gap-3 shrink-0">
+                  <Link href="/admin" className="flex items-center gap-2.5 group">
+                    <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-black flex items-center justify-center border border-[#111827] transition-transform group-hover:scale-105 duration-150 shrink-0">
+                      <Image
+                        src="/images/edworld-mark.png"
+                        alt="EdWorld Co. Logo"
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-cover"
+                        priority
+                      />
+                    </div>
+                    <div className="flex items-center gap-1.5 leading-none">
+                      <span className="font-bold text-base tracking-tight text-[#111827]">
+                        EdWorld
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#111827] text-white">
+                        Admin OS
+                      </span>
+                    </div>
+                  </Link>
                 </div>
 
-                {/* Desktop Navigation Tabs */}
-                <nav className="hidden md:flex items-center gap-1">
+                {/* Desktop Admin Tabs (All Features) */}
+                <nav className="hidden xl:flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
                   {ADMIN_NAV_LINKS.map((item) => {
                     const Icon = item.icon;
-                    const isActive = pathname === item.href || (pathname === "/admin" && item.href === "/admin/users");
+                    const isActive = item.exact 
+                      ? pathname === item.href 
+                      : pathname === item.href || pathname.startsWith(item.href + "/");
+
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1.5 shrink-0 ${
                           isActive
-                            ? "bg-black text-white shadow-xs font-black"
-                            : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+                            ? "bg-[#F7F8FA] text-[#2563EB] border border-[#E5E7EB] shadow-2xs"
+                            : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F7F8FA]"
                         }`}
                       >
-                        <Icon className="w-4 h-4" />
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#2563EB]" : "text-[#6B7280]"}`} />
                         <span>{item.label}</span>
                       </Link>
                     );
                   })}
                 </nav>
 
-                {/* Right Actions: Return to App & Mobile Trigger */}
-                <div className="flex items-center gap-2 sm:gap-3">
+                {/* Right Controls: Identity, App Switcher, Sign Out */}
+                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                  
+                  {/* Identity Badge */}
+                  <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="font-bold text-[#111827] max-w-[120px] truncate" title={adminName}>
+                      {adminName}
+                    </span>
+                    <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-white border border-[#E5E7EB] text-[#2563EB]">
+                      {adminRole}
+                    </span>
+                  </div>
+
+                  {/* Return to Student App */}
                   <Link
                     href="/dashboard"
-                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-neutral-600 hover:text-black border border-neutral-200 rounded-lg hover:border-neutral-400 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#111827] bg-white hover:bg-[#F7F8FA] border border-[#E5E7EB] rounded-lg transition-colors cursor-pointer shadow-2xs"
+                    title="Exit Admin to Student Dashboard"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Return to App</span>
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#2563EB]" />
+                    <span className="hidden sm:inline">Exit to App</span>
                   </Link>
 
+                  {/* Sign Out */}
+                  <button
+                    onClick={handleSignOut}
+                    className="p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-semibold text-[#6B7280] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
+                    title="Sign Out of Admin"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Logout</span>
+                  </button>
+
+                  {/* Mobile Drawer Toggle */}
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="md:hidden p-2 rounded-lg text-neutral-600 hover:text-black hover:bg-neutral-100"
-                    aria-label="Toggle admin navigation"
+                    className="xl:hidden p-2 rounded-lg text-[#6B7280] hover:text-[#111827] hover:bg-[#F7F8FA] border border-[#E5E7EB]"
+                    aria-label="Toggle admin navigation menu"
                   >
-                    {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                   </button>
                 </div>
 
               </div>
             </div>
 
+            {/* Tablet Sub-Navigation Strip (Visible on md & lg, hidden on xl and mobile) */}
+            <div className="hidden md:flex xl:hidden border-t border-[#E5E7EB] bg-[#F7F8FA] px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto no-scrollbar gap-1">
+              {ADMIN_NAV_LINKS.map((item) => {
+                const Icon = item.icon;
+                const isActive = item.exact 
+                  ? pathname === item.href 
+                  : pathname === item.href || pathname.startsWith(item.href + "/");
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1.5 shrink-0 ${
+                      isActive
+                        ? "bg-white text-[#2563EB] border border-[#E5E7EB] shadow-2xs"
+                        : "text-[#6B7280] hover:text-[#111827] hover:bg-white/60"
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#2563EB]" : "text-[#6B7280]"}`} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
             {/* Mobile Navigation Drawer */}
             {mobileMenuOpen && (
-              <div className="md:hidden border-t border-neutral-200 bg-white px-4 py-3 space-y-1">
+              <div className="xl:hidden border-t border-[#E5E7EB] bg-white px-4 py-3 space-y-1 shadow-md animate-in slide-in-from-top-2 duration-150">
+                <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-[#6B7280]">
+                  Admin Modules
+                </div>
                 {ADMIN_NAV_LINKS.map((item) => {
                   const Icon = item.icon;
-                  const isActive = pathname === item.href;
+                  const isActive = item.exact 
+                    ? pathname === item.href 
+                    : pathname === item.href || pathname.startsWith(item.href + "/");
+
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                         isActive
-                          ? "bg-black text-white"
-                          : "text-neutral-700 hover:bg-neutral-100"
+                          ? "bg-[#F7F8FA] text-[#2563EB] border border-[#E5E7EB]"
+                          : "text-[#111827] hover:bg-[#F7F8FA]"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <div>
-                        <div>{item.label}</div>
-                        <div className={`text-[10px] font-normal ${isActive ? "text-neutral-300" : "text-neutral-500"}`}>
-                          {item.desc}
-                        </div>
-                      </div>
+                      <Icon className="w-4 h-4 text-[#2563EB]" />
+                      <span>{item.label}</span>
                     </Link>
                   );
                 })}
-                <div className="pt-2 border-t border-neutral-200">
+
+                <div className="pt-2 border-t border-[#E5E7EB] space-y-1">
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-neutral-600 hover:text-black"
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#111827] hover:bg-[#F7F8FA] rounded-lg"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Exit Admin to User Dashboard</span>
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#2563EB]" />
+                    <span>Exit Admin to Student Dashboard</span>
                   </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg text-left"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
+                  </button>
                 </div>
               </div>
             )}
           </header>
 
           {/* Main Admin Workspace Container */}
-          <main className="flex-1 max-w-[1536px] w-full mx-auto p-4 sm:p-6 lg:p-8">
+          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
             {children}
           </main>
 

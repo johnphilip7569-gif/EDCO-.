@@ -1,13 +1,61 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Authenticate the caller strictly from session/token
+    const supabaseServer = createClient();
+    let authUserId: string | null = null;
+    let isCallerAdmin = false;
+
+    const { data: { user } } = await supabaseServer.auth.getUser();
+    if (user) {
+      authUserId = user.id;
+    } else {
+      const sessionToken =
+        req.cookies.get("edworld_session")?.value ||
+        req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ||
+        req.headers.get("x-session-token");
+      if (sessionToken) {
+        const { valid, userId: sessUid } = validateSession(sessionToken);
+        if (valid && sessUid) {
+          authUserId = sessUid;
+        }
+      }
+    }
+
+    if (!authUserId) {
+      return NextResponse.json({ success: false, error: "Unauthorized: Active login session required." }, { status: 401 });
+    }
+
+    // Check if caller is platform admin (can delete on behalf with consent)
+    const { data: callerProfile } = await supabase
+      .from("profiles")
+      .select("is_admin, role")
+      .eq("id", authUserId)
+      .maybeSingle();
+
+    if (callerProfile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER"].includes(callerProfile?.role)) {
+      isCallerAdmin = true;
+    }
+
     const body = await req.json();
     const { userId, confirmationPhrase, reason } = body;
 
     if (!userId) {
       return NextResponse.json({ success: false, error: "User ID is required" }, { status: 400 });
+    }
+
+    // Authorization check: User can only delete their OWN account unless admin
+    if (authUserId !== userId && !isCallerAdmin) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: You are not authorized to delete another user's account." },
+        { status: 403 }
+      );
     }
 
     if (confirmationPhrase !== "DELETE MY ACCOUNT") {

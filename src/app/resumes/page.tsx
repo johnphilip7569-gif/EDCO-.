@@ -230,25 +230,25 @@ export default function ResumesDirectEditorPage() {
   if (isJuniorTrack) {
     return (
       <AuthGuard>
-        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-paper">
-          <div className="max-w-md w-full bg-paper-raised rounded-3xl border border-line shadow-xl p-8 text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-gold/15 border border-gold/30 text-gold-dark flex items-center justify-center mx-auto shadow-sm">
-              <Lock className="w-8 h-8 text-gold" />
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-white">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-neutral-200 shadow-sm p-8 text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-neutral-100 border border-neutral-200 text-black flex items-center justify-center mx-auto shadow-xs">
+              <Lock className="w-8 h-8 text-black" />
             </div>
             <div className="space-y-2">
-              <span className="px-3 py-1 rounded-full bg-gold-light text-gold-dark text-xs font-mono font-bold uppercase tracking-wider border border-gold/30">
-                Junior Track (13-15)
+              <span className="px-3 py-1 rounded-full bg-[#F7F8FA] text-[#6B7280] text-xs font-medium border border-[#E5E7EB]">
+                Junior track (13–15)
               </span>
-              <h1 className="text-3xl font-bold font-display text-ink tracking-tight">Resume Maker is for Explorer &amp; Career Tracks</h1>
-              <p className="text-sm text-ink-soft leading-relaxed">
+              <h1 className="text-2xl font-bold text-[#111827] tracking-tight">Resume maker is for explorer &amp; career tracks</h1>
+              <p className="text-xs text-[#6B7280] leading-relaxed">
                 As a Class 9-10 learner, your focus is on curious exploration, building hands-on creative projects, and learning core concepts. Resume building unlocks in the 16-18 Explorer Track.
               </p>
             </div>
             <Link
               href="/dashboard"
-              className="w-full py-3.5 px-4 rounded-xl bg-forest hover:bg-forest-light active:bg-forest-dark text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all flex items-center justify-center gap-2"
+              className="btn-primary w-full py-3 px-4 text-xs flex items-center justify-center gap-2"
             >
-              <span>Return to Dashboard</span>
+              <span>Return to dashboard</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -260,10 +260,10 @@ export default function ResumesDirectEditorPage() {
   if (loading || !resume) {
     return (
       <AuthGuard>
-        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-slate-50">
-          <div className="text-center space-y-3 font-mono text-xs text-slate-500">
-            <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p>Loading ATS Builder Workspace...</p>
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-[#F7F8FA]">
+          <div className="text-center space-y-3 text-xs text-[#6B7280]">
+            <div className="w-6 h-6 border-2 border-[#111827] border-t-transparent rounded-full animate-spin mx-auto" />
+            <p>Loading resume workspace...</p>
           </div>
         </div>
       </AuthGuard>
@@ -272,15 +272,15 @@ export default function ResumesDirectEditorPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex flex-col">
+      <div className="min-h-[calc(100vh-4rem)] bg-[#FFF8EE] flex flex-col font-studio text-[#1B1B2F]">
         {/* Top Action Bar */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-3.5 shadow-xs">
+        <header className="bg-white border-b-2 border-[#1B1B2F] sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-3.5 shadow-[0_4px_0px_#1B1B2F]">
           <div className="max-w-[1536px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard"
                 title="Back to Dashboard"
-                className="p-2.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                className="p-2.5 rounded-2xl border-2 border-[#1B1B2F] text-[#1B1B2F] bg-[#FFF8EE] hover:bg-[#FFC93C] transition-colors shadow-[2px_2px_0px_#1B1B2F]"
               >
                 <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
@@ -290,13 +290,13 @@ export default function ResumesDirectEditorPage() {
                     type="text"
                     value={resume.title}
                     onChange={(e) => handleTitleChange(e.target.value)}
-                    className="font-bold text-slate-900 text-base sm:text-lg lg:text-xl border-b border-transparent hover:border-slate-300 focus:border-slate-900 focus:outline-none bg-transparent px-1 py-0.5"
+                    className="font-display font-black text-[#1B1B2F] text-base sm:text-lg border-b-2 border-transparent hover:border-[#1B1B2F] focus:border-[#FF6B6B] focus:outline-none bg-transparent px-1 py-0.5"
                     aria-label="Resume Title"
                   />
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-400 font-mono pl-1">
+                <div className="flex items-center gap-2 text-xs font-heading font-extrabold text-[#4A4A68] pl-1">
                   <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
                     {savedStatus}
                   </span>
                 </div>
@@ -305,15 +305,16 @@ export default function ResumesDirectEditorPage() {
 
             <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
               {/* Template Selector */}
-              <div className="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs font-bold">
+              <div className="flex items-center bg-[#FFF8EE] p-1 rounded-2xl border-2 border-[#1B1B2F] text-xs font-heading font-extrabold shadow-[2px_2px_0px_#1B1B2F]">
                 {(["classic", "modern", "tech"] as ResumeTemplateId[]).map((tmpl) => (
                   <button
                     key={tmpl}
+                    type="button"
                     onClick={() => handleTemplateChange(tmpl)}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg uppercase tracking-wider text-[11px] sm:text-xs font-mono transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs capitalize transition-all cursor-pointer ${
                       activeTemplate === tmpl
-                        ? "bg-white text-slate-900 shadow-sm"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-[#1B1B2F] text-white shadow-xs font-black"
+                        : "text-[#4A4A68] hover:text-[#1B1B2F]"
                     }`}
                   >
                     {tmpl}
@@ -323,20 +324,22 @@ export default function ResumesDirectEditorPage() {
 
               {/* Myra Smart Job Matcher Button */}
               <button
+                type="button"
                 onClick={() => setIsMyraJobModalOpen(true)}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-[#00D2B4] hover:bg-[#00BF9F] text-[#13141B] text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2 shadow-md transition-all hover:scale-105"
+                className="btn-squishy text-xs py-2 px-3.5 rounded-2xl bg-[#FFC93C] text-[#1B1B2F] font-heading font-extrabold border-2 border-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] flex items-center gap-1.5 cursor-pointer select-none"
               >
-                <Briefcase className="w-4 h-4 text-[#13141B]" />
-                <span>Match Jobs with Myra</span>
+                <Briefcase className="w-3.5 h-3.5 text-[#1B1B2F]" />
+                <span>Match Jobs</span>
               </button>
 
               {/* AI JD-Match Button */}
               <button
+                type="button"
                 onClick={() => setIsJDModalOpen(true)}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+                className="btn-squishy text-xs py-2 px-3.5 rounded-2xl bg-white text-[#1B1B2F] font-heading font-extrabold border-2 border-[#1B1B2F] shadow-[2px_2px_0px_#1B1B2F] flex items-center gap-1.5 cursor-pointer select-none hover:bg-[#FFF8EE]"
               >
-                <Sparkles className="w-4 h-4 text-brand-300" />
-                <span>AI JD Match</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#FF6B6B]" />
+                <span>JD Match</span>
               </button>
 
               {/* PDF Export Button */}
@@ -350,16 +353,21 @@ export default function ResumesDirectEditorPage() {
         </header>
 
         {/* User Identity Greeting Context Sub-Bar */}
-        <div className="bg-white/80 backdrop-blur-xs border-b border-slate-200/60 px-4 sm:px-6 lg:px-8 py-3">
-          <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
-            <UserGreeting
-              context="resume"
-              subtitle="All contact details & skills sync seamlessly with your verified profile."
-              className="text-xs sm:text-sm"
-            />
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 shrink-0">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Live ATS Studio Active</span>
+        <div className="bg-[#FFF8EE] border-b-2 border-[#1B1B2F]/15 px-4 sm:px-6 lg:px-8 py-2.5">
+          <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#FFC93C] text-[#1B1B2F] text-xs font-heading font-extrabold border border-[#1B1B2F]">
+                ✦ Pillar 02: 98% ATS Match
+              </span>
+              <UserGreeting
+                context="resume"
+                subtitle="All contact details &amp; skills sync seamlessly with your verified profile."
+                className="text-xs"
+              />
+            </div>
+            <div className="flex items-center gap-2 text-xs font-heading font-extrabold text-[#4A4A68] shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Google X-Y-Z Optimizer Active</span>
             </div>
           </div>
         </div>
@@ -382,36 +390,36 @@ export default function ResumesDirectEditorPage() {
           </div>
         )}
 
-        {/* Mobile Tab Toggle */}
-        <div className="md:hidden flex border-b border-slate-200 bg-white">
+        {/* Mobile & Portrait Tablet Tab Toggle (< 1024px) */}
+        <div className="lg:hidden sticky top-[61px] z-10 flex border-b border-[#E5E7EB] bg-white/95 backdrop-blur-md">
           <button
             onClick={() => setMobileTab("edit")}
-            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-3 min-h-[44px] text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
               mobileTab === "edit"
-                ? "border-b-2 border-slate-900 text-slate-900"
-                : "text-slate-500"
+                ? "border-b-2 border-[#111827] text-[#111827] bg-[#F7F8FA]"
+                : "text-[#6B7280] hover:text-[#111827]"
             }`}
           >
             <FileEdit className="w-4 h-4" />
-            <span>Editor</span>
+            <span>Edit sections</span>
           </button>
           <button
             onClick={() => setMobileTab("preview")}
-            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-3 min-h-[44px] text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
               mobileTab === "preview"
-                ? "border-b-2 border-slate-900 text-slate-900"
-                : "text-slate-500"
+                ? "border-b-2 border-[#111827] text-[#111827] bg-[#F7F8FA]"
+                : "text-[#6B7280] hover:text-[#111827]"
             }`}
           >
             <Eye className="w-4 h-4" />
-            <span>Live Preview</span>
+            <span>Live A4 preview</span>
           </button>
         </div>
 
         {/* Main Studio Grid */}
         <div className="max-w-[1536px] mx-auto w-full flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* Form Column */}
-          <div className={`lg:col-span-6 w-full ${mobileTab === "preview" ? "hidden md:block" : "block"}`}>
+          <div className={`lg:col-span-6 w-full ${mobileTab === "preview" ? "hidden lg:block" : "block"}`}>
             <ResumeBuilderForm
               content={resume.content}
               onChange={handleContentChange}
@@ -419,11 +427,11 @@ export default function ResumesDirectEditorPage() {
           </div>
 
           {/* Live Preview Column */}
-          <div className={`lg:col-span-6 w-full sticky top-36 ${mobileTab === "edit" ? "hidden md:block" : "block"}`}>
-            <div className="bg-slate-200/80 p-4 sm:p-6 lg:p-8 rounded-3xl border border-slate-300/80 shadow-inner overflow-hidden">
-              <div className="flex items-center justify-between mb-3 text-xs font-mono text-slate-500 px-1">
-                <span>ATS Vector Preview &bull; {activeTemplate.toUpperCase()}</span>
-                <span>100% Text Selectable</span>
+          <div className={`lg:col-span-6 w-full lg:sticky lg:top-36 ${mobileTab === "edit" ? "hidden lg:block" : "block"}`}>
+            <div className="bg-slate-200/80 p-3 sm:p-6 lg:p-8 rounded-3xl border border-slate-300/80 shadow-inner overflow-x-auto">
+              <div className="flex items-center justify-between mb-3 text-xs text-[#6B7280] px-1">
+                <span>ATS preview &bull; {activeTemplate.charAt(0).toUpperCase() + activeTemplate.slice(1)}</span>
+                <span>Text selectable</span>
               </div>
               <div className="shadow-2xl rounded-xl overflow-hidden bg-white">
                 <ResumePreview

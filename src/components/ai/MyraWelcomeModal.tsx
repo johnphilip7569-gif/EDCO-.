@@ -30,8 +30,8 @@ export default function MyraWelcomeModal({ forceOpen = false, onClose }: MyraWel
 
   const firstName = user?.name ? user.name.split(" ")[0] : "Learner";
   const greetingText = user?.name
-    ? `Welcome to EdWorld Co., ${firstName}! I'm Myra, your AI companion. Let's master your skills and reach your dream goals together!`
-    : "Welcome to EdWorld Co.! I'm Myra, your AI career and learning companion. Let's explore your opportunities and master your skills together!";
+    ? `Welcome to EdWorld Co., ${firstName}! I'm Myra, your study and career mentor. Let's master your skills and reach your dream goals together!`
+    : "Welcome to EdWorld Co.! I'm Myra, your study and career mentor. Let's explore your opportunities and master your skills together!";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -140,7 +140,7 @@ export default function MyraWelcomeModal({ forceOpen = false, onClose }: MyraWel
             <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-3xl overflow-hidden border-2 border-zinc-900 shadow-xl bg-gradient-to-b from-zinc-100 to-zinc-200 p-0.5">
               <Image
                 src="/images/myra-avatar.png"
-                alt="Myra AI Avatar"
+                alt="Myra Mentor"
                 fill
                 priority
                 className={`object-cover object-top transition-transform duration-300 ${isSpeaking ? "scale-105 animate-pulse" : "group-hover:scale-105"}`}
@@ -150,7 +150,7 @@ export default function MyraWelcomeModal({ forceOpen = false, onClose }: MyraWel
             {/* Live Speaking Badge */}
             <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950 text-white text-[10px] font-bold shadow-md border border-zinc-800">
               <span className={`w-2 h-2 rounded-full ${isSpeaking ? "bg-[#00D2B4] animate-ping" : "bg-[#00D2B4]"}`} />
-              <span>{isSpeaking ? "Speaking..." : "Myra AI"}</span>
+              <span>{isSpeaking ? "Speaking..." : "Myra"}</span>
             </div>
           </div>
 
@@ -223,7 +223,7 @@ export default function MyraWelcomeModal({ forceOpen = false, onClose }: MyraWel
               <span>3D Mock Interview</span>
             </div>
             <p className="text-[10px] text-zinc-500 leading-tight">
-              Spoken drills with Myra AI
+              Spoken drills with Myra
             </p>
           </Link>
 

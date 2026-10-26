@@ -25,8 +25,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase.from("profiles").select("display_name, full_name").eq("id", user.id).maybeSingle();
-    const userName = profile?.display_name || profile?.full_name || user.user_metadata?.full_name || "there";
+    const { data: profile } = await supabase.from("profiles").select("display_name, name, first_name").eq("id", user.id).maybeSingle();
+    const userName = profile?.first_name || profile?.display_name || profile?.name || user.user_metadata?.full_name || "there";
 
     const [recommendation, summary] = await Promise.all([
       getOrGenerateDailyRecommendation(user.id, supabase, userName),

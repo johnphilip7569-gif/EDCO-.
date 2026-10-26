@@ -1,12 +1,12 @@
 {
-  "name": "Edworld Co — Adaptive Career Readiness",
-  "short_name": "Edworld Co",
-  "description": "Personalized career-readiness, ATS Resume Maker, and Adaptive Mock Interviews.",
-  "start_url": "/",
+  "name": "EdWorld Co — Adaptive Career Readiness",
+  "short_name": "EdWorld Co",
+  "description": "Personalized career-readiness, DSA Visual Studio, ATS Resume Maker, and Adaptive Mock Interviews.",
+  "start_url": "/dashboard",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0284c7",
-  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "any",
   "icons": [
     {
       "src": "/images/edworld-logo.png",
@@ -19,6 +19,32 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "DSA Visual Studio",
+      "short_name": "DSA",
+      "description": "Interactive Data Structures & Algorithms explainers and drills",
+      "url": "/dsa"
+    },
+    {
+      "name": "Mock Interview Studio",
+      "short_name": "Interviews",
+      "description": "3D AI-powered mock technical and behavioral interviews",
+      "url": "/interviews"
+    },
+    {
+      "name": "ATS Resume Maker",
+      "short_name": "Resumes",
+      "description": "Build and calibrate ATS-ready resumes",
+      "url": "/resumes"
+    },
+    {
+      "name": "Career Dashboard",
+      "short_name": "Dashboard",
+      "description": "Daily career readiness telemetry and goals",
+      "url": "/dashboard"
     }
   ]
 }

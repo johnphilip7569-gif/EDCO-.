@@ -25,8 +25,13 @@ import {
   CheckCircle2,
   MessageSquare,
   Sparkles,
-  ArrowLeft
+  ArrowLeft,
+  Download,
+  LayoutGrid,
+  ListFilter,
+  ArrowRight
 } from "lucide-react";
+import { downloadJobApplicantsAsCsv } from "@/lib/excel-export";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +40,7 @@ export default function EmployerStudioPage() {
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [selectedJobId, setSelectedJobId] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
   const [showNewJobModal, setShowNewJobModal] = useState(false);
   const [feedbackModalApp, setFeedbackModalApp] = useState<{ id: string; targetStatus: ApplicationStatus } | null>(null);
   const [feedbackNoteInput, setFeedbackNoteInput] = useState("");
@@ -275,121 +281,356 @@ export default function EmployerStudioPage() {
   });
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-[#FAF8F5] py-8 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-[calc(100vh-4rem)] bg-[#FFFFFF] py-8 px-4 sm:px-6 lg:px-8 font-sans text-[#111827]">
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <Link
             href="/jobs"
-            className="flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-emerald-900 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#6B7280] hover:text-[#111827] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Job Board</span>
           </Link>
-          <span className="text-xs text-stone-500 font-semibold">{jobs.length} Active Postings</span>
+          <span className="text-xs text-[#6B7280] font-medium">{jobs.length} Active Postings &bull; {applications.length} Candidates</span>
         </div>
 
         {/* Header Bar */}
-        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs p-6 sm:p-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
                 Verified Recruiter
               </span>
-              <span className="text-xs font-bold text-stone-500">Role-Isolated Talent Acquisition</span>
+              <span className="text-xs text-[#6B7280]">Role-Isolated Talent Acquisition</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight font-serif">
-              Employer Studio &amp; Candidate Portal
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#111827] tracking-tight">
+              Employer Studio &amp; Candidate Pipeline
             </h1>
-            <p className="text-xs sm:text-sm text-stone-600 max-w-2xl">
-              Post verified openings, review immutable candidate resume snapshots, and provide moderated feedback notes.
+            <p className="text-xs sm:text-sm text-[#6B7280] max-w-2xl">
+              Manage postings, track applicants across real-time hiring stages, review immutable ATS resume snapshots, and issue structured candidate feedback.
             </p>
           </div>
 
-          <button
-            onClick={() => setShowNewJobModal(true)}
-            className="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-sm flex items-center gap-2 transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Post New Listing</span>
-          </button>
+          <div className="flex items-center gap-2.5 self-start sm:self-auto shrink-0">
+            <button
+              type="button"
+              onClick={() => downloadJobApplicantsAsCsv(filteredApps)}
+              disabled={filteredApps.length === 0}
+              className="px-3.5 py-2 rounded-lg border border-[#E5E7EB] bg-white hover:bg-[#F7F8FA] text-[#111827] text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              title="Download applicant roster as CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-[#2563EB]" />
+              <span>Export CSV</span>
+            </button>
+
+            <button
+              onClick={() => setShowNewJobModal(true)}
+              className="px-4 py-2 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold text-xs shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Post New Listing</span>
+            </button>
+          </div>
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-5 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-1">
-            <span className="text-xs font-bold uppercase text-stone-400">Total Postings</span>
-            <p className="text-2xl font-black text-stone-900">{jobs.length}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Active Openings</span>
+            <p className="text-2xl font-bold text-[#111827]">{jobs.length}</p>
           </div>
-          <div className="p-5 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-1">
-            <span className="text-xs font-bold uppercase text-stone-400">Active Candidates</span>
-            <p className="text-2xl font-black text-emerald-800">{applications.length}</p>
+          <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Total Applicants</span>
+            <p className="text-2xl font-bold text-[#2563EB]">{applications.length}</p>
           </div>
-          <div className="p-5 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-1">
-            <span className="text-xs font-bold uppercase text-stone-400">Shortlisted Pool</span>
-            <p className="text-2xl font-black text-amber-700">
+          <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Shortlisted Candidates</span>
+            <p className="text-2xl font-bold text-emerald-600">
               {applications.filter((a) => a.status === "shortlisted").length}
+            </p>
+          </div>
+          <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Review Completed</span>
+            <p className="text-2xl font-bold text-[#111827]">
+              {applications.filter((a) => a.status !== "applied" && a.status !== "submitted").length}
             </p>
           </div>
         </div>
 
-        {/* Candidate Management Section */}
-        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-4">
+        {/* Candidate Pipeline Section */}
+        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs p-5 sm:p-7 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E7EB] pb-4">
             <div>
-              <h2 className="text-lg font-bold text-stone-900 font-serif">Applicant Review Queue</h2>
-              <p className="text-xs text-stone-500">Only candidates who applied to your listings are shown.</p>
+              <h2 className="text-lg font-bold text-[#111827]">Candidate Pipeline &amp; Queue</h2>
+              <p className="text-xs text-[#6B7280]">Real-time applicant progression across evaluation stages.</p>
             </div>
 
-            {/* Filter by Job */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-stone-500">Filter by Role:</span>
-              <select
-                value={selectedJobId}
-                onChange={(e) => setSelectedJobId(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-stone-800"
-              >
-                <option value="all">All Postings ({applications.length})</option>
-                {jobs.map((j) => (
-                  <option key={j.id} value={j.id}>
-                    {j.title}
-                  </option>
-                ))}
-              </select>
+            {/* Controls: Role Filter + View Mode Switcher */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-[#6B7280]">Role:</span>
+                <select
+                  value={selectedJobId}
+                  onChange={(e) => setSelectedJobId(e.target.value)}
+                  className="px-3 py-1.5 rounded-lg border border-[#E5E7EB] bg-[#F7F8FA] text-xs font-medium text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                >
+                  <option value="all">All Postings ({applications.length})</option>
+                  {jobs.map((j) => (
+                    <option key={j.id} value={j.id}>
+                      {j.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div className="flex items-center bg-[#F7F8FA] border border-[#E5E7EB] rounded-lg p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("kanban")}
+                  className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-1 cursor-pointer ${
+                    viewMode === "kanban"
+                      ? "bg-white text-[#111827] shadow-2xs border border-[#E5E7EB]"
+                      : "text-[#6B7280] hover:text-[#111827]"
+                  }`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Kanban</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-1 cursor-pointer ${
+                    viewMode === "list"
+                      ? "bg-white text-[#111827] shadow-2xs border border-[#E5E7EB]"
+                      : "text-[#6B7280] hover:text-[#111827]"
+                  }`}
+                >
+                  <ListFilter className="w-3.5 h-3.5" />
+                  <span>List</span>
+                </button>
+              </div>
             </div>
           </div>
 
           {filteredApps.length === 0 ? (
-            <div className="p-12 text-center space-y-3">
-              <Users className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-base font-bold text-stone-900 font-serif">No candidates in queue</h3>
-              <p className="text-xs text-stone-500 max-w-sm mx-auto">
+            <div className="p-12 text-center space-y-3 bg-[#F7F8FA] rounded-xl border border-dashed border-[#E5E7EB]">
+              <Users className="w-10 h-10 text-[#6B7280] mx-auto" />
+              <h3 className="text-base font-bold text-[#111827]">No candidates in queue</h3>
+              <p className="text-xs text-[#6B7280] max-w-sm mx-auto">
                 Applications for your openings will appear here once candidates apply through the Job Board.
               </p>
             </div>
+          ) : viewMode === "kanban" ? (
+            /* KANBAN SPRINT PIPELINE */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto pb-2">
+              
+              {/* Column 1: New / Applied */}
+              <div className="bg-[#F7F8FA] rounded-xl border border-[#E5E7EB] p-3.5 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
+                  <span className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span>New / Applied</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white border border-[#E5E7EB] text-[#111827]">
+                    {filteredApps.filter(a => a.status === "applied" || a.status === "submitted").length}
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {filteredApps.filter(a => a.status === "applied" || a.status === "submitted").map((app) => (
+                    <div key={app.id} className="bg-white p-3.5 rounded-lg border border-[#E5E7EB] shadow-2xs space-y-2 hover:border-gray-400 transition-colors">
+                      <div className="flex items-start justify-between gap-1">
+                        <div>
+                          <h4 className="font-bold text-xs text-[#111827]">{app.applicantName}</h4>
+                          <p className="text-[11px] text-[#6B7280] truncate">{app.jobTitle}</p>
+                        </div>
+                        {app.matchScore && (
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-100">
+                            {app.matchScore}%
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between text-[10px] text-[#6B7280] pt-1 border-t border-[#E5E7EB]">
+                        <span>{new Date(app.appliedAt).toLocaleDateString()}</span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleOpenSnapshot(app)}
+                            className="px-2 py-0.5 rounded bg-[#F7F8FA] hover:bg-gray-100 text-[#111827] font-semibold text-[10px] border border-[#E5E7EB] cursor-pointer"
+                          >
+                            Resume
+                          </button>
+                          <button
+                            onClick={() => setFeedbackModalApp({ id: app.id, targetStatus: "shortlisted" })}
+                            className="px-2 py-0.5 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold text-[10px] cursor-pointer"
+                          >
+                            Shortlist
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Column 2: Reviewed / Viewed */}
+              <div className="bg-[#F7F8FA] rounded-xl border border-[#E5E7EB] p-3.5 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
+                  <span className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>In Review</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white border border-[#E5E7EB] text-[#111827]">
+                    {filteredApps.filter(a => a.status === "viewed_by_employer").length}
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {filteredApps.filter(a => a.status === "viewed_by_employer").map((app) => (
+                    <div key={app.id} className="bg-white p-3.5 rounded-lg border border-[#E5E7EB] shadow-2xs space-y-2 hover:border-gray-400 transition-colors">
+                      <div className="flex items-start justify-between gap-1">
+                        <div>
+                          <h4 className="font-bold text-xs text-[#111827]">{app.applicantName}</h4>
+                          <p className="text-[11px] text-[#6B7280] truncate">{app.jobTitle}</p>
+                        </div>
+                        {app.matchScore && (
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            {app.matchScore}%
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between text-[10px] text-[#6B7280] pt-1 border-t border-[#E5E7EB]">
+                        <span>{new Date(app.appliedAt).toLocaleDateString()}</span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleOpenSnapshot(app)}
+                            className="px-2 py-0.5 rounded bg-[#F7F8FA] hover:bg-gray-100 text-[#111827] font-semibold text-[10px] border border-[#E5E7EB] cursor-pointer"
+                          >
+                            Resume
+                          </button>
+                          <button
+                            onClick={() => setFeedbackModalApp({ id: app.id, targetStatus: "shortlisted" })}
+                            className="px-2 py-0.5 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold text-[10px] cursor-pointer"
+                          >
+                            Advance
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Column 3: Shortlisted */}
+              <div className="bg-[#F7F8FA] rounded-xl border border-[#E5E7EB] p-3.5 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
+                  <span className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span>Shortlisted</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white border border-[#E5E7EB] text-[#111827]">
+                    {filteredApps.filter(a => a.status === "shortlisted").length}
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {filteredApps.filter(a => a.status === "shortlisted").map((app) => (
+                    <div key={app.id} className="bg-white p-3.5 rounded-lg border border-emerald-200 shadow-2xs space-y-2 hover:border-emerald-300 transition-colors">
+                      <div className="flex items-start justify-between gap-1">
+                        <div>
+                          <h4 className="font-bold text-xs text-[#111827]">{app.applicantName}</h4>
+                          <p className="text-[11px] text-[#6B7280] truncate">{app.jobTitle}</p>
+                        </div>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          {app.matchScore || 85}%
+                        </span>
+                      </div>
+
+                      {app.feedbackNote && (
+                        <p className="text-[11px] text-emerald-800 bg-emerald-50/50 p-1.5 rounded text-xs line-clamp-2">
+                          {app.feedbackNote}
+                        </p>
+                      )}
+
+                      <div className="flex items-center justify-between text-[10px] text-[#6B7280] pt-1 border-t border-[#E5E7EB]">
+                        <span>Shortlisted</span>
+                        <button
+                          onClick={() => handleOpenSnapshot(app)}
+                          className="px-2 py-0.5 rounded bg-[#F7F8FA] hover:bg-gray-100 text-[#111827] font-semibold text-[10px] border border-[#E5E7EB] cursor-pointer"
+                        >
+                          Dossier
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Column 4: Declined / Other */}
+              <div className="bg-[#F7F8FA] rounded-xl border border-[#E5E7EB] p-3.5 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
+                  <span className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-gray-400" />
+                    <span>Declined</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white border border-[#E5E7EB] text-[#111827]">
+                    {filteredApps.filter(a => a.status === "rejected").length}
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {filteredApps.filter(a => a.status === "rejected").map((app) => (
+                    <div key={app.id} className="bg-white p-3.5 rounded-lg border border-[#E5E7EB] shadow-2xs space-y-2 opacity-75">
+                      <div className="flex items-start justify-between gap-1">
+                        <div>
+                          <h4 className="font-bold text-xs text-[#111827]">{app.applicantName}</h4>
+                          <p className="text-[11px] text-[#6B7280] truncate">{app.jobTitle}</p>
+                        </div>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-[#6B7280]">
+                          Declined
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-[#6B7280] pt-1 border-t border-[#E5E7EB] flex justify-end">
+                        <button
+                          onClick={() => handleOpenSnapshot(app)}
+                          className="px-2 py-0.5 rounded bg-[#F7F8FA] hover:bg-gray-100 text-[#111827] font-semibold text-[10px] border border-[#E5E7EB] cursor-pointer"
+                        >
+                          Archive
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
           ) : (
+            /* TRADITIONAL TABLE / LIST VIEW */
             <div className="space-y-3">
               {filteredApps.map((app) => (
                 <div
                   key={app.id}
-                  className="p-5 rounded-2xl bg-stone-50/70 border border-stone-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-stone-50 transition-colors"
+                  className="p-4 sm:p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-gray-300 transition-colors"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-bold text-sm text-stone-900">{app.applicantName}</h4>
-                      <span className="text-xs text-stone-500">&bull; Applied for <strong>{app.jobTitle}</strong></span>
+                      <h4 className="font-bold text-sm text-[#111827]">{app.applicantName}</h4>
+                      <span className="text-xs text-[#6B7280]">&bull; Applied for <strong className="text-[#111827]">{app.jobTitle}</strong></span>
                       {app.matchScore && (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-50 text-[#2563EB] border border-blue-100">
                           {app.matchScore}% Match
                         </span>
                       )}
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-200 text-stone-700">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-white border border-[#E5E7EB] text-[#111827]">
                         Status: {app.status}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-stone-500">
+                    <div className="flex items-center gap-3 text-xs text-[#6B7280]">
                       <span>Applied {new Date(app.appliedAt).toLocaleDateString()}</span>
                       {app.coverNote && (
                         <span className="italic truncate max-w-md">&ldquo;{app.coverNote}&rdquo;</span>
@@ -397,24 +638,24 @@ export default function EmployerStudioPage() {
                     </div>
 
                     {app.feedbackNote && (
-                      <p className="text-[11px] text-emerald-800 font-medium">
+                      <p className="text-[11px] text-[#2563EB] font-medium">
                         Feedback Note: {app.feedbackNote}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 self-end md:self-center">
+                  <div className="flex items-center gap-2 self-end md:self-center shrink-0">
                     <button
                       onClick={() => handleOpenSnapshot(app)}
-                      className="px-3 py-1.5 rounded-xl border border-stone-200 bg-white hover:bg-stone-100 text-xs font-bold text-stone-800 flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg border border-[#E5E7EB] bg-white hover:bg-gray-100 text-xs font-semibold text-[#111827] flex items-center gap-1.5 cursor-pointer shadow-2xs"
                     >
-                      <Eye className="w-3.5 h-3.5 text-emerald-700" />
+                      <Eye className="w-3.5 h-3.5 text-[#2563EB]" />
                       <span>Review Resume</span>
                     </button>
 
                     <button
                       onClick={() => setFeedbackModalApp({ id: app.id, targetStatus: "shortlisted" })}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold flex items-center gap-1 cursor-pointer shadow-2xs"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Shortlist</span>
@@ -422,7 +663,7 @@ export default function EmployerStudioPage() {
 
                     <button
                       onClick={() => setFeedbackModalApp({ id: app.id, targetStatus: "rejected" })}
-                      className="px-3 py-1.5 rounded-xl border border-stone-200 hover:bg-rose-50 hover:text-rose-700 text-stone-600 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg border border-[#E5E7EB] hover:bg-rose-50 hover:text-rose-700 text-[#6B7280] text-xs font-semibold flex items-center gap-1 cursor-pointer bg-white"
                     >
                       <X className="w-3.5 h-3.5" />
                       <span>Decline</span>

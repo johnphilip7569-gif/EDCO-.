@@ -1,0 +1,27 @@
+Chapter 1: Electric Charges and Fields (Class 12 Physics - CBSE/NCERT Syllabus)
+
+Electric charge is an intrinsic property of matter that causes it to experience a force when placed in an electromagnetic field. There are two kinds of charges: positive and negative. Like charges repel each other, while unlike charges attract each other.
+
+Key Properties of Electric Charge:
+1. Additivity of Charges: If a system contains point charges q1, q2, ..., qn, then the total charge of the system is the algebraic sum: Q = q1 + q2 + ... + qn.
+2. Conservation of Charge: The total electric charge of an isolated system remains constant. Charges can neither be created nor destroyed; they can only be transferred from one body to another.
+3. Quantization of Charge: All free charges are integral multiples of a basic unit of charge denoted by e, where e = 1.602 x 10^(-19) C. Thus: q = n * e, where n is any integer positive or negative.
+
+Coulomb's Law:
+Coulomb's law states that the magnitude of the electrostatic force between two point charges q1 and q2 separated by a distance r in vacuum is directly proportional to the product of the magnitudes of the charges and inversely proportional to the square of the distance between them:
+F = (1 / (4 * pi * epsilon_0)) * (|q1 * q2| / r^2)
+where epsilon_0 is the permittivity of free space, epsilon_0 = 8.854 x 10^(-12) C^2 / (N m^2).
+The constant k = 1 / (4 * pi * epsilon_0) is approximately 9 x 10^9 N m^2 / C^2.
+The force acts along the line joining the two point charges.
+
+Electric Field:
+The electric field E due to a charge Q at a point in space is defined as the force experienced by a unit positive test charge q placed at that point:
+E = F / q = (1 / (4 * pi * epsilon_0)) * (Q / r^2) * r_hat.
+Electric field lines radiate outwards from positive charges and converge inwards toward negative charges. Field lines never intersect each other because if they did, the electric field at the point of intersection would have two different directions, which is physically impossible.
+
+Electric Flux and Gauss's Law:
+Electric flux (Phi_E) through an area element delta_S is defined as the dot product:
+Phi_E = integral of (E . dS).
+Gauss's Law states that the total electric flux through any closed surface S is equal to 1/epsilon_0 times the total charge q enclosed inside the surface:
+Closed integral of (E . dS) = q_enclosed / epsilon_0.
+Gauss's law is valid for any closed surface of any shape and size, and is especially useful for calculating electric fields in systems with high symmetry (such as infinite lines of charge, infinite planar sheets, and spherical shells).

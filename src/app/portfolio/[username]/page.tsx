@@ -262,7 +262,7 @@ export default function EnhancedPortfolioPage() {
             
             {/* Avatar & User Details */}
             <div className="flex items-start gap-4 sm:gap-5">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-emerald-700 to-teal-600 text-white font-serif font-bold text-2xl sm:text-3xl flex items-center justify-center shadow-sm shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-neutral-900 text-white font-serif font-bold text-2xl sm:text-3xl flex items-center justify-center shadow-xs shrink-0">
                 {userInitial}
               </div>
 
@@ -271,8 +271,8 @@ export default function EnhancedPortfolioPage() {
                   <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 leading-tight">
                     {displayName}
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200/80 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Builder
+                  <span className="px-2.5 py-0.5 rounded-full bg-neutral-100 text-black text-[10px] font-bold border border-neutral-200 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-black" /> Verified Builder
                   </span>
                 </div>
 

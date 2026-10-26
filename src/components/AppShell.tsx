@@ -5,15 +5,21 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { CURRENT_TOS_VERSION, CURRENT_PRIVACY_VERSION } from "@/lib/types";
 import ReconsentModal from "@/components/legal/ReconsentModal";
-import FloatingNav from "@/components/layout/FloatingNav";
+import ModernEdworldNavbar from "@/components/layout/ModernEdworldNavbar";
+import ModernEdworldFooter from "@/components/layout/ModernEdworldFooter";
 import MyraChatbot from "@/components/ai/MyraChatbot";
+import FloatingMyraSignupBuddy from "@/components/auth/FloatingMyraSignupBuddy";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import AegisClientShield from "@/components/security/AegisClientShield";
+import MobileBottomNav from "@/components/mobile/ui/MobileBottomNav";
+import { cn } from "@/lib/utils";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuth();
   const [showReconsent, setShowReconsent] = useState(false);
 
+  const isLandingPage = pathname === "/";
   const isAuthPage =
     pathname === "/login" ||
     pathname === "/signup" ||
@@ -21,20 +27,30 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     pathname === "/auth/signup" ||
     pathname?.startsWith("/auth/");
 
-  const isPublicLanding =
-    pathname === "/" ||
-    pathname === "/about" ||
-    pathname === "/contact" ||
-    pathname === "/pricing" ||
-    pathname === "/privacy" ||
-    pathname === "/terms" ||
-    pathname === "/for-college" ||
-    pathname === "/for-professionals" ||
-    pathname === "/for-career" ||
-    pathname === "/consent/verify" ||
-    pathname?.startsWith("/sector-landing");
+  const isSignupPage = pathname === "/signup" || pathname === "/auth/signup";
+  const isMobilePrototype = pathname === "/mobile" || pathname?.startsWith("/mobile/");
+  const isAdminPage = pathname === "/admin" || pathname?.startsWith("/admin/");
 
-  const isAppWorkspace = !isAuthPage && !isPublicLanding;
+  const [isSiteLaunched, setIsSiteLaunched] = useState<boolean | null>(null);
+  const [isPreview, setIsPreview] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("preview") === "true") {
+        setIsPreview(true);
+      }
+    }
+
+    if (isLandingPage) {
+      fetch("/api/feature-flags")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          setIsSiteLaunched(Boolean(data?.isSiteLaunched));
+        })
+        .catch(() => setIsSiteLaunched(false));
+    }
+  }, [isLandingPage]);
 
   useEffect(() => {
     if (user) {
@@ -51,66 +67,101 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     setShowReconsent(false);
   };
 
-  if (isAppWorkspace) {
+  // Dedicated standalone rendering for Mobile Prototype canvas
+  if (isMobilePrototype) {
     return (
-      <div className="min-h-screen flex flex-col bg-white text-black font-sans antialiased selection:bg-neutral-950 selection:text-white">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-black focus:text-white focus:rounded-xl focus:shadow-xl focus:font-bold focus:text-xs"
-        >
-          Skip to main content
-        </a>
-
-        {/* Floating Top-Left Brand Logo & Floating Top-Right Navigation Menu Hub */}
-        <FloatingNav />
-
-        {/* Main Full-Width Application Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden pt-20 sm:pt-24">
-          <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-full outline-none">
-            {children}
-          </main>
-        </div>
-
-        <ReconsentModal
-          isOpen={showReconsent}
-          onAccept={handleReconsentAccept}
-        />
-
-        {/* Floating AI Educational Mentor & Doubt Solver */}
-        <MyraChatbot />
-
-        {/* Global Privacy & Cookie Consent */}
-        <CookieConsentBanner />
+      <div className="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased">
+        {children}
+        <AegisClientShield />
       </div>
     );
   }
 
+  // Standalone clean rendering for Authentication Pages
+  if (isAuthPage) {
+    return (
+      <div className="min-h-screen w-full bg-white text-black font-sans antialiased relative">
+        {children}
+        <CookieConsentBanner />
+        <AegisClientShield />
+      </div>
+    );
+  }
+
+  // Dedicated standalone rendering for Admin Operations Portal (No student navbar, footer, or chatbot)
+  if (isAdminPage) {
+    return (
+      <div className="min-h-screen w-full bg-white text-[#111827] font-sans antialiased selection:bg-[#2563EB] selection:text-white relative">
+        {children}
+        <AegisClientShield />
+      </div>
+    );
+  }
+
+  // Dedicated standalone rendering for Coming Soon Landing Page
+  // When Coming Soon mode is active, do NOT render the main website navbar or footer or floating chatbot.
+  // The Coming Soon page renders its own focused, standalone view.
+  if (isLandingPage && !isSiteLaunched && !isPreview) {
+    return (
+      <div className="min-h-screen w-full bg-neutral-950 text-white font-sans antialiased relative">
+        {children}
+        <CookieConsentBanner />
+        <AegisClientShield />
+      </div>
+    );
+  }
+
+  // Modern Full-Width Responsive SaaS Layout
   return (
-    <div className="min-h-screen flex flex-col font-sans selection:bg-neutral-950 selection:text-white overflow-x-clip bg-white text-black">
+    <div
+      className={cn(
+        "min-h-screen flex flex-col font-sans antialiased selection:bg-[#2563EB] selection:text-white",
+        isLandingPage ? "bg-white text-[#111827]" : "edworld-bg-canvas text-slate-900"
+      )}
+    >
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-black focus:text-white focus:rounded-xl focus:shadow-2xl focus:font-bold focus:text-xs"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#2563EB] focus:text-white focus:rounded-xl focus:shadow-xl focus:font-bold focus:text-xs"
       >
         Skip to main content
       </a>
 
-      {/* Floating Top-Left Brand Logo & Floating Top-Right Navigation Menu Hub */}
-      <FloatingNav />
+      {/* Modern Sticky Glassmorphic Navbar */}
+      <ModernEdworldNavbar />
 
-      <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-full outline-none">
+      {/* Main Workspace Container */}
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className={cn(
+          "flex-1 outline-none",
+          isLandingPage
+            ? "w-full"
+            : "max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-10 lg:pb-4"
+        )}
+      >
         {children}
       </main>
+
+      {/* Modern Light Footer */}
+      <ModernEdworldFooter />
+
+      {/* Mobile Bottom Navigation for Authenticated Users */}
+      {user && !isLandingPage && <MobileBottomNav />}
 
       <ReconsentModal
         isOpen={showReconsent}
         onAccept={handleReconsentAccept}
       />
 
-      {/* Floating AI Educational Mentor & Doubt Solver */}
-      <MyraChatbot />
+      {/* Floating AI Study Buddy & Doubt Solver */}
+      {user && <MyraChatbot />}
 
       {/* Global Privacy & Cookie Consent */}
       <CookieConsentBanner />
+
+      {/* Autonomous Client Cyber-Defense & Anti-Bot Telemetry Shield */}
+      <AegisClientShield />
     </div>
   );
 }

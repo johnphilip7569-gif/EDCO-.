@@ -15,6 +15,13 @@ const SUBDOMAIN_SECTOR_MAP: Record<string, string> = {
   "working.localhost": "career",
 };
 
+// Learn Academy Subdomains
+const LEARN_SUBDOMAINS = [
+  "learn.edworld.co.in",
+  "learn.edworldco.in",
+  "learn.localhost",
+];
+
 // Public page paths accessible without authentication
 const PUBLIC_PAGE_PREFIXES = [
   "/login",
@@ -34,6 +41,10 @@ const PUBLIC_PAGE_PREFIXES = [
   "/contact",
   "/pricing",
   "/consent/verify",
+  "/mobile",
+  "/learn",
+  "/verify",
+  "/certificate",
 ];
 
 // Public API endpoints accessible without authentication
@@ -50,9 +61,18 @@ const PUBLIC_API_PREFIXES = [
   "/api/landing",
   "/api/billing/webhook",
   "/api/jobs/maintenance",
+  "/api/security/sentinel",
+  "/api/career/paths",
+  "/api/events",
+  "/api/interview/tts",
+  "/api/interview/turn",
+  "/api/ai/myra",
+  "/api/learn",
+  "/api/certificates",
+  "/api/feature-flags",
 ];
 
-// Apply hardened security & data protection headers to responses
+// Apply hardened security, anti-AI-scraping & data protection headers to responses
 function applySecurityHeaders(res: NextResponse, requestId: string): NextResponse {
   res.headers.set("x-request-id", requestId);
   res.headers.set("X-Frame-Options", "DENY");
@@ -62,6 +82,9 @@ function applySecurityHeaders(res: NextResponse, requestId: string): NextRespons
   res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
   res.headers.set("Permissions-Policy", "camera=(self), microphone=(self), geolocation=()");
   res.headers.set("X-Permitted-Cross-Domain-Policies", "none");
+  res.headers.set("X-Robots-Tag", "noai, noimageai");
+  res.headers.set("X-Sentinel-Shield", "active");
+  res.headers.set("X-Content-Security-Policy", "default-src 'self'");
   return res;
 }
 
@@ -82,6 +105,7 @@ export function middleware(req: NextRequest) {
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/images") ||
+    pathname.startsWith("/extensions") ||
     pathname.startsWith("/favicon.ico") ||
     pathname.startsWith("/sitemap.xml") ||
     pathname.startsWith("/robots.txt")
@@ -101,8 +125,9 @@ export function middleware(req: NextRequest) {
           success: false,
           error: {
             code: "FIREWALL_BLOCKED",
-            message: wafResult.reason || "Access blocked by application security firewall.",
+            message: wafResult.reason || "Access blocked by Aegis Sentinel AI security firewall.",
             threat_type: wafResult.threatType,
+            risk_score: wafResult.riskScore || 90,
             request_id: requestId,
           },
         },
@@ -142,6 +167,22 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  // 3B. Subdomain Routing: Learn Academy (learn.edworld.co.in, learn.localhost)
+  if (LEARN_SUBDOMAINS.includes(host)) {
+    // If visitor visits root on learn subdomain, rewrite internally to /learn
+    if (pathname === "/" || pathname === "") {
+      const rewriteUrl = new URL("/learn", req.url);
+      const res = NextResponse.rewrite(rewriteUrl);
+      return applySecurityHeaders(res, requestId);
+    }
+    // If visitor accesses nested paths on learn subdomain (e.g. /dsa-mastery), rewrite to /learn/dsa-mastery
+    if (!pathname.startsWith("/learn") && !pathname.startsWith("/api") && !pathname.startsWith("/verify") && !pathname.startsWith("/certificate") && !pathname.startsWith("/_next")) {
+      const rewriteUrl = new URL(`/learn${pathname}`, req.url);
+      const res = NextResponse.rewrite(rewriteUrl);
+      return applySecurityHeaders(res, requestId);
+    }
+  }
+
   // 3. Allow root landing page
   if (pathname === "/") {
     const res = NextResponse.next();
@@ -168,9 +209,11 @@ export function middleware(req: NextRequest) {
       req.cookies.has("edworld_session") ||
       req.cookies.has("sb-access-token") ||
       req.cookies.has("edworld_auth");
-    
-    const internalSecret = process.env.INTERNAL_SERVICE_SECRET || "edworld-internal-k8s-secret-2026";
-    const hasInternalAuth = req.headers.get("x-internal-secret") === internalSecret;
+
+    const internalSecret = process.env.INTERNAL_SERVICE_SECRET;
+    // Only grant internal auth when the secret is explicitly configured — never use a fallback string
+    const hasInternalAuth =
+      !!internalSecret && req.headers.get("x-internal-secret") === internalSecret;
     const hasBearerToken = req.headers.has("authorization");
 
     if (!hasSessionCookie && !hasBearerToken && !hasInternalAuth) {
@@ -194,7 +237,10 @@ export function middleware(req: NextRequest) {
       return applySecurityHeaders(errRes, requestId);
     }
 
-    const res = NextResponse.next();
+    // Forward the correlation ID into the request so route handlers can read it
+    const reqHeaders = new Headers(req.headers);
+    reqHeaders.set("x-request-id", requestId);
+    const res = NextResponse.next({ request: { headers: reqHeaders } });
     return applySecurityHeaders(res, requestId);
   }
 

@@ -51,7 +51,19 @@ export async function POST(req: NextRequest) {
       careerStage,
       certifications,
       showBirthdayToConnections,
-      show_birthday_to_connections
+      show_birthday_to_connections,
+      institution,
+      degree,
+      field_of_study,
+      graduation_year,
+      current_company,
+      experience_level,
+      onboarding_completed,
+      github_url,
+      linkedin_url,
+      leetcode_url,
+      avatar_url,
+      photo_url,
     } = body;
 
     const { displayName, firstName: cleanFirst, lastName: cleanLast } = normalizeDisplayName(
@@ -88,18 +100,51 @@ export async function POST(req: NextRequest) {
     if (gradeLevel !== undefined) profilePayload.grade_level = gradeLevel;
     if (careerStage !== undefined) profilePayload.career_stage = careerStage;
     if (certifications !== undefined) profilePayload.certifications = certifications;
+    if (institution !== undefined) profilePayload.institution = institution;
+    if (degree !== undefined) profilePayload.degree = degree;
+    if (field_of_study !== undefined) profilePayload.field_of_study = field_of_study;
+    if (graduation_year !== undefined) profilePayload.graduation_year = graduation_year;
+    if (current_company !== undefined) profilePayload.current_company = current_company;
+    if (experience_level !== undefined) profilePayload.experience_level = experience_level;
+    if (onboarding_completed !== undefined) profilePayload.onboarding_completed = Boolean(onboarding_completed);
+    if (github_url !== undefined) profilePayload.github_url = github_url;
+    if (linkedin_url !== undefined) profilePayload.linkedin_url = linkedin_url;
+    if (leetcode_url !== undefined) profilePayload.leetcode_url = leetcode_url;
+    if (avatar_url !== undefined) profilePayload.avatar_url = avatar_url;
+    else if (photo_url !== undefined) profilePayload.avatar_url = photo_url;
 
-    // Authoritative Upsert to profiles table
-    const { data: updatedProfile, error: profileErr } = await supabase
+    // Authoritative Upsert to profiles table (with resilient fallback for schema cache lag)
+    let upsertPayload: Record<string, any> = {
+      id: authUser.id,
+      user_id: authUser.id,
+      ...(authUser.email ? { email: authUser.email } : {}),
+      ...profilePayload,
+    };
+
+    let { data: updatedProfile, error: profileErr } = await supabase
       .from("profiles")
-      .upsert({
-        id: authUser.id,
-        user_id: authUser.id,
-        ...(authUser.email ? { email: authUser.email } : {}),
-        ...profilePayload,
-      })
+      .upsert(upsertPayload)
       .select()
       .single();
+
+    // If PostgREST schema cache lags or has an unmapped column, strip the offending column and retry once
+    if (profileErr && profileErr.message && profileErr.message.includes("in the schema cache")) {
+      console.warn("[Profile Update API - Schema Cache Drift Detected]:", profileErr.message);
+      const match = profileErr.message.match(/Could not find the '([^']+)' column/i);
+      if (match && match[1]) {
+        const missingCol = match[1];
+        delete upsertPayload[missingCol];
+        const retryRes = await supabase
+          .from("profiles")
+          .upsert(upsertPayload)
+          .select()
+          .single();
+        if (!retryRes.error) {
+          updatedProfile = retryRes.data;
+          profileErr = null;
+        }
+      }
+    }
 
     if (profileErr) {
       console.error("[Profile Update API - Profiles Error]:", profileErr);
@@ -174,6 +219,16 @@ export async function POST(req: NextRequest) {
         isMentor: updatedProfile?.is_mentor,
         mentorTags: updatedProfile?.mentor_tags,
         certifications: updatedProfile?.certifications,
+        institution: updatedProfile?.institution,
+        degree: updatedProfile?.degree,
+        field_of_study: updatedProfile?.field_of_study,
+        graduation_year: updatedProfile?.graduation_year,
+        current_company: updatedProfile?.current_company,
+        experience_level: updatedProfile?.experience_level,
+        onboarding_completed: updatedProfile?.onboarding_completed,
+        github_url: updatedProfile?.github_url,
+        linkedin_url: updatedProfile?.linkedin_url,
+        leetcode_url: updatedProfile?.leetcode_url,
         updatedAt: nowIso
       }
     });

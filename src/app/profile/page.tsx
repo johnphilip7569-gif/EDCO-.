@@ -29,7 +29,9 @@ import {
   CheckCircle2,
   Target,
   Layers,
-  Globe
+  Globe,
+  Camera,
+  Upload
 } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -39,6 +41,7 @@ import SyncedAccountsCard from "@/components/dashboard/SyncedAccountsCard";
 import EdworldDigitalIdCard from "@/components/ui/EdworldDigitalIdCard";
 import { SyncedAccounts, UserDomainItem, UserDomainPriority, SkillLevel } from "@/lib/types";
 import { DOMAIN_CATALOG } from "@/lib/services/career-learning-os";
+import CareerPathPicker from "@/components/career/CareerPathPicker";
 
 export default function ProfilePage() {
   const { user, profile, role, updateUserProfile } = useAuth();
@@ -53,6 +56,8 @@ export default function ProfilePage() {
   const [company, setCompany] = useState(profile?.current_company || (profile as any)?.company || "");
   const [isPublic, setIsPublic] = useState<boolean>(profile?.isPublic !== false);
   const [showBirthdayToConnections, setShowBirthdayToConnections] = useState<boolean>(Boolean((profile as any)?.show_birthday_to_connections));
+  const [avatarUrl, setAvatarUrl] = useState<string>((profile as any)?.avatar_url || (profile as any)?.photo_url || "");
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState<boolean>(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "success" | "error">("idle");
   const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
 
@@ -63,6 +68,9 @@ export default function ProfilePage() {
       if (profile.headline) setHeadline(profile.headline);
       if (profile.bio) setBio(profile.bio);
       if (profile.phone) setPhone(profile.phone);
+      if ((profile as any).avatar_url || (profile as any).photo_url) {
+        setAvatarUrl((profile as any).avatar_url || (profile as any).photo_url);
+      }
       if ((profile as any).location) setLocation((profile as any).location);
       if (profile.institution || (profile as any).college) setCollege(profile.institution || (profile as any).college);
       if (profile.current_company || (profile as any).company) setCompany(profile.current_company || (profile as any).company);
@@ -221,6 +229,29 @@ export default function ProfilePage() {
     return Math.min(score, 100);
   }, [name, headline, bio, careerTargetRole, phone, certs]);
 
+  const handlePhotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image file size must be under 5MB.");
+      return;
+    }
+    setIsUploadingPhoto(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      if (result) {
+        setAvatarUrl(result);
+      }
+      setIsUploadingPhoto(false);
+    };
+    reader.onerror = () => {
+      setIsUploadingPhoto(false);
+      alert("Failed to read image file.");
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Handle Save Profile
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -233,6 +264,7 @@ export default function ProfilePage() {
         phone,
         headline,
         bio,
+        avatar_url: avatarUrl,
       });
 
       // Also persist additional fields via authoritative API
@@ -244,6 +276,7 @@ export default function ProfilePage() {
           phone,
           headline,
           bio,
+          avatar_url: avatarUrl,
           isPublic,
           showBirthdayToConnections
         })
@@ -426,64 +459,67 @@ export default function ProfilePage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-[#FAF8F5] text-stone-900 p-4 sm:p-6 lg:p-8 xl:p-10 font-sans selection:bg-emerald-100 selection:text-emerald-900">
-        <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-300">
-          
+      <div className="bg-white text-[#111827] font-sans pb-4 selection:bg-[#2563EB] selection:text-white">
+        <div className="max-w-5xl mx-auto space-y-6 pt-2">
           {/* ========================================================================= */}
           {/* 1. PAGE HEADER: Human Profile Overview */}
           {/* ========================================================================= */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="p-6 sm:p-8 rounded-xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-start gap-4 sm:gap-5">
-              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-tr from-emerald-700 to-teal-600 text-white font-serif font-bold text-2xl flex items-center justify-center shadow-sm shrink-0">
-                {userInitial}
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#111827] text-white font-bold text-xl flex items-center justify-center shrink-0 shadow-xs overflow-hidden border border-[#E5E7EB]">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+                ) : (
+                  <span>{userInitial}</span>
+                )}
               </div>
 
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight leading-tight">
+                  <h1 className="text-2xl font-bold text-[#111827] tracking-tight">
                     {displayName}
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200/80 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Member
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#F7F8FA] text-[#6B7280] text-[10px] font-medium border border-[#E5E7EB] flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#2563EB]" /> Verified Member
                   </span>
                 </div>
 
-                <p className="text-xs sm:text-sm font-medium text-stone-600">
+                <p className="text-xs sm:text-sm text-[#6B7280]">
                   {headline || "Software Engineer & Platform Builder"}
                 </p>
 
-                <div className="flex items-center gap-3 text-xs text-stone-500 font-mono pt-0.5 flex-wrap">
+                <div className="flex items-center gap-3 text-xs text-[#6B7280] pt-0.5 flex-wrap">
                   <span>{user?.email}</span>
                   <span>&bull;</span>
-                  <span className="text-emerald-800 font-semibold">{profile?.careerStage || "Career Track"}</span>
+                  <span className="text-[#111827] font-medium">{profile?.careerStage || "Career Track"}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 self-start md:self-auto shrink-0">
               {/* Profile Strength Indicator */}
-              <div className="px-4 py-2 rounded-2xl bg-stone-50 border border-stone-200 text-left">
-                <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
+              <div className="px-3.5 py-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-left">
+                <span className="text-[10px] font-medium text-[#6B7280] uppercase tracking-wider block">
                   Profile Strength
                 </span>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <div className="w-20 bg-stone-200 h-2 rounded-full overflow-hidden">
+                  <div className="w-20 bg-[#E5E7EB] h-1.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-emerald-600 h-full rounded-full transition-all duration-500"
+                      className="bg-[#2563EB] h-full rounded-full transition-all duration-300"
                       style={{ width: `${profileStrength}%` }}
                     />
                   </div>
-                  <span className="text-xs font-bold text-stone-800 font-mono">{profileStrength}%</span>
+                  <span className="text-xs font-semibold text-[#111827]">{profileStrength}%</span>
                 </div>
               </div>
 
               <Link
                 href={`/u/${profile?.username || user?.uid}`}
                 target="_blank"
-                className="px-4 py-2.5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                className="px-4 py-2 rounded-lg bg-[#F7F8FA] hover:bg-gray-100 border border-[#E5E7EB] text-[#111827] text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Public Profile</span>
+                <ExternalLink className="w-3.5 h-3.5 text-[#6B7280]" />
+                <span>Public View</span>
               </Link>
             </div>
           </div>
@@ -491,14 +527,14 @@ export default function ProfilePage() {
           {/* ========================================================================= */}
           {/* 2. EDWORLD DIGITAL IDENTITY CARD */}
           {/* ========================================================================= */}
-          <section className="space-y-3">
+          <section className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <div>
-                <h2 className="text-base font-serif font-bold text-stone-900">
-                  Edworld Digital Identity Card
+                <h2 className="text-base font-bold text-[#111827]">
+                  EdWorld Digital Student ID
                 </h2>
-                <p className="text-xs text-stone-500">
-                  Your persistent, verifiable digital credential on the Edworld network.
+                <p className="text-xs text-[#6B7280]">
+                  Your verified academic &amp; engineering identity on the EdWorld network.
                 </p>
               </div>
             </div>
@@ -519,90 +555,131 @@ export default function ProfilePage() {
           </section>
 
           {/* Main Grid: Form & Integrations */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left 2 Columns: Identity & Goals */}
-            <div className="lg:col-span-2 space-y-8">
-              
+            <div className="lg:col-span-2 space-y-6">
               {/* 3. PROFESSIONAL IDENTITY FORM */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-6">
-                <div className="border-b border-stone-100 pb-4">
-                  <h2 className="text-lg font-serif font-bold text-stone-900 flex items-center gap-2">
-                    <User className="w-5 h-5 text-emerald-700" />
+              <div className="p-6 rounded-xl bg-white border border-[#E5E7EB] shadow-xs space-y-5">
+                <div className="border-b border-[#E5E7EB] pb-3">
+                  <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                    <User className="w-4 h-4 text-[#2563EB]" />
                     <span>Personal &amp; Professional Identity</span>
                   </h2>
-                  <p className="text-xs text-stone-500 mt-1">
-                    Manage your public identity, display name, headline, and bio.
+                  <p className="text-xs text-[#6B7280] mt-0.5">
+                    Manage your display name, headline, contact, and public biography.
                   </p>
                 </div>
 
                 {saveState === "success" && (
-                  <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                  <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2 animate-in fade-in">
                     <Check className="w-4 h-4 text-emerald-600" />
                     <span>Profile information saved successfully.</span>
                   </div>
                 )}
 
                 {saveState === "error" && (
-                  <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                  <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-2 animate-in fade-in">
                     <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
                     <span>{saveErrorMessage || "Failed to update profile. Please try again."}</span>
                   </div>
                 )}
 
                 <form onSubmit={handleSave} className="space-y-4">
+                  {/* Profile Photo Uploader / Changer */}
+                  <div className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-xl bg-[#111827] text-white font-bold text-lg flex items-center justify-center shrink-0 overflow-hidden border border-[#E5E7EB] shadow-xs">
+                        {avatarUrl ? (
+                          <img src={avatarUrl} alt="Profile Photo" className="w-full h-full object-cover" />
+                        ) : (
+                          <span>{userInitial}</span>
+                        )}
+                      </div>
+                      <div>
+                        <span className="text-sm font-semibold text-[#111827] block">Profile Photo</span>
+                        <p className="text-xs text-[#6B7280]">
+                          Upload a photo or avatar. Visible in EdBuild collaborative groups and your public portfolio.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                      <label className="btn-secondary text-xs cursor-pointer flex items-center gap-1.5 py-2 px-3">
+                        <Upload className="w-3.5 h-3.5 text-[#2563EB]" />
+                        <span>{isUploadingPhoto ? "Processing..." : avatarUrl ? "Change Photo" : "Upload Photo"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handlePhotoFileChange}
+                          className="hidden"
+                          disabled={isUploadingPhoto}
+                        />
+                      </label>
+                      {avatarUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setAvatarUrl("")}
+                          className="p-2 rounded-lg border border-[#E5E7EB] hover:bg-rose-50 hover:border-rose-200 text-[#6B7280] hover:text-rose-600 transition-colors cursor-pointer"
+                          title="Remove Photo"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Full Name</label>
+                    <div className="space-y-1">
+                      <label className="text-sm font-medium text-[#111827]">Full name</label>
                       <input
                         type="text"
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. Adarsh Kolluru"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB]"
                       />
                     </div>
 
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Phone Number</label>
+                    <div className="space-y-1">
+                      <label className="text-sm font-medium text-[#111827]">Phone number</label>
                       <input
                         type="text"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="e.g. +91 98765 43210"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB]"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Professional Headline</label>
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-[#111827]">Professional headline</label>
                     <input
                       type="text"
                       value={headline}
                       onChange={(e) => setHeadline(e.target.value)}
                       placeholder="e.g. Full Stack Software Engineer & Distributed Systems Builder"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                      className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB]"
                     />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Professional Bio</label>
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-[#111827]">Professional bio</label>
                     <textarea
                       rows={3}
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       placeholder="Briefly describe your career focus, engineering background, and key accomplishments..."
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                      className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB] leading-relaxed"
                     />
                   </div>
 
                   {/* Public Portfolio Visibility Toggle */}
-                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center justify-between">
+                  <div className="p-3.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-stone-900 block">Public Portfolio Visibility</span>
-                      <span className="text-[11px] text-stone-500">Allow employers and peers to view your public profile at /u/{profile?.username || "username"}</span>
+                      <span className="text-sm font-medium text-[#111827] block">Public portfolio visibility</span>
+                      <span className="text-xs text-[#6B7280]">Allow peers and recruiters to view your public profile at /u/{profile?.username || "username"}</span>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
@@ -611,16 +688,16 @@ export default function ProfilePage() {
                         onChange={(e) => setIsPublic(e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600" />
+                      <div className="w-9 h-5 bg-[#E5E7EB] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#2563EB]" />
                     </label>
                   </div>
 
                   {/* Connection Birthday Visibility Toggle */}
-                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center justify-between">
+                  <div className="p-3.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-stone-900 block">Show Birthday to Accepted Connections</span>
-                      <span className="text-[11px] text-stone-500">
-                        Displays an upcoming birthday reminder (Month &amp; Day only) within 7 days to your connections. Your birth year and age are never shared.
+                      <span className="text-sm font-medium text-[#111827] block">Show birthday to accepted connections</span>
+                      <span className="text-xs text-[#6B7280]">
+                        Displays an upcoming reminder to your accepted connections. Birth year and age are never shared.
                       </span>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -630,7 +707,7 @@ export default function ProfilePage() {
                         onChange={(e) => setShowBirthdayToConnections(e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600" />
+                      <div className="w-9 h-5 bg-[#E5E7EB] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#2563EB]" />
                     </label>
                   </div>
 
@@ -638,181 +715,143 @@ export default function ProfilePage() {
                     <button
                       type="submit"
                       disabled={saveState === "saving"}
-                      className="px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                      className="btn-primary text-xs font-medium cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
                     >
-                      <Save className="w-4 h-4" />
+                      <Save className="w-3.5 h-3.5" />
                       <span>{saveState === "saving" ? "Saving..." : "Save Changes"}</span>
                     </button>
                   </div>
                 </form>
               </div>
 
-              {/* 4. CAREER DIRECTION & LEARNING GOALS */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-6">
-                <div className="border-b border-stone-100 pb-4">
-                  <h2 className="text-lg font-serif font-bold text-stone-900 flex items-center gap-2">
-                    <Target className="w-5 h-5 text-emerald-700" />
-                    <span>Career Direction &amp; Goals</span>
+              {/* 4. CAREER FOCUS & PATHWAY SELECTION */}
+              <div className="p-6 rounded-xl bg-white border border-[#E5E7EB] shadow-xs space-y-5">
+                <div className="border-b border-[#E5E7EB] pb-3">
+                  <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                    <Target className="w-4 h-4 text-[#2563EB]" />
+                    <span>Career Focus &amp; Target Paths</span>
                   </h2>
-                  <p className="text-xs text-stone-500 mt-1">
-                    Calibrate your target role and available learning hours for personalized AI drill recommendations.
+                  <p className="text-xs text-[#6B7280] mt-0.5">
+                    Select your primary trajectory. EdWorld adapts your dashboard coursework and practice drills.
                   </p>
                 </div>
 
                 {careerOSStatus && (
-                  <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
-                    <Check className="w-4 h-4 text-emerald-600" />
+                  <div className="p-3 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-[#111827] text-xs font-medium flex items-center gap-2 animate-in fade-in">
+                    <Check className="w-4 h-4 text-[#2563EB]" />
                     <span>{careerOSStatus}</span>
                   </div>
                 )}
 
-                <form onSubmit={handleUpdateCareerOS} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Career Goal</label>
-                      <input
-                        type="text"
-                        value={careerTargetRole}
-                        onChange={(e) => setCareerTargetRole(e.target.value)}
-                        placeholder="e.g. Full Stack Software Engineer"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
-                      />
-                    </div>
+                <CareerPathPicker
+                  mode="settings"
+                  userId={user?.uid}
+                  showSubmitButton={true}
+                  submitButtonText="Save Career Focus"
+                  onSaveSuccess={(ids, primary) => {
+                    setCareerOSStatus("Your career focus preferences have been saved successfully.");
+                    setTimeout(() => setCareerOSStatus(null), 4000);
+                  }}
+                />
 
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Target Timeframe</label>
+                <div className="pt-5 border-t border-[#E5E7EB]">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
+                    Learning Cadence &amp; Timeline
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#111827]">Target Timeframe</label>
                       <select
                         value={careerTimeframe}
                         onChange={(e) => setCareerTimeframe(Number(e.target.value))}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] text-xs text-[#111827] bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
                       >
-                        <option value={3}>3 Months (Fast-Track)</option>
-                        <option value={6}>6 Months (Standard)</option>
-                        <option value={12}>12 Months (Comprehensive)</option>
+                        <option value={3}>3 Months (Fast-Track Placement)</option>
+                        <option value={6}>6 Months (Standard Comprehensive)</option>
+                        <option value={12}>12 Months (Deep Mastery)</option>
                       </select>
                     </div>
 
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Time for Learning</label>
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#111827]">Daily Practice Allocation</label>
                       <select
                         value={careerDailyHours}
                         onChange={(e) => setCareerDailyHours(Number(e.target.value))}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] text-xs text-[#111827] bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
                       >
-                        <option value={1}>1 Hour / day</option>
-                        <option value={2}>2 Hours / day</option>
-                        <option value={3}>3 Hours / day</option>
-                        <option value={4}>4+ Hours / day</option>
+                        <option value={1}>1 Hour / day (Light Pace)</option>
+                        <option value={2}>2 Hours / day (Recommended)</option>
+                        <option value={3}>3 Hours / day (Accelerated)</option>
+                        <option value={4}>4+ Hours / day (Intensive)</option>
                       </select>
                     </div>
                   </div>
-
-                  {/* Domain Focus Selector */}
-                  <div className="space-y-2 pt-2">
-                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block">
-                      Target Domains ({careerDomains.length} Selected)
-                    </label>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {DOMAIN_CATALOG.map((cat) => {
-                        const isSelected = careerDomains.some(d => d.domain_id === cat.id);
-                        return (
-                          <div
-                            key={cat.id}
-                            onClick={() => handleToggleProfileDomain(cat.id, cat.name)}
-                            className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                              isSelected
-                                ? "bg-emerald-50 border-emerald-300 text-emerald-950 font-bold"
-                                : "bg-stone-50 border-stone-200/80 text-stone-700 hover:border-stone-300"
-                            }`}
-                          >
-                            <span className="text-xs">{cat.name}</span>
-                            <div className={`w-4 h-4 rounded flex items-center justify-center text-xs ${
-                              isSelected ? "bg-emerald-700 text-white" : "border border-stone-300"
-                            }`}>
-                              {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex justify-end">
-                    <button
-                      type="submit"
-                      disabled={loadingCareerOS}
-                      className="px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-50"
-                    >
-                      {loadingCareerOS ? "Saving Goals..." : "Save Career Goals"}
-                    </button>
-                  </div>
-                </form>
+                </div>
               </div>
 
               {/* 5. CERTIFICATIONS & LICENSES */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-5">
-                <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <div className="p-6 rounded-xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
                   <div>
-                    <h2 className="text-lg font-serif font-bold text-stone-900 flex items-center gap-2">
-                      <Award className="w-5 h-5 text-emerald-700" />
+                    <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                      <Award className="w-4 h-4 text-[#2563EB]" />
                       <span>Certifications &amp; Credentials</span>
                     </h2>
-                    <p className="text-xs text-stone-500 mt-1">Verified licenses and technical credentials.</p>
+                    <p className="text-xs text-[#6B7280] mt-0.5">Verified certificates and engineering achievements.</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowAddCert(!showAddCert)}
-                    className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                    className="px-3 py-1.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-medium flex items-center gap-1.5 transition-colors shadow-xs"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
                     <span>Add Certificate</span>
                   </button>
                 </div>
 
                 {showAddCert && (
-                  <form onSubmit={handleAddCert} className="p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <form onSubmit={handleAddCert} className="p-4 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 uppercase mb-1">Certificate Title *</label>
+                        <label className="block text-xs font-semibold text-[#111827] mb-1">Certificate Title *</label>
                         <input
                           type="text"
                           required
                           placeholder="e.g. AWS Solutions Architect"
                           value={newCertName}
                           onChange={(e) => setNewCertName(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs focus:ring-2 focus:ring-stone-900"
+                          className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 uppercase mb-1">Issuing Organization *</label>
+                        <label className="block text-xs font-semibold text-[#111827] mb-1">Issuing Organization *</label>
                         <input
                           type="text"
                           required
                           placeholder="e.g. Amazon Web Services"
                           value={newCertIssuer}
                           onChange={(e) => setNewCertIssuer(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs focus:ring-2 focus:ring-stone-900"
+                          className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 uppercase mb-1">Issue Date</label>
+                        <label className="block text-xs font-semibold text-[#111827] mb-1">Issue Date</label>
                         <input
                           type="text"
                           placeholder="e.g. May 2026"
                           value={newCertDate}
                           onChange={(e) => setNewCertDate(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs focus:ring-2 focus:ring-stone-900"
+                          className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 uppercase mb-1">Verification URL</label>
+                        <label className="block text-xs font-semibold text-[#111827] mb-1">Verification URL</label>
                         <input
                           type="url"
                           placeholder="https://credly.com/..."
                           value={newCertUrl}
                           onChange={(e) => setNewCertUrl(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs focus:ring-2 focus:ring-stone-900"
+                          className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] bg-white text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                         />
                       </div>
                     </div>
@@ -820,13 +859,13 @@ export default function ProfilePage() {
                       <button
                         type="button"
                         onClick={() => setShowAddCert(false)}
-                        className="px-4 py-2 rounded-xl bg-stone-200 text-stone-700 text-xs font-semibold"
+                        className="px-3 py-1.5 rounded-lg bg-white border border-[#E5E7EB] text-[#6B7280] text-xs font-medium"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-4 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold"
+                        className="px-4 py-1.5 rounded-lg bg-[#2563EB] text-white text-xs font-medium"
                       >
                         Save Credential
                       </button>
@@ -835,22 +874,22 @@ export default function ProfilePage() {
                 )}
 
                 {certs.length === 0 ? (
-                  <p className="text-xs text-stone-500 italic">No certifications added yet.</p>
+                  <p className="text-xs text-[#6B7280] italic">No certifications added yet.</p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {certs.map((c) => (
-                      <div key={c.id} className="p-4 rounded-2xl border border-stone-200 bg-stone-50/50 flex items-center justify-between gap-3">
+                      <div key={c.id} className="p-3.5 rounded-lg border border-[#E5E7EB] bg-[#F7F8FA] flex items-center justify-between gap-3">
                         <div>
-                          <h4 className="font-bold text-xs sm:text-sm text-stone-900">{c.name}</h4>
-                          <p className="text-[11px] text-stone-500">{c.issuer} {c.issue_date ? `• ${c.issue_date}` : ""}</p>
+                          <h4 className="font-semibold text-xs text-[#111827]">{c.name}</h4>
+                          <p className="text-[11px] text-[#6B7280]">{c.issuer} {c.issue_date ? `• ${c.issue_date}` : ""}</p>
                         </div>
                         <div className="flex items-center gap-1">
                           {c.url && (
-                            <a href={c.url} target="_blank" rel="noreferrer" className="p-1.5 text-stone-400 hover:text-stone-700">
+                            <a href={c.url} target="_blank" rel="noreferrer" className="p-1 text-[#6B7280] hover:text-[#111827]">
                               <ExternalLink className="w-3.5 h-3.5" />
                             </a>
                           )}
-                          <button type="button" onClick={() => handleDeleteCert(c.id)} className="p-1.5 text-rose-400 hover:text-rose-600">
+                          <button type="button" onClick={() => handleDeleteCert(c.id)} className="p-1 text-rose-500 hover:text-rose-700">
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
@@ -866,29 +905,27 @@ export default function ProfilePage() {
                 onUpdateAccounts={handleUpdateAccounts}
                 userId={user?.uid}
               />
-
             </div>
 
             {/* Right 1 Column: Security & Preferences */}
-            <div className="space-y-8">
-              
+            <div className="space-y-6">
               {/* 7. ACCOUNT & SECURITY SETTINGS */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-6">
-                <div className="border-b border-stone-100 pb-4">
-                  <h3 className="text-base font-serif font-bold text-stone-900 flex items-center gap-2">
-                    <KeyRound className="w-4 h-4 text-emerald-700" />
+              <div className="p-6 rounded-xl bg-white border border-[#E5E7EB] shadow-xs space-y-5">
+                <div className="border-b border-[#E5E7EB] pb-3">
+                  <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                    <KeyRound className="w-4 h-4 text-[#2563EB]" />
                     <span>Account &amp; Security</span>
                   </h3>
-                  <p className="text-xs text-stone-500 mt-1">Manage your sign-in credentials and security.</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Manage your credentials and security settings.</p>
                 </div>
 
                 {/* Email Verification Status */}
-                <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center justify-between gap-3">
+                <div className="p-3 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold uppercase text-stone-500 block">Primary Email</span>
-                    <span className="text-xs font-mono text-stone-900 truncate block">{user?.email}</span>
+                    <span className="text-[10px] font-semibold uppercase text-[#6B7280] block">Primary Email</span>
+                    <span className="text-xs font-mono text-[#111827] truncate block">{user?.email}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200 flex items-center gap-1 shrink-0">
+                  <span className="px-2 py-0.5 rounded-md bg-[#F7F8FA] text-emerald-700 text-[10px] font-medium border border-emerald-200 flex items-center gap-1 shrink-0">
                     <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                     <span>Verified</span>
                   </span>
@@ -896,23 +933,23 @@ export default function ProfilePage() {
 
                 {/* Password Update Form */}
                 <div className="space-y-3 pt-2">
-                  <span className="text-xs font-bold text-stone-900 block">Update Password</span>
+                  <span className="text-xs font-semibold text-[#111827] block">Update Password</span>
                   
                   {passwordStatus && (
-                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-1.5 animate-in fade-in">
+                    <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-1.5 animate-in fade-in">
                       <Check className="w-3.5 h-3.5 text-emerald-600" />
                       <span>{passwordStatus}</span>
                     </div>
                   )}
 
                   {passwordError && (
-                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-center gap-1.5 animate-in fade-in">
+                    <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-1.5 animate-in fade-in">
                       <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                       <span>{passwordError}</span>
                     </div>
                   )}
 
-                  <form onSubmit={handleChangePassword} className="space-y-3">
+                  <form onSubmit={handleChangePassword} className="space-y-2.5">
                     <div className="relative">
                       <input
                         type={showNewPass ? "text" : "password"}
@@ -920,12 +957,12 @@ export default function ProfilePage() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="New Password (min 8 chars)"
-                        className="w-full px-3.5 py-2.5 pr-10 rounded-xl border border-stone-300 text-xs text-stone-900 focus:ring-2 focus:ring-stone-900"
+                        className="w-full px-3 py-2 pr-9 rounded-lg border border-[#E5E7EB] text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPass(!showNewPass)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#111827]"
                       >
                         {showNewPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
@@ -937,13 +974,13 @@ export default function ProfilePage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm New Password"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs text-stone-900 focus:ring-2 focus:ring-stone-900"
+                      className="w-full px-3 py-2 rounded-lg border border-[#E5E7EB] text-xs text-[#111827] focus:ring-1 focus:ring-[#2563EB]"
                     />
 
                     <button
                       type="submit"
                       disabled={isChangingPass}
-                      className="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
+                      className="w-full py-2 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-medium text-xs transition-colors shadow-xs cursor-pointer disabled:opacity-50"
                     >
                       {isChangingPass ? "Updating..." : "Update Password"}
                     </button>
@@ -952,49 +989,46 @@ export default function ProfilePage() {
               </div>
 
               {/* 8. WORKSPACE NOTIFICATIONS */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-4">
-                <h3 className="text-base font-serif font-bold text-stone-900 flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-emerald-700" />
+              <div className="p-6 rounded-xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
+                <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-[#2563EB]" />
                   <span>Notification Preferences</span>
                 </h3>
 
-                <div className="space-y-2.5">
-                  <label className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200/60 cursor-pointer text-xs">
-                    <span className="font-medium text-stone-800">Interview &amp; Feedback Alerts</span>
+                <div className="space-y-2">
+                  <label className="flex items-center justify-between p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] cursor-pointer text-xs">
+                    <span className="font-medium text-[#111827]">Interview &amp; Feedback Alerts</span>
                     <input
                       type="checkbox"
                       checked={notifyTasks}
                       onChange={(e) => setNotifyTasks(e.target.checked)}
-                      className="accent-emerald-600 rounded"
+                      className="accent-[#2563EB] rounded"
                     />
                   </label>
 
-                  <label className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200/60 cursor-pointer text-xs">
-                    <span className="font-medium text-stone-800">Mentor &amp; Peer Messages</span>
+                  <label className="flex items-center justify-between p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] cursor-pointer text-xs">
+                    <span className="font-medium text-[#111827]">Mentor &amp; Peer Messages</span>
                     <input
                       type="checkbox"
                       checked={notifyLeaves}
                       onChange={(e) => setNotifyLeaves(e.target.checked)}
-                      className="accent-emerald-600 rounded"
+                      className="accent-[#2563EB] rounded"
                     />
                   </label>
 
-                  <label className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200/60 cursor-pointer text-xs">
-                    <span className="font-medium text-stone-800">Job Match &amp; Application Updates</span>
+                  <label className="flex items-center justify-between p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] cursor-pointer text-xs">
+                    <span className="font-medium text-[#111827]">Job Match &amp; Application Updates</span>
                     <input
                       type="checkbox"
                       checked={notifyPayroll}
                       onChange={(e) => setNotifyPayroll(e.target.checked)}
-                      className="accent-emerald-600 rounded"
+                      className="accent-[#2563EB] rounded"
                     />
                   </label>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
       </div>
     </AuthGuard>

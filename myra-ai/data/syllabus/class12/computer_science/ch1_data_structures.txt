@@ -1,0 +1,49 @@
+Chapter 1: Data Structures - Stacks and Queues (Class 12 Computer Science - Python)
+
+A data structure is a specialized format for organizing, processing, retrieving, and storing data. Linear data structures are those where data elements are sequentially or linearly arranged, where each element is attached to its previous and next adjacent elements.
+
+1. Stack Data Structure:
+A stack is a linear data structure that follows the LIFO (Last-In-First-Out) principle. The element that is inserted last is the first one to be removed. All insertions and deletions take place at a single designated end called TOP.
+
+Primary Stack Operations:
+- Push: Adding an element to the top of the stack. If the stack is full, attempting to push causes a Stack Overflow condition.
+- Pop: Removing and returning the top element of the stack. If the stack is empty, attempting to pop causes a Stack Underflow condition.
+- Peek: Returning the value of the top element without removing it from the stack.
+- isEmpty: Checking whether the stack contains any elements.
+
+Python Implementation of Stack using Lists:
+```python
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("Stack Underflow: cannot pop from empty stack")
+        return self.items.pop()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.items[-1]
+
+    def size(self):
+        return len(self.items)
+```
+Applications of Stacks:
+- Expression evaluation and conversion: Infix to Postfix (Reverse Polish Notation) or Prefix conversion.
+- Function call management and recursion call stacks in operating systems.
+- Undo/Redo operations in text editors.
+- Syntax parsing and balancing of parentheses: matching opening brackets '(', '{', '[' with closing brackets ')', '}', ']'.
+
+2. Queue Data Structure:
+A queue is a linear data structure that follows the FIFO (First-In-First-Out) principle. Elements are inserted at one end called the REAR and removed from the opposite end called the FRONT.
+- Enqueue: Inserting an element at the rear of the queue.
+- Dequeue: Removing an element from the front of the queue.
+Applications of Queues: CPU task scheduling, print job spooling, breadth-first search (BFS) graph traversal, and asynchronous data buffering.

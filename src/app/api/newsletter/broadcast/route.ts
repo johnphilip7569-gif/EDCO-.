@@ -1,12 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
 import { broadcastToSubscribers } from "@/lib/email-service";
-import { verifyUserRole } from "@/lib/server-role-guard";
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const userId = req.headers.get("x-user-id");
+    const supabase = createClient();
+    let authUserId: string | null = null;
+    let isAuthorized = false;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      authUserId = user.id;
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(profile?.role)) {
+        isAuthorized = true;
+      }
+    }
+
+    if (!isAuthorized) {
+      const sessionCookie = req.cookies.get("edworld_session")?.value;
+      if (sessionCookie) {
+        const { valid, role, userId: sUid } = validateSession(sessionCookie);
+        if (valid && ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(role || "")) {
+          isAuthorized = true;
+          authUserId = sUid || "admin-session";
+        }
+      }
+    }
+
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized: Elevated administrator role required to broadcast emails." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const { subject, title, contentHtml, ctaText, ctaUrl } = body;
 
@@ -17,24 +53,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Role check: Only admin, founder, or super_admin can broadcast
-    if (userId) {
-      const roleCheck = await verifyUserRole(userId, ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"]);
-      if (!roleCheck.authorized) {
-        return NextResponse.json(
-          { success: false, error: "Unauthorized: Elevated role required to broadcast emails." },
-          { status: 403 }
-        );
-      }
-    }
-
     const result = await broadcastToSubscribers({
       subject,
       title,
       contentHtml,
       ctaText,
       ctaUrl,
-      sentByUserId: userId || "admin-system",
+      sentByUserId: authUserId || "admin-system",
     });
 
     return NextResponse.json({

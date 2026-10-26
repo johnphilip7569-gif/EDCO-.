@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  myra-ai:
+    build: .
+    container_name: edworld-myra-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - MODEL=${MODEL:-claude-3-5-sonnet-20241022}
+    volumes:
+      - ./data:/app/data
+      - ./vectordb:/app/vectordb
+      - ./students.db:/app/students.db
+    restart: unless-stopped

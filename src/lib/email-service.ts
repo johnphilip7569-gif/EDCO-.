@@ -10,14 +10,17 @@ import { supabase } from "@/lib/supabase";
 import { 
   renderBrandedEmailHtml, 
   renderConnectionRequestReceivedEmail, 
-  renderConnectionAcceptedEmail 
+  renderConnectionAcceptedEmail,
+  renderSignupWelcomeEmail,
+  renderProjectCompletionCertificateEmail 
 } from "./email-templates";
 
 export const PRIMARY_ADMIN_EMAIL = "edworld.eden@gmail.com";
 export const SUPPORT_EMAIL = "edworld.eden@gmail.com";
 export const GRIEVANCE_EMAIL = "edworld.eden@gmail.com";
 export const SENDER_NAME = "EdWorld Co.";
-export const DEFAULT_FROM_EMAIL = "EdWorld Co. <notifications@edworldco.in>";
+export const DEFAULT_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "EdWorld Co. <notifications@edworld.co.in>";
+export const CERTIFICATE_FROM_EMAIL = process.env.RESEND_CERTIFICATE_FROM_EMAIL || "EdWorld Certifications <certificate@edworld.co.in>";
 
 // Initialize Resend Client lazily or safely
 let resendClient: Resend | null = null;
@@ -33,13 +36,14 @@ function getResendClient(): Resend | null {
 }
 
 export interface EmailDispatchPayload {
+  from?: string;
   to?: string | string[];
   cc?: string | string[];
   bcc?: string | string[];
   subject: string;
   html: string;
   text?: string;
-  category?: "contact" | "report" | "auth" | "ambassador" | "interview" | "application" | "system" | "newsletter";
+  category?: "contact" | "report" | "auth" | "ambassador" | "interview" | "application" | "system" | "newsletter" | "certificate";
   metadata?: Record<string, any>;
 }
 
@@ -73,8 +77,9 @@ export async function sendEmailNotification(payload: EmailDispatchPayload): Prom
     // 1. Dispatch via Resend SDK if configured
     if (resend) {
       try {
+        const fromAddress = payload.from || DEFAULT_FROM_EMAIL;
         const { data, error } = await resend.emails.send({
-          from: DEFAULT_FROM_EMAIL,
+          from: fromAddress,
           to: recipients,
           bcc: bccList.length > 0 ? bccList : undefined,
           subject: payload.subject,
@@ -421,4 +426,79 @@ export async function sendConnectionAcceptedNotification(params: {
     },
   });
 }
+
+/**
+ * Dispatches a custom branded welcome email to newly registered students.
+ */
+export async function sendSignupWelcomeEmail(params: {
+  email: string;
+  name: string;
+  careerStage?: string;
+}): Promise<{ success: boolean; id?: string; error?: string }> {
+  try {
+    const cleanEmail = params.email.trim().toLowerCase();
+    const cleanName = params.name ? params.name.trim() : "Learner";
+    const firstName = cleanName.split(" ")[0];
+
+    const html = renderSignupWelcomeEmail({
+      email: cleanEmail,
+      name: cleanName,
+      careerStage: params.careerStage,
+    });
+
+    return await sendEmailNotification({
+      to: cleanEmail,
+      subject: `🎉 Welcome to EdWorld Co., ${firstName}! Your Study & Career Roadmap is Ready`,
+      html,
+      category: "auth",
+      metadata: {
+        type: "SIGNUP_WELCOME",
+        email: cleanEmail,
+        careerStage: params.careerStage,
+      },
+    });
+  } catch (err: any) {
+    console.error("[sendSignupWelcomeEmail Exception]:", err?.message || err);
+    return { success: false, error: err?.message || "Failed to dispatch signup welcome email" };
+  }
+}
+
+/**
+ * Dispatches a verified EdBuild Project Completion Certificate email to students.
+ */
+export async function sendProjectCompletionCertificateEmail(params: {
+  email: string;
+  studentName: string;
+  projectName: string;
+  certificateUrl: string;
+  certificateCode: string;
+}): Promise<{ success: boolean; id?: string; error?: string }> {
+  try {
+    const cleanEmail = params.email.trim().toLowerCase();
+    const html = renderProjectCompletionCertificateEmail({
+      studentName: params.studentName,
+      projectName: params.projectName,
+      certificateUrl: params.certificateUrl,
+      certificateCode: params.certificateCode,
+    });
+
+    return await sendEmailNotification({
+      from: CERTIFICATE_FROM_EMAIL,
+      to: cleanEmail,
+      subject: `🎓 Congratulations on Completing "${params.projectName}" – Your Verified Certificate of Completion`,
+      html,
+      category: "certificate",
+      metadata: {
+        type: "EDBUILD_CERTIFICATE_ISSUED",
+        certificateCode: params.certificateCode,
+        projectName: params.projectName,
+        sender: CERTIFICATE_FROM_EMAIL,
+      },
+    });
+  } catch (err: any) {
+    console.error("[sendProjectCompletionCertificateEmail Exception]:", err?.message || err);
+    return { success: false, error: err?.message || "Failed to dispatch certificate email" };
+  }
+}
+
 

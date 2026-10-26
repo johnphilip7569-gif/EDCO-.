@@ -1,21 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { Pool } from "pg";
+import { getDbPool } from "@/lib/db-server";
 
-let pool: Pool | null = null;
-function getDbPool() {
-  if (!pool) {
-    const connStr =
-      process.env.DATABASE_URL ||
-      process.env.POSTGRES_URL ||
-      "postgresql://postgres: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@db.wgyscapdywroefsjenno.supabase.co:5432/postgres";
-    pool = new Pool({
-      connectionString: connStr,
-      ssl: { rejectUnauthorized: false },
-    });
-  }
-  return pool;
-}
+export const dynamic = "force-dynamic";
 
 // Maximum postings allowed per 24 hours per employer account
 const MAX_POSTINGS_PER_DAY = 5;
@@ -25,13 +12,11 @@ export async function GET(req: NextRequest) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    const url = new URL(req.url);
-    const mockEmployerId = url.searchParams.get("employerId");
-    const employerId = user?.id || mockEmployerId;
-
-    if (!employerId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized: Active employer login required." }, { status: 401 });
     }
+
+    const employerId = user.id;
 
     const db = getDbPool();
     const client = await db.connect();
@@ -78,13 +63,13 @@ export async function POST(req: NextRequest) {
       experienceLevel = "Mid-Level",
       category = "General Tech",
       applicationDeadline,
-      mockEmployerId,
     } = body;
 
-    const employerId = user?.id || mockEmployerId;
-    if (!employerId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized: Active employer login required." }, { status: 401 });
     }
+
+    const employerId = user.id;
 
     // Validation
     if (!title || !company || !description || description.trim().length < 50) {

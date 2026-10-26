@@ -352,7 +352,7 @@ export default function AdminBulkMailSenderPage() {
             <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5 space-y-4 text-xs font-sans">
               <div className="space-y-1 border-b border-neutral-200 pb-3 text-[11px]">
                 <div className="text-neutral-500">
-                  <span className="font-bold text-black">From:</span> EdWorld Co. &lt;notifications@edworldco.in&gt;
+                  <span className="font-bold text-black">From:</span> EdWorld Co. &lt;notifications@edworld.co.in&gt;
                 </div>
                 <div className="text-neutral-500 truncate">
                   <span className="font-bold text-black">Subject:</span> {subject || "Subject line will appear here..."}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDbPool } from "@/lib/db-server";
 import { rateLimit, getClientIp } from "@/lib/rate-limiter";
+import { sendSignupWelcomeEmail } from "@/lib/email-service";
 
 export const dynamic = "force-dynamic";
 
@@ -320,6 +321,17 @@ export async function POST(req: NextRequest) {
     );
 
     await client.query("COMMIT");
+
+    // 7. Dispatch Custom Branded Welcome Email to the Student
+    try {
+      await sendSignupWelcomeEmail({
+        email: cleanEmail,
+        name: cleanName,
+        careerStage: dbCareerStage,
+      });
+    } catch (emailErr) {
+      console.warn("[Signup Welcome Email Warning]:", emailErr);
+    }
 
     return NextResponse.json({
       success: true,

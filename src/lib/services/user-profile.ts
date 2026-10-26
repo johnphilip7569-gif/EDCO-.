@@ -204,12 +204,21 @@ export async function updateCanonicalUserProfile(
     if (updates.targetRole !== undefined) profilePayload.target_role = updates.targetRole;
     if (updates.gradeLevel !== undefined) profilePayload.grade_level = updates.gradeLevel;
 
-    // 1. Update profiles table
-    await supabase.from("profiles").upsert({
+    // 1. Update profiles table (with resilient fallback for schema cache lag)
+    let profUpsertPayload: Record<string, any> = {
       id: userId,
       user_id: userId,
       ...profilePayload,
-    });
+    };
+    let { error: profErr } = await supabase.from("profiles").upsert(profUpsertPayload);
+    if (profErr && profErr.message && profErr.message.includes("in the schema cache")) {
+      console.warn("[updateCanonicalUserProfile - Schema Cache Drift Detected]:", profErr.message);
+      const match = profErr.message.match(/Could not find the '([^']+)' column/i);
+      if (match && match[1]) {
+        delete profUpsertPayload[match[1]];
+        await supabase.from("profiles").upsert(profUpsertPayload);
+      }
+    }
 
     // 2. Sync to users table
     const userPayload: Record<string, any> = {};

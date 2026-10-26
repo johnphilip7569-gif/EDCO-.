@@ -20,8 +20,15 @@ import {
   X, 
   Calendar, 
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  Download,
+  CheckSquare,
+  Square,
+  Check,
+  Archive,
+  SlidersHorizontal
 } from "lucide-react";
+import { downloadJobsAsCsv } from "@/lib/excel-export";
 
 interface AdminRoleRecord {
   id: string;
@@ -45,6 +52,11 @@ export default function AdminJobsManagementPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"all" | "job" | "internship">("all");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [selectedJobIds, setSelectedJobIds] = useState<Set<string>>(new Set());
+  const [batchActionLoading, setBatchActionLoading] = useState(false);
+  const [showBatchDeleteModal, setShowBatchDeleteModal] = useState(false);
   
   // Add Role Modal
   const [showAddModal, setShowAddModal] = useState(false);
@@ -65,6 +77,7 @@ export default function AdminJobsManagementPage() {
   // Delete Confirmation Modal
   const [deletingRole, setDeletingRole] = useState<AdminRoleRecord | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
 
   const fetchRoles = async () => {
     setLoading(true);
@@ -165,6 +178,86 @@ export default function AdminJobsManagementPage() {
     }
   };
 
+  const toggleSelectRole = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelectedJobIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedJobIds.size === filteredRoles.length && filteredRoles.length > 0) {
+      setSelectedJobIds(new Set());
+    } else {
+      setSelectedJobIds(new Set(filteredRoles.map((r) => r.id)));
+    }
+  };
+
+  const handleBatchStatusUpdate = async (isActive: boolean) => {
+    if (selectedJobIds.size === 0) return;
+    setBatchActionLoading(true);
+    setActionError(null);
+    try {
+      const ids = Array.from(selectedJobIds);
+      const res = await fetch("/api/admin/jobs", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids, is_active: isActive }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionSuccess(`Updated status for ${ids.length} role(s).`);
+        setSelectedJobIds(new Set());
+        fetchRoles();
+        setTimeout(() => setActionSuccess(null), 3500);
+      } else {
+        setActionError(data.error || "Failed to update role status.");
+      }
+    } catch (err: any) {
+      setActionError(err.message || "Failed to batch update roles.");
+    } finally {
+      setBatchActionLoading(false);
+    }
+  };
+
+  const handleBatchDeleteConfirm = async () => {
+    if (selectedJobIds.size === 0) return;
+    setBatchActionLoading(true);
+    setActionError(null);
+    try {
+      const ids = Array.from(selectedJobIds);
+      const res = await fetch("/api/admin/jobs", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionSuccess(`Successfully deleted ${ids.length} role(s).`);
+        setSelectedJobIds(new Set());
+        setShowBatchDeleteModal(false);
+        fetchRoles();
+        setTimeout(() => setActionSuccess(null), 3500);
+      } else {
+        setActionError(data.error || "Failed to delete selected roles.");
+      }
+    } catch (err: any) {
+      setActionError(err.message || "Failed to batch delete roles.");
+    } finally {
+      setBatchActionLoading(false);
+    }
+  };
+
+  const handleExportCsv = () => {
+    downloadJobsAsCsv(filteredRoles);
+  };
+
   const filteredRoles = useMemo(() => {
     return roles.filter((r) => {
       const matchesSearch = 
@@ -179,12 +272,22 @@ export default function AdminJobsManagementPage() {
         (filterType === "internship" && isIntern) ||
         (filterType === "job" && !isIntern);
 
-      return matchesSearch && matchesType;
+      const matchesCategory = 
+        filterCategory === "all" ||
+        r.category?.toLowerCase() === filterCategory.toLowerCase();
+
+      const matchesStatus = 
+        filterStatus === "all" ||
+        (filterStatus === "active" && r.is_active !== false) ||
+        (filterStatus === "archived" && r.is_active === false);
+
+      return matchesSearch && matchesType && matchesCategory && matchesStatus;
     });
-  }, [roles, searchQuery, filterType]);
+  }, [roles, searchQuery, filterType, filterCategory, filterStatus]);
 
   const internshipCount = roles.filter(r => r.type?.toLowerCase().includes("intern")).length;
   const jobCount = roles.length - internshipCount;
+  const allSelected = filteredRoles.length > 0 && selectedJobIds.size === filteredRoles.length;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -201,18 +304,27 @@ export default function AdminJobsManagementPage() {
               Jobs &amp; Internships Manager
             </h1>
             <p className="text-xs sm:text-sm text-neutral-600">
-              Add new full-time openings and internships for candidates, or remove existing roles in one click.
+              Manage enterprise roles, student internships, batch statuses, and export verified datasets.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={fetchRoles}
               disabled={loading}
-              className="px-3.5 py-2 rounded-xl border border-neutral-200 hover:border-black text-black text-xs font-bold transition-all flex items-center gap-1.5 bg-white"
+              className="px-3.5 py-2 rounded-xl border border-neutral-200 hover:border-black text-black text-xs font-bold transition-all flex items-center gap-1.5 bg-white cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
               <span>Refresh</span>
+            </button>
+            <button
+              onClick={handleExportCsv}
+              disabled={filteredRoles.length === 0}
+              className="px-3.5 py-2 rounded-xl border border-neutral-200 hover:border-black text-black text-xs font-bold transition-all flex items-center gap-1.5 bg-white cursor-pointer disabled:opacity-40"
+              title="Download filtered jobs as CSV"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
             </button>
             <button
               onClick={() => {
@@ -244,18 +356,18 @@ export default function AdminJobsManagementPage() {
 
         {/* Search & Filter Controls */}
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 mt-6 pt-6 border-t border-neutral-100">
-          <div className="sm:col-span-8 relative">
+          <div className="sm:col-span-5 relative">
             <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search by role title, company name, or location..."
+              placeholder="Search by role title, company, or location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:border-black text-xs font-medium text-black placeholder:text-neutral-400 bg-white"
             />
           </div>
 
-          <div className="sm:col-span-4 flex items-center gap-1 p-1 rounded-xl bg-neutral-100 border border-neutral-200">
+          <div className="sm:col-span-3 flex items-center gap-1 p-1 rounded-xl bg-neutral-100 border border-neutral-200">
             <button
               onClick={() => setFilterType("all")}
               className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${
@@ -278,11 +390,92 @@ export default function AdminJobsManagementPage() {
                 filterType === "internship" ? "bg-white text-black shadow-2xs" : "text-neutral-600 hover:text-black"
               }`}
             >
-              Internships ({internshipCount})
+              Intern ({internshipCount})
             </button>
+          </div>
+
+          <div className="sm:col-span-2">
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:border-black text-xs font-bold text-black bg-white cursor-pointer"
+            >
+              <option value="all">All Disciplines</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Product">Product &amp; Design</option>
+              <option value="Data">Data &amp; AI</option>
+              <option value="Operations">Operations</option>
+            </select>
+          </div>
+
+          <div className="sm:col-span-2">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:border-black text-xs font-bold text-black bg-white cursor-pointer"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active Only</option>
+              <option value="archived">Archived Only</option>
+            </select>
           </div>
         </div>
       </div>
+
+      {/* Batch Operations Toolbar */}
+      {selectedJobIds.size > 0 && (
+        <div className="bg-neutral-900 text-white rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg animate-in slide-in-from-top-2">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleSelectAll}
+              className="p-1 rounded text-white hover:text-neutral-300 transition-colors"
+              title={allSelected ? "Deselect All" : "Select All"}
+            >
+              {allSelected ? (
+                <CheckSquare className="w-5 h-5 text-blue-400" />
+              ) : (
+                <Square className="w-5 h-5" />
+              )}
+            </button>
+            <span className="text-xs font-mono font-bold">
+              {selectedJobIds.size} of {filteredRoles.length} role(s) selected
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => handleBatchStatusUpdate(true)}
+              disabled={batchActionLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Mark Active</span>
+            </button>
+            <button
+              onClick={() => handleBatchStatusUpdate(false)}
+              disabled={batchActionLoading}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <Archive className="w-3.5 h-3.5 text-amber-400" />
+              <span>Archive</span>
+            </button>
+            <button
+              onClick={() => setShowBatchDeleteModal(true)}
+              disabled={batchActionLoading}
+              className="px-3 py-1.5 rounded-xl bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete ({selectedJobIds.size})</span>
+            </button>
+            <button
+              onClick={() => setSelectedJobIds(new Set())}
+              className="px-2.5 py-1.5 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Role Listings Grid */}
       <div className="space-y-3">
@@ -297,7 +490,7 @@ export default function AdminJobsManagementPage() {
             <p className="text-sm font-bold text-black">No roles found matching criteria.</p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 rounded-xl bg-black text-white text-xs font-bold inline-flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-black text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Create First Role</span>
@@ -307,20 +500,42 @@ export default function AdminJobsManagementPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredRoles.map((role) => {
               const isIntern = role.type?.toLowerCase().includes("intern");
+              const isSelected = selectedJobIds.has(role.id);
               return (
                 <div 
                   key={role.id}
-                  className="bg-white border border-neutral-200 rounded-3xl p-5 sm:p-6 flex flex-col justify-between hover:border-black transition-all shadow-xs space-y-4"
+                  className={`bg-white border rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all shadow-xs space-y-4 relative ${
+                    isSelected ? "border-blue-600 ring-2 ring-blue-500/20" : "border-neutral-200 hover:border-black"
+                  }`}
                 >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between gap-2">
-                      <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${
-                        isIntern 
-                          ? "bg-purple-100 text-purple-900 border border-purple-200"
-                          : "bg-neutral-100 text-black border border-neutral-200"
-                      }`}>
-                        {isIntern ? "Internship" : "Full-Time Job"}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => toggleSelectRole(role.id, e)}
+                          className="p-1 text-neutral-400 hover:text-black cursor-pointer"
+                          title={isSelected ? "Deselect" : "Select"}
+                        >
+                          {isSelected ? (
+                            <CheckSquare className="w-4 h-4 text-blue-600" />
+                          ) : (
+                            <Square className="w-4 h-4" />
+                          )}
+                        </button>
+                        <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${
+                          isIntern 
+                            ? "bg-purple-100 text-purple-900 border border-purple-200"
+                            : "bg-neutral-100 text-black border border-neutral-200"
+                        }`}>
+                          {isIntern ? "Internship" : "Full-Time"}
+                        </span>
+                        {role.is_active === false && (
+                          <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                            Archived
+                          </span>
+                        )}
+                      </div>
                       <span className="text-[10px] text-neutral-400 font-mono">
                         {new Date(role.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                       </span>
@@ -616,6 +831,51 @@ export default function AdminJobsManagementPage() {
                 className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs"
               >
                 {isDeleting ? "Deleting..." : "Delete Permanently"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BATCH DELETE CONFIRMATION MODAL */}
+      {showBatchDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div 
+            className="bg-white border border-neutral-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 text-red-600">
+              <div className="w-10 h-10 rounded-2xl bg-red-50 flex items-center justify-center">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-black">Delete Selected Roles?</h3>
+                <p className="text-xs text-neutral-500">
+                  You are about to permanently remove {selectedJobIds.size} job opening(s).
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 font-medium">
+              This action cannot be undone. Active candidates viewing these opportunities will no longer have access.
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowBatchDeleteModal(false)}
+                disabled={batchActionLoading}
+                className="px-4 py-2 rounded-xl border border-neutral-200 text-neutral-700 font-bold text-xs hover:border-black cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleBatchDeleteConfirm}
+                disabled={batchActionLoading}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs cursor-pointer"
+              >
+                {batchActionLoading ? "Deleting..." : `Delete ${selectedJobIds.size} Roles`}
               </button>
             </div>
           </div>

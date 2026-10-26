@@ -2,8 +2,38 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { supabase as publicSupabase } from "@/lib/supabase";
 import { CURATED_JOB_LISTINGS } from "@/lib/data/curated-jobs";
+import { validateSession } from "@/lib/otp-service";
 
 export const dynamic = "force-dynamic";
+
+async function verifyAdminClearance(req: NextRequest): Promise<boolean> {
+  try {
+    const supabaseServer = createClient();
+    const { data: { user } } = await supabaseServer.auth.getUser();
+    if (user) {
+      const { data: profile } = await publicSupabase
+        .from("profiles")
+        .select("is_admin, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(profile?.role)) {
+        return true;
+      }
+    }
+
+    const sessionCookie = req.cookies.get("edworld_session")?.value;
+    if (sessionCookie) {
+      const { valid, role } = validateSession(sessionCookie);
+      if (valid && ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(role || "")) {
+        return true;
+      }
+    }
+  } catch (err) {
+    console.error("[Admin Jobs Auth Error]:", err);
+  }
+  return false;
+}
 
 export async function GET(req: NextRequest) {
   try {
@@ -76,6 +106,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator clearance required to create job postings." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       title,
@@ -146,19 +184,80 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PATCH(req: NextRequest) {
+  try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator clearance required to update job postings." },
+        { status: 403 }
+      );
+    }
+
+    const body = await req.json();
+    const { ids, is_active } = body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json({ error: "Job IDs array is required for batch update." }, { status: 400 });
+    }
+
+    const { error } = await publicSupabase
+      .from("jobs")
+      .update({ is_active: Boolean(is_active) })
+      .in("id", ids);
+
+    if (error) {
+      console.warn("[Admin Jobs Batch Patch Warning]:", error.message);
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Updated status for ${ids.length} role(s).`,
+      count: ids.length,
+    });
+  } catch (err: any) {
+    console.error("[Admin Jobs Patch Error]:", err);
+    return NextResponse.json({ error: err.message || "Failed to update roles." }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator clearance required to delete job postings." },
+        { status: 403 }
+      );
+    }
 
-    if (!id) {
-      return NextResponse.json({ error: "Role ID is required for deletion." }, { status: 400 });
+    const { searchParams } = new URL(req.url);
+    let targetIds: string[] = [];
+
+    const idParam = searchParams.get("id") || searchParams.get("ids");
+    if (idParam) {
+      targetIds = idParam.split(",").map((s) => s.trim()).filter(Boolean);
+    } else {
+      try {
+        const body = await req.json();
+        if (Array.isArray(body.ids)) {
+          targetIds = body.ids;
+        } else if (body.id) {
+          targetIds = [body.id];
+        }
+      } catch {
+        // No JSON body
+      }
+    }
+
+    if (targetIds.length === 0) {
+      return NextResponse.json({ error: "Role ID(s) required for deletion." }, { status: 400 });
     }
 
     const { error } = await publicSupabase
       .from("jobs")
       .delete()
-      .eq("id", id);
+      .in("id", targetIds);
 
     if (error) {
       console.warn("[Admin Jobs Delete Warning]:", error.message);
@@ -166,10 +265,12 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Role ${id} successfully removed.`,
+      message: `${targetIds.length} role(s) successfully removed.`,
+      deletedCount: targetIds.length,
     });
   } catch (err: any) {
     console.error("[Admin Jobs Delete Error]:", err);
     return NextResponse.json({ error: err.message || "Failed to delete role." }, { status: 500 });
   }
 }
+

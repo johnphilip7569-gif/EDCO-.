@@ -202,23 +202,55 @@ function evaluateRoles(record: any, allowedRoles: RoleType[]): RoleCheckResult {
   };
 }
 
+import { createClient } from "@/lib/supabase/server";
+
 /**
  * Standard NextRequest middleware helper for API routes.
+ * Authenticates caller identity strictly from verified session tokens or Supabase Auth.
  */
 export async function requireRole(
   req: NextRequest,
   allowedRoles: RoleType[],
   explicitUserId?: string
 ): Promise<RoleCheckResult> {
-  const userId = explicitUserId || 
-    req.headers.get("x-user-id") || 
-    req.cookies.get("edworld_session")?.value ||
-    req.cookies.get("sb-access-token")?.value ||
-    req.nextUrl.searchParams.get("userId") || 
-    req.nextUrl.searchParams.get("teacherId") || 
-    req.nextUrl.searchParams.get("adminId");
+  let resolvedUserId: string | null | undefined = explicitUserId;
 
-  return verifyUserRole(userId, allowedRoles);
+  if (!resolvedUserId) {
+    // 1. Primary: Verify through Supabase SSR Auth
+    try {
+      const supabaseServer = createClient();
+      const { data: { user } } = await supabaseServer.auth.getUser();
+      if (user?.id) {
+        resolvedUserId = user.id;
+      }
+    } catch {}
+  }
+
+  if (!resolvedUserId) {
+    // 2. Secondary: Verify through cryptographically validated session token
+    const sessionToken = 
+      req.cookies.get("edworld_session")?.value ||
+      req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+
+    if (sessionToken) {
+      if (sessionToken.startsWith("edw_sess_")) {
+        const sessRes = validateSession(sessionToken);
+        if (sessRes.valid && sessRes.userId) {
+          resolvedUserId = sessionToken; // Passes into verifyUserRole session validator
+        }
+      }
+    }
+  }
+
+  if (!resolvedUserId) {
+    return {
+      authorized: false,
+      statusCode: 401,
+      error: "Unauthorized: Active authenticated session required."
+    };
+  }
+
+  return verifyUserRole(resolvedUserId, allowedRoles);
 }
 
 /**

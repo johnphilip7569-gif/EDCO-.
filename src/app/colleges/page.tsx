@@ -214,55 +214,59 @@ export default function CollegesPlacementHubPage() {
 
   return (
     <AuthGuard allowedRoles={["COLLEGE_ADMIN", "PLACEMENT_OFFICER", "ADMIN", "SUPER_ADMIN"]}>
-      <div className="min-h-screen bg-[#0E0F15] text-white p-4 sm:p-6 lg:p-8 xl:px-10 space-y-8 max-w-[1536px] mx-auto">
+      <div className="min-h-screen bg-[#F7F8FA] text-[#111827] p-4 sm:p-6 lg:p-8 xl:px-10 space-y-8 max-w-[1536px] mx-auto font-sans">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[#13141B] p-6 sm:p-8 lg:p-10 rounded-3xl border border-white/10 shadow-xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E7EB] shadow-xs">
         <div className="space-y-2">
           <div className="flex items-center gap-2.5">
-            <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-purple-500/10 text-purple-400 border border-purple-500/30">
-              College &amp; University Hub
+            <span className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-[#2563EB] border border-blue-100">
+              College &amp; university hub
             </span>
-            <span className="text-xs sm:text-sm text-[#8E95A5]">🎓 Institutional Placement OS</span>
+            <span className="text-xs text-[#6B7280]">Institutional placement management</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white font-sans">
-            Colleges &amp; Placement Operations
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111827]">
+            Colleges &amp; placement operations
           </h1>
+          <p className="text-xs sm:text-sm text-[#6B7280] max-w-2xl leading-relaxed">
+            Coordinate campus drives, track student placement radars, align academic syllabus with industry standards, and manage partner companies.
+          </p>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
           <button
+            type="button"
             onClick={() => setShowDriveModal(true)}
-            className="px-5 py-2.5 sm:py-3 rounded-2xl bg-[#D7FC51] hover:bg-[#E9FFA4] text-[#13141B] text-xs sm:text-sm font-black transition-all flex items-center gap-2 shadow-md cursor-pointer"
+            className="btn-primary text-xs py-2 px-4 flex items-center gap-2 cursor-pointer"
           >
-            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Plus className="w-4 h-4" />
             <span>Schedule Campus Drive</span>
           </button>
         </div>
       </div>
 
       {notification && (
-        <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in">
-          <Check className="w-4 h-4 text-emerald-400" />
+        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+          <Check className="w-4 h-4 text-emerald-600" />
           <span>{notification}</span>
         </div>
       )}
 
       {/* Placement Insight Agent */}
       {aiInsights.length > 0 && (
-        <div className="p-4 rounded-3xl bg-gradient-to-r from-purple-950/40 via-[#13141B] to-[#13141B] border border-purple-500/20 space-y-2">
-          <div className="flex items-center gap-2 text-purple-300">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-3">
+          <div className="flex items-center gap-2 text-[#2563EB]">
             <Sparkles className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-wider">PlacementInsightAgent Drive Telemetry</span>
+            <span className="text-xs font-medium">Placement insight telemetry</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {aiInsights.map((insight) => (
-              <div key={insight.id} className="p-3 rounded-2xl bg-[#1C1D26]/80 border border-white/5 space-y-1">
-                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">
+              <div key={insight.id} className="p-3.5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+                <span className="text-xs font-medium capitalize px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-100">
                   {insight.category}
                 </span>
-                <h4 className="text-xs font-bold text-white mt-0.5">{insight.headline}</h4>
-                <p className="text-[11px] text-[#8E95A5] leading-snug">{insight.detail}</p>
+                <h4 className="text-xs font-semibold text-[#111827] mt-1">{insight.headline}</h4>
+                <p className="text-xs text-[#6B7280] leading-snug">{insight.detail}</p>
               </div>
             ))}
           </div>
@@ -270,11 +274,11 @@ export default function CollegesPlacementHubPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2.5 border-b border-white/10 pb-3 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-[#E5E7EB] pb-3 overflow-x-auto touch-scroll-x">
         {[
           { id: "drives", label: "Campus Drives Scheduler", icon: Building2 },
           { id: "student_radar", label: "Student Placement Radar", icon: Users },
-          { id: "syllabus_alignment", label: "Syllabus Industry Alignment", icon: Layers },
+          { id: "syllabus_alignment", label: "Syllabus Alignment", icon: Layers },
           { id: "company_crm", label: "Corporate CRM", icon: Briefcase },
           { id: "analytics", label: "Placement Analytics", icon: BarChart3 },
         ].map((tab) => {
@@ -283,14 +287,15 @@ export default function CollegesPlacementHubPage() {
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-colors whitespace-nowrap cursor-pointer border ${
                 isActive
-                  ? "bg-[#D7FC51] text-[#13141B] shadow-md font-black"
-                  : "bg-[#1C1D26] text-[#8E95A5] hover:text-white hover:bg-[#252633]"
+                  ? "bg-[#2563EB] text-white border-[#2563EB] font-semibold shadow-xs"
+                  : "bg-white text-[#6B7280] border-[#E5E7EB] hover:text-[#111827] hover:border-[#D1D5DB]"
               }`}
             >
-              <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
             </button>
           );
@@ -301,49 +306,49 @@ export default function CollegesPlacementHubPage() {
       {activeTab === "drives" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-white">Active Campus Placement Drives ({drives.length})</h2>
-            <span className="text-xs text-[#8E95A5]">Audited by TPO Placement Cell</span>
+            <h2 className="text-base font-bold text-[#111827]">Active Campus Placement Drives ({drives.length})</h2>
+            <span className="text-xs text-[#6B7280]">Placement Cell Verified</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {drives.map((d) => (
-              <div key={d.id} className="p-5 rounded-3xl bg-[#13141B] border border-white/10 space-y-4 shadow-xl">
-                <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <div key={d.id} className="p-5 rounded-2xl bg-white border border-[#E5E7EB] space-y-4 shadow-xs hover:border-[#2563EB]/40 transition-colors">
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
                   <div>
-                    <h3 className="text-base font-bold text-white">{d.companyName}</h3>
-                    <span className="text-xs text-[#8E95A5]">{d.role}</span>
+                    <h3 className="text-base font-bold text-[#111827]">{d.companyName}</h3>
+                    <span className="text-xs text-[#6B7280]">{d.role}</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xl font-black text-[#D7FC51] font-mono">₹{d.packageLpa} LPA</span>
-                    <span className="text-[10px] text-purple-400 block font-bold">{d.status}</span>
+                    <span className="text-xl font-bold text-[#2563EB]">₹{d.packageLpa} LPA</span>
+                    <span className="text-[10px] text-[#6B7280] block font-medium">{d.status}</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 text-xs text-[#8E95A5]">
+                <div className="grid grid-cols-2 gap-3 text-xs text-[#6B7280]">
                   <div>
                     <span>Drive Date:</span>
-                    <strong className="text-white block">{d.driveDate}</strong>
+                    <strong className="text-[#111827] block font-medium">{d.driveDate}</strong>
                   </div>
                   <div>
                     <span>Location:</span>
-                    <strong className="text-white block">{d.location}</strong>
+                    <strong className="text-[#111827] block font-medium">{d.location}</strong>
                   </div>
                   <div>
                     <span>Eligibility:</span>
-                    <strong className="text-white block">{d.eligibilityCriteria.minCgpa}+ CGPA ({d.eligibilityCriteria.allowedBranches.join(", ")})</strong>
+                    <strong className="text-[#111827] block font-medium">{d.eligibilityCriteria.minCgpa}+ CGPA ({d.eligibilityCriteria.allowedBranches.join(", ")})</strong>
                   </div>
                   <div>
                     <span>Application Deadline:</span>
-                    <strong className="text-rose-400 block">{d.applicationDeadline}</strong>
+                    <strong className="text-rose-600 block font-medium">{d.applicationDeadline}</strong>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#1C1D26] flex items-center justify-between text-xs">
+                <div className="p-3 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] flex items-center justify-between text-xs">
                   <div className="flex items-center gap-3">
-                    <span>Registered: <strong className="text-white font-mono">{d.registeredCount}</strong></span>
-                    <span>Shortlisted: <strong className="text-purple-400 font-mono">{d.shortlistedCount}</strong></span>
+                    <span className="text-[#6B7280]">Registered: <strong className="text-[#111827]">{d.registeredCount}</strong></span>
+                    <span className="text-[#6B7280]">Shortlisted: <strong className="text-[#2563EB]">{d.shortlistedCount}</strong></span>
                   </div>
-                  <span className="text-[10px] text-[#8E95A5]">Coordinator: {d.coordinatorName}</span>
+                  <span className="text-[10px] text-[#6B7280]">Coordinator: {d.coordinatorName}</span>
                 </div>
               </div>
             ))}
@@ -353,30 +358,30 @@ export default function CollegesPlacementHubPage() {
 
       {/* TAB 2: STUDENT RADAR */}
       {activeTab === "student_radar" && (
-        <div className="bg-[#13141B] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-white">Student Placement Funnel Radar</h2>
-            <span className="text-xs text-[#8E95A5] font-mono">{students.length} Tracked Candidates</span>
+            <h2 className="text-base font-semibold text-[#111827]">Student placement funnel radar</h2>
+            <span className="text-xs text-[#6B7280] tabular-nums">{students.length} tracked candidates</span>
           </div>
 
           <div className="space-y-3">
             {students.map((stu) => (
-              <div key={stu.id} className="p-4 rounded-2xl bg-[#1C1D26] border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div key={stu.id} className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-white">{stu.fullName}</span>
-                    <span className="text-[10px] text-[#8E95A5] font-mono">({stu.rollNo})</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D7FC51]/10 text-[#D7FC51]">
+                    <span className="text-xs font-semibold text-[#111827]">{stu.fullName}</span>
+                    <span className="text-xs text-[#6B7280]">({stu.rollNo})</span>
+                    <span className="px-2 py-0.5 rounded text-xs font-medium bg-white border border-[#E5E7EB] text-[#2563EB]">
                       {stu.branch} &bull; CGPA {stu.cgpa}
                     </span>
                   </div>
-                  <span className="text-[11px] text-[#8E95A5]">
+                  <span className="text-xs text-[#6B7280]">
                     Applied Drives: {stu.appliedDrivesCount} {stu.placedCompany ? `&bull; Placed at ${stu.placedCompany} (₹${stu.packageOfferedLpa} LPA)` : ""}
                   </span>
                 </div>
 
                 <div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-black font-mono ${stu.currentStage === "SELECTED" || stu.currentStage === "PLACED" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30" : "bg-purple-500/10 text-purple-300 border border-purple-500/30"}`}>
+                  <span className={`px-2.5 py-0.5 rounded-md text-xs font-medium ${stu.currentStage === "SELECTED" || stu.currentStage === "PLACED" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-blue-50 text-[#2563EB] border border-blue-200"}`}>
                     {stu.currentStage}
                   </span>
                 </div>
@@ -390,85 +395,85 @@ export default function CollegesPlacementHubPage() {
       {activeTab === "syllabus_alignment" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          <div className="bg-[#13141B] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
-            <h2 className="text-base font-black text-white">Map Subject to Industry Role</h2>
-            <form onSubmit={handleSaveSyllabusMap} className="space-y-3">
+          <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4">
+            <h2 className="text-base font-semibold text-[#111827]">Map Subject to Industry Role</h2>
+            <form onSubmit={handleSaveSyllabusMap} className="space-y-3 text-xs">
               <div>
-                <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Academic Program</label>
+                <label className="text-xs font-medium text-[#111827] block mb-1">Academic program</label>
                 <input
                   type="text"
                   value={progCode}
                   onChange={(e) => setProgCode(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                  className="w-full mt-1 p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Subject Code</label>
+                  <label className="text-xs font-medium text-[#111827] block mb-1">Subject code</label>
                   <input
                     type="text"
                     value={subCode}
                     onChange={(e) => setSubCode(e.target.value)}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Subject Name</label>
+                  <label className="text-xs font-medium text-[#111827] block mb-1">Subject name</label>
                   <input
                     type="text"
                     value={subName}
                     onChange={(e) => setSubName(e.target.value)}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Target Industry Skill</label>
+                <label className="text-xs font-medium text-[#111827] block mb-1">Target industry skill</label>
                 <input
                   type="text"
                   value={targetSkill}
                   onChange={(e) => setTargetSkill(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                  className="w-full mt-1 p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Matching Placement Role</label>
+                <label className="text-xs font-medium text-[#111827] block mb-1">Matching placement role</label>
                 <input
                   type="text"
                   value={matchRole}
                   onChange={(e) => setMatchRole(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                  className="w-full mt-1 p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-xl bg-[#D7FC51] text-[#13141B] font-black text-xs hover:bg-[#E9FFA4] transition-all"
+                className="btn-primary w-full py-2.5 text-xs font-semibold mt-2 cursor-pointer"
               >
                 Register Syllabus Alignment
               </button>
             </form>
           </div>
 
-          <div className="lg:col-span-2 bg-[#13141B] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
-            <h2 className="text-base font-black text-white">Curriculum vs Industry Skill Alignments</h2>
+          <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4">
+            <h2 className="text-base font-bold text-[#111827]">Curriculum vs Industry Skill Alignments</h2>
             <div className="space-y-3">
               {syllabusMaps.map((sm) => (
-                <div key={sm.id} className="p-4 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-2">
+                <div key={sm.id} className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-2">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-white">{sm.subjectCode} — {sm.subjectName}</span>
-                      <span className="text-[10px] text-[#8E95A5] block">{sm.academicProgram}</span>
+                      <span className="text-xs font-bold text-[#111827]">{sm.subjectCode} — {sm.subjectName}</span>
+                      <span className="text-[10px] text-[#6B7280] block">{sm.academicProgram}</span>
                     </div>
-                    <span className="text-lg font-black text-[#D7FC51] font-mono">{sm.alignmentScore}% Match</span>
+                    <span className="text-base font-bold text-[#2563EB]">{sm.alignmentScore}% Match</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-[11px] text-[#8E95A5] pt-1">
-                    <div>Target Skill: <strong className="text-white">{sm.targetSkill}</strong></div>
-                    <div>Placement Role: <strong className="text-purple-400">{sm.matchingPlacementRole}</strong></div>
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-[#6B7280] pt-1">
+                    <div>Target Skill: <strong className="text-[#111827] font-medium">{sm.targetSkill}</strong></div>
+                    <div>Placement Role: <strong className="text-[#2563EB] font-medium">{sm.matchingPlacementRole}</strong></div>
                   </div>
                 </div>
               ))}
@@ -480,29 +485,29 @@ export default function CollegesPlacementHubPage() {
 
       {/* TAB 4: COMPANY CRM */}
       {activeTab === "company_crm" && (
-        <div className="bg-[#13141B] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-white">Corporate Recruiting Partners</h2>
-            <span className="text-xs text-[#8E95A5] font-mono">{partners.length} Active Partners</span>
+            <h2 className="text-base font-bold text-[#111827]">Corporate Recruiting Partners</h2>
+            <span className="text-xs text-[#6B7280]">{partners.length} Active Partners</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {partners.map((p) => (
-              <div key={p.id} className="p-5 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-3">
-                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <div key={p.id} className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-3">
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-2">
                   <div>
-                    <h3 className="text-sm font-bold text-white">{p.companyName}</h3>
-                    <span className="text-[10px] text-[#8E95A5]">{p.industry}</span>
+                    <h3 className="text-sm font-bold text-[#111827]">{p.companyName}</h3>
+                    <span className="text-[10px] text-[#6B7280]">{p.industry}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-black bg-[#D7FC51]/10 text-[#D7FC51]">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-white border border-[#E5E7EB] text-[#2563EB]">
                     {p.tier}
                   </span>
                 </div>
 
-                <div className="text-xs text-[#8E95A5] space-y-1">
-                  <div>Contact: <strong className="text-white">{p.contactPerson}</strong> ({p.contactEmail})</div>
-                  <div>Hiring History: <strong className="text-white">{p.totalHired} Students</strong> across {p.drivesConducted} drives (Avg ₹{p.avgPackageLpa} LPA)</div>
-                  <div className="text-[11px] italic text-[#8E95A5] pt-1">&ldquo;{p.relationshipNotes}&rdquo;</div>
+                <div className="text-xs text-[#6B7280] space-y-1">
+                  <div>Contact: <strong className="text-[#111827] font-medium">{p.contactPerson}</strong> ({p.contactEmail})</div>
+                  <div>Hiring History: <strong className="text-[#111827] font-medium">{p.totalHired} Students</strong> across {p.drivesConducted} drives (Avg ₹{p.avgPackageLpa} LPA)</div>
+                  <div className="text-[11px] italic text-[#6B7280] pt-1">&ldquo;{p.relationshipNotes}&rdquo;</div>
                 </div>
               </div>
             ))}
@@ -512,32 +517,32 @@ export default function CollegesPlacementHubPage() {
 
       {/* TAB 5: PLACEMENT ANALYTICS */}
       {activeTab === "analytics" && (
-        <div className="bg-[#13141B] p-6 rounded-3xl border border-white/10 shadow-xl space-y-6">
-          <h2 className="text-lg font-black text-white">Annual Placement Statistics (2026 Batch)</h2>
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs space-y-6">
+          <h2 className="text-base font-semibold text-[#111827]">Annual placement statistics (2026 batch)</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-[#8E95A5] uppercase">Total Eligible Students</span>
-              <div className="text-3xl font-black text-white font-mono">{totalEligible}</div>
-              <span className="text-[10px] text-[#8E95A5]">Across Engineering Disciplines</span>
+            <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+              <span className="text-xs font-medium text-[#6B7280] block">Total eligible students</span>
+              <div className="text-2xl font-semibold text-[#111827] tabular-nums">{totalEligible}</div>
+              <span className="text-xs text-[#6B7280]">Across engineering disciplines</span>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-[#8E95A5] uppercase">Total Offers Made</span>
-              <div className="text-3xl font-black text-[#D7FC51] font-mono">{totalOffers + 18}</div>
-              <span className="text-[10px] text-emerald-400 font-bold">Includes Super Dream offers</span>
+            <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+              <span className="text-xs font-medium text-[#6B7280] block">Total offers made</span>
+              <div className="text-2xl font-semibold text-[#2563EB] tabular-nums">{totalOffers + 18}</div>
+              <span className="text-xs text-emerald-600 font-medium">Includes Super Dream offers</span>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-[#8E95A5] uppercase">Highest Package</span>
-              <div className="text-3xl font-black text-purple-400 font-mono">₹28.5 LPA</div>
-              <span className="text-[10px] text-[#8E95A5]">Atlassian Platform Track</span>
+            <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+              <span className="text-xs font-medium text-[#6B7280] block">Highest package</span>
+              <div className="text-2xl font-semibold text-[#2563EB] tabular-nums">₹28.5 LPA</div>
+              <span className="text-xs text-[#6B7280]">Atlassian Platform Track</span>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#1C1D26] border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-[#8E95A5] uppercase">Average Package</span>
-              <div className="text-3xl font-black text-emerald-400 font-mono">₹14.2 LPA</div>
-              <span className="text-[10px] text-emerald-400 font-bold">+18% vs Last Year</span>
+            <div className="p-5 rounded-xl bg-[#F7F8FA] border border-[#E5E7EB] space-y-1">
+              <span className="text-xs font-medium text-[#6B7280] block">Average package</span>
+              <div className="text-2xl font-semibold text-[#111827] tabular-nums">₹14.2 LPA</div>
+              <span className="text-xs text-emerald-600 font-medium">+18% vs last year</span>
             </div>
           </div>
         </div>
@@ -545,85 +550,89 @@ export default function CollegesPlacementHubPage() {
 
       {/* Schedule Drive Modal */}
       {showDriveModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-[#13141B] border border-white/15 rounded-3xl p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-black text-white">Schedule Campus Placement Drive</h3>
-              <button onClick={() => setShowDriveModal(false)} className="text-[#8E95A5] hover:text-white">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-white border border-[#E5E7EB] rounded-2xl p-6 space-y-4 shadow-xl text-[#111827]">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+              <h3 className="text-base font-semibold text-[#111827]">Schedule campus placement drive</h3>
+              <button
+                type="button"
+                onClick={() => setShowDriveModal(false)}
+                className="text-[#6B7280] hover:text-[#111827] cursor-pointer"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateDrive} className="space-y-3">
+            <form onSubmit={handleCreateDrive} className="space-y-3 text-xs">
               <div>
-                <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Company Name</label>
+                <label className="text-xs font-medium text-[#111827] block mb-1">Company name</label>
                 <input
                   type="text"
                   required
                   value={newCompany}
                   onChange={(e) => setNewCompany(e.target.value)}
                   placeholder="e.g. Microsoft / Amazon"
-                  className="w-full mt-1 p-2.5 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                  className="w-full mt-1 p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Role Title</label>
+                <label className="text-xs font-medium text-[#111827] block mb-1">Role title</label>
                 <input
                   type="text"
                   required
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                  className="w-full mt-1 p-2.5 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Package (LPA)</label>
+                  <label className="text-xs font-medium text-[#111827] block mb-1">Package (LPA)</label>
                   <input
                     type="number"
                     value={newPackage}
                     onChange={(e) => setNewPackage(Number(e.target.value))}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Min CGPA</label>
+                  <label className="text-xs font-medium text-[#111827] block mb-1">Min CGPA</label>
                   <input
                     type="number"
                     step="0.1"
                     value={newMinCgpa}
                     onChange={(e) => setNewMinCgpa(Number(e.target.value))}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Drive Date</label>
+                  <label className="text-[10px] font-semibold text-[#6B7280] uppercase">Drive Date</label>
                   <input
                     type="date"
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-[#8E95A5] uppercase">Application Deadline</label>
+                  <label className="text-[10px] font-semibold text-[#6B7280] uppercase">Application Deadline</label>
                   <input
                     type="date"
                     value={newDeadline}
                     onChange={(e) => setNewDeadline(e.target.value)}
-                    className="w-full mt-1 p-2 rounded-xl bg-[#1C1D26] border border-white/10 text-xs text-white"
+                    className="w-full mt-1 p-2 rounded-lg bg-[#F7F8FA] border border-[#E5E7EB] text-xs text-[#111827] focus:outline-none focus:border-[#2563EB]"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-xl bg-[#D7FC51] text-[#13141B] font-black text-xs hover:bg-[#E9FFA4] transition-all mt-2"
+                className="btn-primary w-full py-2.5 text-xs font-semibold mt-3 cursor-pointer"
               >
                 Schedule &amp; Open Registrations
               </button>

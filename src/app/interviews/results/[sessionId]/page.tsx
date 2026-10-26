@@ -31,7 +31,8 @@ import {
   Layers,
   Compass,
   Lock,
-  ChevronRight
+  ChevronRight,
+  Trash2
 } from "lucide-react";
 import { normalizeDisplayName } from "@/lib/services/user-profile";
 
@@ -54,6 +55,29 @@ export default function InterviewResultsPage() {
   const [sessionData, setSessionData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeAnnotation, setActiveAnnotation] = useState<Annotation | null>(null);
+  const [audioDeleted, setAudioDeleted] = useState(false);
+  const [deletingAudio, setDeletingAudio] = useState(false);
+
+  const handleDeleteAudio = async () => {
+    if (!confirm("Permanently delete stored audio for this session? This action cannot be undone.")) return;
+    setDeletingAudio(true);
+    try {
+      const res = await fetch("/api/interview/cleanup-audio", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, userId: user?.uid }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAudioDeleted(true);
+        alert("Audio data deleted permanently per your request.");
+      }
+    } catch (err) {
+      console.warn("Delete audio note:", err);
+    } finally {
+      setDeletingAudio(false);
+    }
+  };
 
   useEffect(() => {
     async function loadResult() {
@@ -94,6 +118,9 @@ export default function InterviewResultsPage() {
             fluencyScore: metrics.fluencyScore || 78,
             vocabularyScore: metrics.vocabularyScore || 80,
             professionalScore: metrics.professionalScore || 84,
+            voiceOptIn: Boolean(data.voice_opt_in ?? metrics.voice_opt_in),
+            retentionExpiresAt: data.retention_expires_at || metrics.retention_expires_at,
+            audioDeletedAt: data.audio_deleted_at,
             sector: metrics.sector || data.sector || "AI & Software Engineering",
             targetRole: metrics.targetRole || data.category || "Full-Stack Software Engineer",
             whatYouSaid: metrics.whatYouSaid || data.questions?.[0]?.transcript || "",
@@ -229,7 +256,7 @@ export default function InterviewResultsPage() {
             <p className="text-xs text-emerald-400 font-medium mt-1">Cross-referencing JD competency keywords &amp; STAR structure...</p>
           </div>
           <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-3/4 animate-pulse rounded-full" />
+            <div className="bg-white h-full w-3/4 animate-pulse rounded-full" />
           </div>
           <p className="text-[11px] text-slate-400">EdWorld Production Evaluation &bull; Zero Mock Data</p>
         </div>
@@ -244,10 +271,10 @@ export default function InterviewResultsPage() {
   const jdAlignmentScore = Math.max(60, Math.min(100, 100 - missingKeywordsCount * 7));
 
   const scoreStatus = overallScore >= 85
-    ? { label: "Ready for Final Rounds", color: "text-emerald-400", bg: "bg-emerald-950/70 border-emerald-500/40" }
+    ? { label: "Ready for Final Rounds", color: "text-white", bg: "bg-neutral-900 border-neutral-600" }
     : overallScore >= 75
-    ? { label: "Strong Candidate Foundation", color: "text-teal-300", bg: "bg-teal-950/70 border-teal-500/40" }
-    : { label: "Needs Targeted Practice", color: "text-amber-300", bg: "bg-amber-950/70 border-amber-500/40" };
+    ? { label: "Strong Candidate Foundation", color: "text-neutral-200", bg: "bg-neutral-900 border-neutral-700" }
+    : { label: "Needs Targeted Practice", color: "text-neutral-400", bg: "bg-neutral-900 border-neutral-800" };
 
   const handleAskMyraAboutResult = () => {
     window.dispatchEvent(
@@ -335,9 +362,9 @@ export default function InterviewResultsPage() {
                 <div className="pt-1 flex justify-start">
                   <button
                     onClick={handleAskMyraAboutResult}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-xs shadow-md transition-all hover:scale-102 cursor-pointer active:scale-95 border border-emerald-400/30"
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white text-black hover:bg-neutral-100 font-extrabold text-xs shadow-xs transition-all cursor-pointer active:scale-95 border border-white"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <Sparkles className="w-3.5 h-3.5 text-black" />
                     <span>Ask Myra about this result</span>
                   </button>
                 </div>
@@ -346,32 +373,32 @@ export default function InterviewResultsPage() {
 
             {/* Prominent Overall Score Badge & Status */}
             <div className="flex flex-row md:flex-col items-center gap-3 shrink-0">
-              <div className="p-5 rounded-3xl bg-slate-950 border-2 border-emerald-500/40 text-white text-center min-w-[140px] shadow-xl">
-                <span className="text-[9px] uppercase font-black tracking-wider text-slate-400 block">Overall Score</span>
-                <div className="text-4xl font-black text-emerald-400 font-mono mt-0.5">{overallScore}%</div>
+              <div className="p-5 rounded-3xl bg-neutral-900 border border-neutral-700 text-white text-center min-w-[140px] shadow-sm">
+                <span className="text-[9px] uppercase font-black tracking-wider text-neutral-400 block">Overall Score</span>
+                <div className="text-4xl font-black text-white font-mono mt-0.5">{overallScore}%</div>
                 <div className={`mt-2 px-2.5 py-1 rounded-full text-[9px] font-bold border ${scoreStatus.bg} ${scoreStatus.color}`}>
                   {scoreStatus.label}
                 </div>
               </div>
-              <div className="p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/30 text-white text-center min-w-[140px] shadow-md">
-                <span className="text-[9px] uppercase font-extrabold tracking-wider text-indigo-300 block">Delivery Score</span>
-                <div className="text-2xl font-black text-amber-300 font-mono mt-0.5">{sessionData.languageScore || 80}%</div>
+              <div className="p-4 rounded-2xl bg-neutral-900 border border-neutral-700 text-white text-center min-w-[140px] shadow-xs">
+                <span className="text-[9px] uppercase font-extrabold tracking-wider text-neutral-400 block">Delivery Score</span>
+                <div className="text-2xl font-black text-white font-mono mt-0.5">{sessionData.languageScore || 80}%</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Anti-Cheat & Screen Lockdown Integrity Badge */}
-        <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs">
+        <div className="flex items-center justify-between p-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 text-xs">
           <div className="flex items-center gap-2.5">
-            <div className={`p-2 rounded-xl ${exitCount === 0 ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>
+            <div className={`p-2 rounded-xl ${exitCount === 0 ? "bg-white/10 text-white" : "bg-neutral-800 text-neutral-300"}`}>
               {exitCount === 0 ? <ShieldCheck className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
             </div>
             <div>
-              <p className="font-bold text-slate-200">
+              <p className="font-bold text-neutral-200">
                 {exitCount === 0 ? "100% Screen Lockdown Integrity Verified" : `${exitCount} Focus Lost Warning${exitCount > 1 ? "s" : ""} Recorded`}
               </p>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-neutral-400">
                 {exitCount === 0 
                   ? "Full screen lockdown remained active with continuous camera and audio telemetry." 
                   : "Candidate switched tabs or exited fullscreen during the interview session."}
@@ -380,8 +407,8 @@ export default function InterviewResultsPage() {
           </div>
           <span className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full border ${
             exitCount === 0 
-              ? "bg-emerald-950/60 border-emerald-500/30 text-emerald-300" 
-              : "bg-amber-950/60 border-amber-500/30 text-amber-300"
+              ? "bg-neutral-900 border-neutral-700 text-white" 
+              : "bg-neutral-900 border-neutral-700 text-neutral-300"
           }`}>
             {exitCount === 0 ? "Passed Anti-Cheat" : `${exitCount} Interruption${exitCount > 1 ? "s" : ""}`}
           </span>
@@ -389,16 +416,16 @@ export default function InterviewResultsPage() {
 
         {/* 4 Category Breakdown Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-slate-900/80 rounded-3xl p-5 border border-slate-800 shadow-sm space-y-1">
-            <span className="text-[10px] uppercase font-extrabold tracking-wider text-slate-400 block">Technical Depth</span>
-            <div className="text-2xl font-black text-emerald-400 font-mono">{sessionData.contentScore || 85}%</div>
-            <p className="text-[10px] text-slate-400">Architecture &amp; correctness</p>
+          <div className="bg-neutral-900/80 rounded-3xl p-5 border border-neutral-800 shadow-xs space-y-1">
+            <span className="text-[10px] uppercase font-extrabold tracking-wider text-neutral-400 block">Technical Depth</span>
+            <div className="text-2xl font-black text-white font-mono">{sessionData.contentScore || 85}%</div>
+            <p className="text-[10px] text-neutral-400">Architecture &amp; correctness</p>
           </div>
 
-          <div className="bg-slate-900/80 rounded-3xl p-5 border border-slate-800 shadow-sm space-y-1">
-            <span className="text-[10px] uppercase font-extrabold tracking-wider text-slate-400 block">STAR Storytelling</span>
-            <div className="text-2xl font-black text-teal-300 font-mono">{sessionData.clarityScore || 82}%</div>
-            <p className="text-[10px] text-slate-400">Narrative arc &amp; results</p>
+          <div className="bg-neutral-900/80 rounded-3xl p-5 border border-neutral-800 shadow-xs space-y-1">
+            <span className="text-[10px] uppercase font-extrabold tracking-wider text-neutral-400 block">STAR Storytelling</span>
+            <div className="text-2xl font-black text-white font-mono">{sessionData.clarityScore || 82}%</div>
+            <p className="text-[10px] text-neutral-400">Narrative arc &amp; results</p>
           </div>
 
           <div className="bg-slate-900/80 rounded-3xl p-5 border border-slate-800 shadow-sm space-y-1">
@@ -495,30 +522,30 @@ export default function InterviewResultsPage() {
             </div>
           )}
 
-          {/* 3. "What You Said" vs "Myra's Gold-Standard Model Answer" */}
+          {/* 3. "What You Said" vs "Senior Engineer Benchmark Model Answer" */}
           {sessionData.improvedVersion && (
             <div className="space-y-3 pt-2">
-              <span className="text-xs font-bold text-slate-200 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#00D2B4]" /> Response Rewrite: What You Said vs. Myra's Senior Engineer Model Answer
+              <span className="text-xs font-bold text-neutral-200 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-white" /> Response Rewrite: What You Said vs. Senior Benchmark Model Answer
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-950/90 border border-slate-800 space-y-2 text-xs">
-                  <span className="text-[10px] font-mono text-slate-400 uppercase block font-bold">What You Said:</span>
-                  <p className="text-slate-300 italic leading-relaxed">
+                <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-2 text-xs">
+                  <span className="text-[10px] font-mono text-neutral-400 uppercase block font-bold">What You Said:</span>
+                  <p className="text-neutral-300 italic leading-relaxed">
                     &ldquo;{sessionData.whatYouSaid}&rdquo;
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 space-y-2 text-xs">
+                <div className="p-4 rounded-2xl bg-neutral-900 border border-neutral-700 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-emerald-400 uppercase block font-bold">Myra's Gold-Standard Version:</span>
-                    <span className="text-[9px] uppercase font-mono font-bold text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded">Senior Tier</span>
+                    <span className="text-[10px] font-mono text-white uppercase block font-bold">Benchmark Model Version:</span>
+                    <span className="text-[9px] uppercase font-mono font-bold text-white bg-neutral-800 px-2 py-0.5 rounded border border-neutral-700">Senior Tier</span>
                   </div>
-                  <p className="text-emerald-100 font-medium leading-relaxed">
+                  <p className="text-neutral-100 font-medium leading-relaxed">
                     &ldquo;{sessionData.improvedVersion}&rdquo;
                   </p>
                   {sessionData.improvementRationale && (
-                    <div className="text-[11px] text-emerald-300/80 pt-2 border-t border-emerald-500/20">
+                    <div className="text-[11px] text-neutral-300 pt-2 border-t border-neutral-800">
                       <strong>Why this stands out:</strong> {Array.isArray(sessionData.improvementRationale) ? sessionData.improvementRationale.join(" • ") : sessionData.improvementRationale}
                     </div>
                   )}
@@ -623,8 +650,41 @@ export default function InterviewResultsPage() {
           )}
         </div>
 
+        {/* Voice Privacy & Audio Retention Controls */}
+        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-neutral-200 shadow-xs space-y-3 text-black">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-black" />
+                <h3 className="text-xs font-bold text-black uppercase tracking-wider">
+                  Voice Privacy &amp; Recording Retention
+                </h3>
+              </div>
+              <p className="text-xs text-neutral-600">
+                {audioDeleted || sessionData.audioDeletedAt
+                  ? "Raw audio recording has been permanently deleted per privacy policy."
+                  : sessionData.voiceOptIn
+                  ? `Recording retained until ${sessionData.retentionExpiresAt ? new Date(sessionData.retentionExpiresAt).toLocaleDateString() : "7 days"}. You can delete it anytime.`
+                  : "No raw audio stored per your privacy preferences (audio was permanently discarded immediately after scoring)."}
+              </p>
+            </div>
+
+            {(!audioDeleted && !sessionData.audioDeletedAt && sessionData.voiceOptIn) && (
+              <button
+                type="button"
+                onClick={handleDeleteAudio}
+                disabled={deletingAudio}
+                className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer border border-neutral-300 disabled:opacity-50"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{deletingAudio ? "Deleting..." : "Delete Recording Now"}</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* 1-Click Action Hub */}
-        <div className="bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
+        <div className="bg-neutral-900 rounded-3xl p-6 sm:p-8 border border-neutral-800 space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <h3 className="text-sm font-black text-white">Next Steps to Elevate Your Profile</h3>
@@ -636,14 +696,14 @@ export default function InterviewResultsPage() {
             <button
               type="button"
               onClick={handleAskMyraAboutResult}
-              className="p-4 rounded-2xl bg-gradient-to-br from-emerald-950/80 via-slate-950 to-teal-950/80 border border-emerald-500/40 hover:border-emerald-400 transition-all flex flex-col justify-between gap-2 group text-left cursor-pointer"
+              className="p-4 rounded-2xl bg-neutral-900 border border-neutral-700 hover:border-white transition-all flex flex-col justify-between gap-2 group text-left cursor-pointer"
             >
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-300 group-hover:text-emerald-200">
-                <Sparkles className="w-4 h-4 text-amber-300" />
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <Sparkles className="w-4 h-4 text-white" />
                 <span>Ask Myra for Action Plan</span>
               </div>
-              <p className="text-[11px] text-slate-300">Deep-dive on your STAR structure and get coaching feedback.</p>
-              <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1 mt-1">
+              <p className="text-[11px] text-neutral-300">Deep-dive on your STAR structure and get coaching feedback.</p>
+              <span className="text-[10px] font-bold text-white flex items-center gap-1 mt-1">
                 Open AI Consultation <ChevronRight className="w-3 h-3" />
               </span>
             </button>

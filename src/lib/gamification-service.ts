@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 
 export interface AwardPointsParams {
   userId: string;
-  sourceFeature: "mock_interview" | "curiosity_quest" | "daily_task" | "project_studio" | "resume_maker" | "communication_trainer" | "problem_solution";
+  sourceFeature: "mock_interview" | "curiosity_quest" | "daily_task" | "project_studio" | "resume_maker" | "communication_trainer" | "problem_solution" | "dsa_practice";
   sourceId: string;
   points: number;
   timezone?: string;

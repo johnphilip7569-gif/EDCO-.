@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "EdWorld Focus Guard",
+  "version": "1.0.0",
+  "description": "Blocks social media and gaming sites during active EdWorld study blocks and redirects to your learning arena.",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.instagram.com/*",
+    "*://*.snapchat.com/*",
+    "*://*.youtube.com/*",
+    "*://*.discord.com/*",
+    "*://*.reddit.com/*",
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "*://*.tiktok.com/*",
+    "*://*.twitch.tv/*",
+    "*://*.roblox.com/*",
+    "*://*.poki.com/*",
+    "*://localhost/*",
+    "*://*.edworld.co/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost:3000/*",
+        "https://*.edworld.co/*"
+      ],
+      "js": ["content_script.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

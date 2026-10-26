@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Sparkles, 
   Calendar, 
@@ -19,11 +20,13 @@ import { EdworldLogo } from "@/components/ui/EdworldLogo";
 
 interface ComingSoonLandingProps {
   onBypassComingSoon?: () => void;
+  targetLaunchDate?: string;
 }
 
-export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLandingProps) {
-  // Target Launch Date: October 20, 2026, 00:00:00 IST
-  const launchTimestamp = new Date("2026-10-20T00:00:00+05:30").getTime();
+export default function ComingSoonLanding({ onBypassComingSoon, targetLaunchDate }: ComingSoonLandingProps) {
+  // Target Launch Date: Dynamic or future date (e.g., Nov 20, 2026)
+  const targetDateStr = targetLaunchDate || "2026-11-20T00:00:00+05:30";
+  const launchTimestamp = new Date(targetDateStr).getTime();
 
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
@@ -51,9 +54,8 @@ export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLand
 
       if (difference <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, hasLaunched: true });
-        if (onBypassComingSoon) {
-          onBypassComingSoon();
-        }
+        // NOTE: Strict safety guard. We NEVER auto-bypass to the live site automatically.
+        // The platform features only unlock when the administrator explicitly approves & launches from /admin.
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -66,7 +68,7 @@ export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLand
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
-  }, [launchTimestamp, onBypassComingSoon]);
+  }, [launchTimestamp]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +86,7 @@ export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLand
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          source: "coming_soon_oct20_waitlist"
+          source: "coming_soon_waitlist"
         })
       });
 
@@ -92,10 +94,9 @@ export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLand
       if (res.ok && data.success) {
         setSubscribed(true);
       } else {
-        // Even if already subscribed or transient error, thank user gracefully
         setSubscribed(true);
       }
-    } catch (err) {
+    } catch {
       setSubscribed(true); // Graceful UX fallback
     } finally {
       setSubmitting(false);
@@ -108,36 +109,60 @@ export default function ComingSoonLanding({ onBypassComingSoon }: ComingSoonLand
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-blue-600/10 via-indigo-600/5 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/5 blur-3xl pointer-events-none" />
 
-      {/* Header */}
-      <header className="relative z-10 max-w-7xl w-full mx-auto px-6 py-8 flex items-center justify-between border-b border-neutral-900">
-        <div className="flex items-center gap-3">
-          <EdworldLogo size="lg" variant="dark" />
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-neutral-900/80 border border-neutral-800 rounded-full text-xs text-neutral-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Launch Date: October 20, 2026</span>
-          </div>
-
-          {onBypassComingSoon && (
-            <button
-              onClick={onBypassComingSoon}
-              className="text-xs text-neutral-500 hover:text-neutral-300 transition underline underline-offset-4"
-              title="Preview full site"
-            >
-              Preview Full Site
-            </button>
-          )}
-        </div>
-      </header>
+      {/* Discrete Top-Right Admin Control */}
+      <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
+        {onBypassComingSoon && (
+          <button
+            onClick={onBypassComingSoon}
+            className="text-[11px] text-neutral-400 hover:text-white transition px-2.5 py-1 rounded-md bg-neutral-900/60 border border-neutral-800"
+            title="Preview full site (Admin only)"
+          >
+            Preview Full Site
+          </button>
+        )}
+        <Link
+          href="/auth/login"
+          className="text-[11px] font-medium text-neutral-400 hover:text-neutral-200 px-3 py-1.5 rounded-lg bg-neutral-900/40 hover:bg-neutral-800 border border-neutral-800/80 transition"
+        >
+          Admin Sign In
+        </Link>
+      </div>
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-4xl w-full mx-auto px-6 py-16 sm:py-24 text-center my-auto">
+      <main className="relative z-10 max-w-4xl w-full mx-auto px-6 py-12 sm:py-16 text-center my-auto">
+        {/* Centered Logo & Brand Name */}
+        <div className="flex flex-col items-center justify-center mb-6">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-black flex items-center justify-center shadow-xl border border-neutral-800">
+              <Image
+                src="/images/edworld-mark.png"
+                alt="EdWorld Co. Logo"
+                width={56}
+                height={56}
+                className="w-full h-full object-cover"
+                priority
+              />
+            </div>
+            <div className="text-left flex flex-col justify-center">
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  Edworld
+                </span>
+                <span className="text-[10px] sm:text-xs font-mono font-black px-1.5 py-0.5 rounded-md bg-neutral-800 border border-neutral-700 text-neutral-200">
+                  CO.
+                </span>
+              </div>
+              <span className="text-[9px] sm:text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mt-1">
+                Skills &amp; Career OS
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Launch Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-xs text-neutral-300 font-medium mb-8">
           <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-          <span>Production Release Arriving October 20, 2026</span>
+          <span>Official Public Launch Arriving Soon • Pre-Release Phase</span>
         </div>
 
         {/* Hero Title */}

@@ -274,3 +274,289 @@ export function downloadUsersAsCsv(records: ExcelUserRecord[], fileNamePrefix = 
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+/**
+ * Downloads job listings as a clean CSV file
+ */
+export function downloadJobsAsCsv(
+  jobs: Array<{
+    id: string;
+    title: string;
+    company: string;
+    location: string;
+    type: string;
+    category: string;
+    salary_range?: string;
+    skills_required?: string[];
+    is_active?: boolean;
+    created_at?: string;
+  }>,
+  fileNamePrefix = "edworld_jobs"
+): void {
+  const headers = [
+    "Job ID",
+    "Role Title",
+    "Company",
+    "Location",
+    "Type",
+    "Category",
+    "Salary Range",
+    "Required Skills",
+    "Status",
+    "Date Posted",
+  ];
+
+  const rows = jobs.map((j) => [
+    `"${(j.id || "").replace(/"/g, '""')}"`,
+    `"${(j.title || "").replace(/"/g, '""')}"`,
+    `"${(j.company || "").replace(/"/g, '""')}"`,
+    `"${(j.location || "Remote").replace(/"/g, '""')}"`,
+    `"${(j.type || "Full-time").replace(/"/g, '""')}"`,
+    `"${(j.category || "Engineering").replace(/"/g, '""')}"`,
+    `"${(j.salary_range || "N/A").replace(/"/g, '""')}"`,
+    `"${(j.skills_required?.join("; ") || "N/A").replace(/"/g, '""')}"`,
+    `"${j.is_active !== false ? "Active" : "Archived"}"`,
+    `"${j.created_at ? new Date(j.created_at).toLocaleDateString() : "N/A"}"`,
+  ]);
+
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `${fileNamePrefix}_${dateStr}.csv`;
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Downloads Security SOC incidents as an audited CSV report
+ */
+export function downloadSecurityIncidentsAsCsv(
+  incidents: Array<{
+    id: string;
+    threatVector: string;
+    riskScore: number;
+    path: string;
+    details: string;
+    actionTaken: string;
+    timestamp: string | number;
+  }>,
+  fileNamePrefix = "edworld_security_audit"
+): void {
+  const headers = [
+    "Incident ID",
+    "Threat Vector",
+    "Risk Score (/100)",
+    "Target Endpoint",
+    "Forensic Details",
+    "Mitigation Action",
+    "Timestamp",
+  ];
+
+  const rows = incidents.map((inc) => [
+    `"${(inc.id || "").replace(/"/g, '""')}"`,
+    `"${(inc.threatVector || "GENERAL").replace(/"/g, '""')}"`,
+    inc.riskScore || 0,
+    `"${(inc.path || "/").replace(/"/g, '""')}"`,
+    `"${(inc.details || "").replace(/"/g, '""')}"`,
+    `"${(inc.actionTaken || "BLOCKED").replace(/"/g, '""')}"`,
+    `"${inc.timestamp ? new Date(inc.timestamp).toISOString() : new Date().toISOString()}"`,
+  ]);
+
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `${fileNamePrefix}_${dateStr}.csv`;
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Downloads EdBuild groups and submissions as a structured CSV audit log
+ */
+export function downloadEdbuildGroupsAsCsv(
+  groups: Array<{
+    id: string;
+    project_name: string;
+    problem_statement: string;
+    access_type: string;
+    team_size: number;
+    current_members_count: number;
+    status: string;
+    leader_name: string;
+    leader_email: string;
+    submission_link?: string;
+    submission_demo_url?: string;
+    submitted_at?: string;
+    created_at: string;
+    members?: Array<{ name: string; email: string; role: string }>;
+  }>,
+  fileNamePrefix = "edworld_edbuild_teams"
+): void {
+  const headers = [
+    "Group ID",
+    "Project Name",
+    "Problem Statement",
+    "Access Type",
+    "Team Size",
+    "Active Members",
+    "Status",
+    "Leader Name",
+    "Leader Email",
+    "Submission Repo",
+    "Submission Demo",
+    "Submitted At",
+    "Created At",
+    "Teammates List",
+  ];
+
+  const rows = groups.map((g) => [
+    `"${(g.id || "").replace(/"/g, '""')}"`,
+    `"${(g.project_name || "").replace(/"/g, '""')}"`,
+    `"${(g.problem_statement || "").replace(/"/g, '""')}"`,
+    `"${(g.access_type || "public").replace(/"/g, '""')}"`,
+    g.team_size || 0,
+    g.current_members_count || 0,
+    `"${(g.status || "OPEN").replace(/"/g, '""')}"`,
+    `"${(g.leader_name || "").replace(/"/g, '""')}"`,
+    `"${(g.leader_email || "").replace(/"/g, '""')}"`,
+    `"${(g.submission_link || "").replace(/"/g, '""')}"`,
+    `"${(g.submission_demo_url || "").replace(/"/g, '""')}"`,
+    `"${g.submitted_at ? new Date(g.submitted_at).toLocaleDateString() : "Not Submitted"}"`,
+    `"${g.created_at ? new Date(g.created_at).toLocaleDateString() : "N/A"}"`,
+    `"${(g.members?.map((m) => `${m.name} (${m.role})`).join("; ") || "N/A").replace(/"/g, '""')}"`,
+  ]);
+
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `${fileNamePrefix}_${dateStr}.csv`;
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Downloads College Campus Ambassadors applications and active roster as CSV
+ */
+export function downloadAmbassadorsAsCsv(
+  ambassadors: Array<{
+    id?: string;
+    user_id?: string;
+    name: string;
+    email: string;
+    college_name: string;
+    status: string;
+    referral_code?: string;
+    joined_at?: string;
+    created_at?: string;
+  }>,
+  fileNamePrefix = "edworld_campus_ambassadors"
+): void {
+  const headers = [
+    "Application / User ID",
+    "Candidate Name",
+    "Email Address",
+    "College Name",
+    "Status",
+    "Referral Code",
+    "Date Joined / Applied",
+  ];
+
+  const rows = ambassadors.map((a) => [
+    `"${(a.id || a.user_id || "").replace(/"/g, '""')}"`,
+    `"${(a.name || "").replace(/"/g, '""')}"`,
+    `"${(a.email || "").replace(/"/g, '""')}"`,
+    `"${(a.college_name || "").replace(/"/g, '""')}"`,
+    `"${(a.status || "ACTIVE").replace(/"/g, '""')}"`,
+    `"${(a.referral_code || "N/A").replace(/"/g, '""')}"`,
+    `"${a.joined_at || a.created_at ? new Date(a.joined_at || a.created_at!).toLocaleDateString() : "N/A"}"`,
+  ]);
+
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `${fileNamePrefix}_${dateStr}.csv`;
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Downloads candidate job applicant roster as an audit CSV for employers
+ */
+export function downloadJobApplicantsAsCsv(
+  applicants: Array<{
+    id: string;
+    jobTitle?: string;
+    applicantName: string;
+    applicantEmail: string;
+    status: string;
+    matchScore?: number;
+    appliedAt: string;
+    feedbackNote?: string;
+  }>,
+  fileNamePrefix = "edworld_recruiter_applicants"
+): void {
+  const headers = [
+    "Application ID",
+    "Candidate Name",
+    "Candidate Email",
+    "Target Job Title",
+    "Match Score (%)",
+    "Pipeline Stage",
+    "Date Applied",
+    "Recruiter Feedback Note",
+  ];
+
+  const rows = applicants.map((app) => [
+    `"${(app.id || "").replace(/"/g, '""')}"`,
+    `"${(app.applicantName || "").replace(/"/g, '""')}"`,
+    `"${(app.applicantEmail || "").replace(/"/g, '""')}"`,
+    `"${(app.jobTitle || "").replace(/"/g, '""')}"`,
+    app.matchScore || 0,
+    `"${(app.status || "submitted").replace(/"/g, '""')}"`,
+    `"${app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : "N/A"}"`,
+    `"${(app.feedbackNote || "").replace(/"/g, '""')}"`,
+  ]);
+
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `${fileNamePrefix}_${dateStr}.csv`;
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+

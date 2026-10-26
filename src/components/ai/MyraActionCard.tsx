@@ -39,19 +39,19 @@ export default function MyraActionCard({
   const getToolIcon = () => {
     switch (proposal.tool) {
       case "update_resume_section":
-        return <FileEdit className="w-4 h-4 text-emerald-600" />;
+        return <FileEdit className="w-4 h-4 text-black" />;
       case "start_mock_interview":
-        return <Video className="w-4 h-4 text-teal-600" />;
+        return <Video className="w-4 h-4 text-black" />;
       case "schedule_task":
-        return <Calendar className="w-4 h-4 text-amber-600" />;
+        return <Calendar className="w-4 h-4 text-black" />;
       case "reorder_dashboard":
-        return <Sliders className="w-4 h-4 text-indigo-600" />;
+        return <Sliders className="w-4 h-4 text-black" />;
       case "search_jobs":
-        return <Briefcase className="w-4 h-4 text-emerald-600" />;
+        return <Briefcase className="w-4 h-4 text-black" />;
       case "update_dashboard_goal":
-        return <Target className="w-4 h-4 text-teal-600" />;
+        return <Target className="w-4 h-4 text-black" />;
       default:
-        return <Sparkles className="w-4 h-4 text-emerald-600" />;
+        return <Sparkles className="w-4 h-4 text-black" />;
     }
   };
 

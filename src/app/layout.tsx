@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { ToastProvider } from "@/lib/toast-context";
@@ -11,17 +11,15 @@ const inter = Inter({
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-
 export const viewport: Viewport = {
-  themeColor: "#1b4332",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -46,6 +44,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "EdWorld Co. Team", url: "https://www.edworld.co.in" }],
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "EdWorld Co",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -85,8 +91,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${fraunces.variable} scroll-smooth font-sans`}>
-      <body className="min-h-screen flex flex-col bg-paper text-ink antialiased selection:bg-forest selection:text-white">
+    <html lang="en" className={`${inter.variable} scroll-smooth font-sans`}>
+      <body className="min-h-screen flex flex-col bg-white text-[#111827] antialiased selection:bg-[#2563EB] selection:text-white">
         <AuthProvider>
           <ToastProvider>
             <AppShell>{children}</AppShell>

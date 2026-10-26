@@ -61,7 +61,7 @@ export default function ReceivedBirthdayWishesCard({ userId }: ReceivedBirthdayW
             <Cake className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-[#13141B]">
+            <h3 className="text-sm font-bold text-black">
               Birthday Wishes Received
             </h3>
             <p className="text-[10px] text-zinc-500">

@@ -1,0 +1,32 @@
+Chapter 1: Real Numbers (Class 10 Mathematics - CBSE/NCERT Syllabus)
+
+The Fundamental Theorem of Arithmetic states that every composite number can be expressed (factorised) as a product of primes, and this factorisation is unique, apart from the order in which the prime factors occur. For example, 24 can be written uniquely as 2 x 2 x 2 x 3 or 2^3 x 3. Any composite number n can be written in the form n = p1^a1 * p2^a2 * ... * pk^ak where p1 < p2 < ... < pk are prime numbers and a1, a2, ..., ak are positive integers.
+
+Calculating HCF and LCM using Prime Factorisation:
+The Highest Common Factor (HCF) of two positive integers is the product of the smallest power of each common prime factor involved in the numbers.
+The Least Common Multiple (LCM) of two positive integers is the product of the greatest power of each prime factor involved in the numbers.
+For any two positive integers a and b, an essential relationship holds:
+HCF(a, b) * LCM(a, b) = a * b.
+For example, find the HCF and LCM of 6 and 20:
+6 = 2^1 * 3^1
+20 = 2^2 * 5^1
+HCF(6, 20) = 2^1 = 2
+LCM(6, 20) = 2^2 * 3^1 * 5^1 = 4 * 3 * 5 = 60
+Notice that 2 * 60 = 120, and 6 * 20 = 120. The product of HCF and LCM equals the product of the numbers. However, this formula HCF * LCM = a * b holds strictly for two numbers and does NOT apply to three or more numbers.
+
+Revisiting Irrational Numbers:
+A number is called irrational if it cannot be written in the form p/q, where p and q are integers and q is not equal to zero.
+Theorem on Irrationality: Let p be a prime number. If p divides a^2, then p divides a, where a is a positive integer.
+Proof that square root of 2 (√2) is irrational:
+Assume to the contrary that √2 is rational.
+Then there exist co-prime positive integers a and b (where b is not 0) such that √2 = a / b.
+Squaring both sides gives 2 = a^2 / b^2, which implies 2 * b^2 = a^2.
+Therefore, 2 divides a^2. By our theorem, 2 must also divide a.
+Hence, we can write a = 2c for some integer c.
+Substituting a = 2c into 2 * b^2 = a^2 gives:
+2 * b^2 = (2c)^2 = 4c^2, which simplifies to b^2 = 2c^2.
+This implies 2 divides b^2, and therefore 2 divides b.
+Thus, both a and b have 2 as a common factor.
+This contradicts the fact that a and b are co-prime (having no common factor other than 1).
+This contradiction arises because of our incorrect assumption that √2 is rational.
+Therefore, √2 is irrational. The same proof applies to √3 and √5.

@@ -1,12 +1,60 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
 import { sendEmailNotification, PRIMARY_ADMIN_EMAIL } from "@/lib/email-service";
 import { renderBrandedEmailHtml } from "@/lib/email-templates";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+async function verifyAdminClearance(req: NextRequest): Promise<boolean> {
   try {
+    const supabaseServer = createClient();
+    const { data: { user } } = await supabaseServer.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(profile?.role)) {
+        return true;
+      }
+    }
+
+    const sessionCookie = req.cookies.get("edworld_session")?.value;
+    if (sessionCookie) {
+      const { valid, role } = validateSession(sessionCookie);
+      if (valid && ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(role || "")) {
+        return true;
+      }
+    }
+  } catch (err) {
+    console.error("[Bulk Mail Auth Error]:", err);
+  }
+  return false;
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Platform administrator clearance required." },
+        { status: 403 }
+      );
+    }
+
     // 1. Fetch audience stats
     const { data: profiles } = await supabase
       .from("profiles")
@@ -48,6 +96,14 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: "Forbidden: Platform administrator clearance required to dispatch bulk emails." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       audience = "all_students", // "all_students" | "onboarded_students" | "all_users" | "test_admin"
@@ -61,6 +117,15 @@ export async function POST(req: NextRequest) {
 
     if (!subject?.trim() || !message?.trim()) {
       return NextResponse.json({ error: "Subject and Message body are required." }, { status: 400 });
+    }
+
+    // Sanitize URLs to prevent javascript: or data: injection
+    let safeCtaUrl: string | undefined = undefined;
+    if (ctaUrl && typeof ctaUrl === "string") {
+      const trimmed = ctaUrl.trim();
+      if (trimmed.startsWith("https://") || trimmed.startsWith("http://") || trimmed.startsWith("/")) {
+        safeCtaUrl = trimmed;
+      }
     }
 
     // 1. Resolve recipients
@@ -98,6 +163,10 @@ export async function POST(req: NextRequest) {
       recipientEmails = [PRIMARY_ADMIN_EMAIL];
     }
 
+    const cleanHeadline = escapeHtml(headline || subject);
+    const cleanMessage = escapeHtml(message);
+    const cleanCtaLabel = ctaLabel ? escapeHtml(ctaLabel) : "";
+
     // Format clean HTML body
     const formattedBodyHtml = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111;">
@@ -106,18 +175,18 @@ export async function POST(req: NextRequest) {
             COMMUNITY ANNOUNCEMENT
           </span>
           <h1 style="font-size: 26px; font-weight: 900; margin: 16px 0 8px 0; letter-spacing: -0.02em; color: #000000;">
-            ${headline || subject}
+            ${cleanHeadline}
           </h1>
         </div>
 
         <div style="padding: 24px 0; font-size: 15px; line-height: 1.7; color: #222222; white-space: pre-wrap;">
-${message}
+${cleanMessage}
         </div>
 
-        ${ctaLabel && ctaUrl ? `
+        ${cleanCtaLabel && safeCtaUrl ? `
         <div style="text-align: center; margin: 28px 0;">
-          <a href="${ctaUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #000000; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 800; padding: 14px 28px; border-radius: 8px; letter-spacing: 0.02em;">
-            ${ctaLabel} &rarr;
+          <a href="${safeCtaUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #000000; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 800; padding: 14px 28px; border-radius: 8px; letter-spacing: 0.02em;">
+            ${cleanCtaLabel} &rarr;
           </a>
         </div>
         ` : ""}

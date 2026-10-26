@@ -1,10 +1,44 @@
-"use server";
-
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { validateSession } from "@/lib/otp-service";
+
+async function verifyAdminClearance(req: NextRequest): Promise<boolean> {
+  try {
+    const supabaseServer = createClient();
+    const { data: { user } } = await supabaseServer.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.is_admin || ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(profile?.role)) {
+        return true;
+      }
+    }
+
+    const sessionCookie = req.cookies.get("edworld_session")?.value;
+    if (sessionCookie) {
+      const { valid, role } = validateSession(sessionCookie);
+      if (valid && ["ADMIN", "SUPER_ADMIN", "FOUNDER", "EXECUTIVE"].includes(role || "")) {
+        return true;
+      }
+    }
+  } catch (err) {
+    console.error("[Ambassador Admin Auth Error]:", err);
+  }
+  return false;
+}
 
 export async function GET(req: NextRequest) {
   try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json({ error: "Forbidden: Administrator clearance required." }, { status: 403 });
+    }
+
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
 
@@ -38,6 +72,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const isAuthorized = await verifyAdminClearance(req);
+    if (!isAuthorized) {
+      return NextResponse.json({ error: "Forbidden: Administrator clearance required." }, { status: 403 });
+    }
+
     const body = await req.json();
     const { applicationId, reviewerId, action, reviewNotes } = body;
 

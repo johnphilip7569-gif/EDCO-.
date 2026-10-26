@@ -5,15 +5,20 @@ declare global {
   var __pgPool: Pool | undefined;
 }
 
-const connectionString =
-  process.env.DATABASE_URL ||
-  process.env.POSTGRES_URL ||
-  "postgresql://postgres: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@db.wgyscapdywroefsjenno.supabase.co:5432/postgres";
+function getConnectionString(): string {
+  const connStr = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+  if (!connStr) {
+    throw new Error(
+      "[Database Configuration Error]: Neither DATABASE_URL nor POSTGRES_URL environment variable is set."
+    );
+  }
+  return connStr;
+}
 
 export function getDbPool(): Pool {
   if (!global.__pgPool) {
     global.__pgPool = new Pool({
-      connectionString,
+      connectionString: getConnectionString(),
       ssl: {
         rejectUnauthorized: false,
       },

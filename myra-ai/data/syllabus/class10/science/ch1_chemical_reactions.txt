@@ -1,0 +1,48 @@
+Chapter 1: Chemical Reactions and Equations (Class 10 Science - Chemistry)
+
+A chemical reaction is a process in which one or more substances (reactants) are converted to one or more different substances (products). Chemical reactions involve breaking and making of bonds between atoms to produce new substances.
+
+Indicators of a Chemical Reaction:
+1. Change in state (e.g., solid precipitate formed).
+2. Change in colour (e.g., rust formation, copper sulfate changing colour).
+3. Evolution of a gas (e.g., hydrogen gas bubbling when zinc reacts with dilute acid).
+4. Change in temperature (exothermic reactions release heat, endothermic reactions absorb heat).
+
+Law of Conservation of Mass:
+Mass can neither be created nor destroyed in a chemical reaction. That is, the total mass of the elements present in the products of a chemical reaction has to be equal to the total mass of the elements present in the reactants. Therefore, the number of atoms of each element must remain the same before and after a chemical reaction. A balanced chemical equation has an equal number of atoms of each element on both reactant and product sides.
+
+Types of Chemical Reactions:
+1. Combination Reaction:
+Two or more reactants combine to form a single product.
+General formula: A + B -> AB
+Example: Burning of coal: C(s) + O2(g) -> CO2(g)
+Example: Formation of slaked lime: Calcium oxide (quicklime, CaO) reacts vigorously with water to produce calcium hydroxide (slaked lime, Ca(OH)2), releasing a large amount of heat:
+CaO(s) + H2O(l) -> Ca(OH)2(aq) + Heat.
+
+2. Decomposition Reaction:
+A single reactant breaks down into two or more simpler products when heated, illuminated, or subjected to electricity.
+- Thermal decomposition: Heating ferrous sulfate crystals (FeSO4.7H2O) produces ferric oxide (Fe2O3), sulfur dioxide (SO2), and sulfur trioxide (SO3):
+2FeSO4(s) --Heat--> Fe2O3(s) + SO2(g) + SO3(g)
+- Electrolytic decomposition: Electrolysis of water gives hydrogen and oxygen gas in a 2:1 volume ratio:
+2H2O(l) --Electricity--> 2H2(g) + O2(g)
+- Photochemical decomposition: Silver chloride turns grey in sunlight:
+2AgCl(s) --Sunlight--> 2Ag(s) + Cl2(g)
+
+3. Displacement Reaction:
+A more reactive element displaces a less reactive element from its compound solution.
+Example: Iron nail placed in copper sulfate solution. Blue color fades to light green as iron displaces copper:
+Fe(s) + CuSO4(aq) -> FeSO4(aq) + Cu(s).
+
+4. Double Displacement Reaction:
+Reactions in which there is an exchange of ions between the reactants. Frequently results in an insoluble precipitate.
+Example: Sodium sulfate reacts with barium chloride to form a white precipitate of barium sulfate and sodium chloride solution:
+Na2SO4(aq) + BaCl2(aq) -> BaSO4(s) (white precipitate) + 2NaCl(aq).
+
+5. Oxidation and Reduction (Redox Reactions):
+Oxidation is the gain of oxygen or loss of hydrogen/electrons.
+Reduction is the loss of oxygen or gain of hydrogen/electrons.
+When copper oxide is heated with hydrogen:
+CuO + H2 -> Cu + H2O
+Here, CuO loses oxygen (reduced to Cu), while H2 gains oxygen (oxidised to H2O).
+Corrosion: When a metal is attacked by substances around it such as moisture and acids. Rusting of iron forms hydrated iron(III) oxide.
+Rancidity: When fats and oils are oxidised, they become rancid and their smell and taste change. Prevented using antioxidants or packaging in nitrogen gas.

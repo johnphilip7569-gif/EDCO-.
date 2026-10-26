@@ -13,8 +13,22 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("[App Segment Error]:", error);
+    // Log to monitoring — not to the user
+    if (process.env.NODE_ENV === "production") {
+      // In production, only emit the digest (anonymous identifier) — never the raw message
+      console.error("[App Segment Error]:", error?.digest ?? "no-digest");
+    } else {
+      console.error("[App Segment Error]:", error);
+    }
   }, [error]);
+
+  // Safe display value: show digest in prod (opaque ID), message only in dev
+  const safeDisplayInfo =
+    process.env.NODE_ENV !== "production" && error?.message
+      ? error.message
+      : error?.digest
+      ? `Ref: ${error.digest}`
+      : null;
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">
@@ -25,19 +39,19 @@ export default function ErrorPage({
 
         <div className="space-y-2">
           <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
-            Error Segment Handled
+            Something went wrong
           </span>
           <h1 className="text-2xl font-black text-[#13141B] tracking-tight">
-            Application Encountered an Error
+            We hit an unexpected error
           </h1>
           <p className="text-xs sm:text-sm text-[#5E6573] leading-relaxed">
-            This module encountered an unexpected state. Your saved progress, resume drafts, and scores remain safe.
+            Your saved progress, resume drafts, and scores are safe. Try again or return to your dashboard.
           </p>
         </div>
 
-        {error?.message && (
+        {safeDisplayInfo && (
           <div className="p-3 bg-[#F4F6FB] rounded-xl border border-[#E8ECF2] text-[11px] text-[#5E6573] font-mono overflow-x-auto text-left">
-            {error.message}
+            {safeDisplayInfo}
           </div>
         )}
 

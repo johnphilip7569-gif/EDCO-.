@@ -27,7 +27,6 @@ import {
 import BackToTop from "@/components/ui/BackToTop";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
-import FloatingContactButton from "@/components/ui/FloatingContactButton";
 import Footer from "@/components/layout/Footer";
 
 export default function ModernEdworldLanding() {
@@ -475,12 +474,7 @@ export default function ModernEdworldLanding() {
         </div>
       </section>
 
-      {/* 7. UNIFIED ENTERPRISE COMPLIANCE FOOTER */}
-      <Footer />
-
       <BackToTop />
-      <FloatingContactButton />
-
     </div>
   );
 }

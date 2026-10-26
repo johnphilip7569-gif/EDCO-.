@@ -1,19 +1,4 @@
-import { Pool } from "pg";
-
-let pool: Pool | null = null;
-function getDbPool() {
-  if (!pool) {
-    const connStr =
-      process.env.DATABASE_URL ||
-      process.env.POSTGRES_URL ||
-      "postgresql://postgres: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@db.wgyscapdywroefsjenno.supabase.co:5432/postgres";
-    pool = new Pool({
-      connectionString: connStr,
-      ssl: { rejectUnauthorized: false },
-    });
-  }
-  return pool;
-}
+import { getDbPool } from "@/lib/db-server";
 
 export interface StalenessAuditResult {
   totalChecked: number;

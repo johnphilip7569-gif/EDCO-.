@@ -18,10 +18,12 @@ import {
   Loader2,
   Gift,
   CheckCircle2,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles
 } from "lucide-react";
-import EdworldLogo from "@/components/ui/EdworldLogo";
 import { supabase } from "@/lib/supabase";
+import FigmaAuthLayout from "@/components/auth/figma/FigmaAuthLayout";
+import FloatingMyraSignupBuddy from "@/components/auth/FloatingMyraSignupBuddy";
 
 function SignupForm() {
   const router = useRouter();
@@ -47,8 +49,6 @@ function SignupForm() {
   const hasMinLen = password.length >= 8;
   const hasLetter = /[a-zA-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  const hasUppercase = /[A-Z]/.test(password);
-  const hasLowercase = /[a-z]/.test(password);
   const isPasswordValid = hasMinLen && hasLetter && hasNumber;
   const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
 
@@ -76,7 +76,7 @@ function SignupForm() {
       setError(null);
       setLoadingStep("Creating your secure account...");
 
-      const res = await signupWithEmail(name.trim(), email.trim().toLowerCase(), password, undefined, undefined, phone.trim() || undefined);
+      await signupWithEmail(name.trim(), email.trim().toLowerCase(), password, undefined, undefined, phone.trim() || undefined);
 
       // Record referral code if present
       if (referralCode.trim()) {
@@ -99,287 +99,238 @@ function SignupForm() {
         }
       }
 
-      setLoadingStep("Finalizing setup...");
       setAccountCreated(true);
-      
-      if (res?.needsEmailVerification) {
-        setTimeout(() => {
-          router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
-        }, 1500);
-      } else {
-        setTimeout(() => {
-          router.push("/onboarding");
-        }, 1000);
-      }
+      setTimeout(() => {
+        router.push("/onboarding");
+      }, 2000);
     } catch (err: any) {
-      console.error("Signup error:", err);
-      setError(translateAuthError(err));
+      const friendlyMsg = translateAuthError(err);
+      setError(friendlyMsg);
+    } finally {
       setLoading(false);
     }
   };
 
-  if (accountCreated) {
-    return (
-      <div className="min-h-screen bg-[#FCFCFB] text-[#13141B] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-          <div className="rounded-2xl p-8 bg-white border border-[#EBECEF] shadow-xs text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-2xs">
+  return (
+    <>
+      <FigmaAuthLayout
+        title="Create Account"
+        subtitle="Join thousands of students and engineers mastering their future."
+        activeTab="signup"
+      >
+      <div className="space-y-5">
+        
+        {/* Success Message Banner */}
+        {accountCreated ? (
+          <div className="p-6 rounded-3xl bg-emerald-50 border-2 border-emerald-600 text-center space-y-3 animate-in zoom-in-95 shadow-[4px_4px_0px_#1B1B2F]">
+            <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-sm border-2 border-[#1B1B2F]">
               <CheckCircle2 className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-extrabold text-[#13141B]">Account Created!</h2>
-            <p className="text-xs text-[#5E6573]">
-              Your EdWorld account has been created successfully. Redirecting you to onboarding...
+            <h3 className="font-heading font-black text-lg text-emerald-950">
+              Account Created Successfully!
+            </h3>
+            <p className="font-studio text-xs text-emerald-800">
+              Setting up your customized learning workspace and directing you to onboarding...
             </p>
-            <div className="flex items-center justify-center gap-2 text-xs font-bold text-[#13141B]">
-              <Loader2 className="w-4 h-4 animate-spin text-[#00D2B4]" />
-              <span>Redirecting...</span>
+            <div className="pt-2">
+              <Loader2 className="w-5 h-5 animate-spin text-emerald-600 mx-auto" />
             </div>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#FCFCFB] text-[#13141B] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans selection:bg-[#00D2B4]/20 selection:text-[#0A5245]">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md space-y-2 text-center">
-        <Link href="/" className="inline-block transition-transform hover:scale-105 active:scale-95">
-          <EdworldLogo />
-        </Link>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#13141B] tracking-tight">
-          Create Your Account
-        </h1>
-        <p className="text-xs sm:text-sm text-[#5E6573] max-w-sm mx-auto">
-          Begin your journey with AI drills, verified portfolio records, and calibrated career pathways.
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="rounded-2xl p-6 sm:p-8 bg-white border border-[#EBECEF] shadow-xs space-y-5">
-          
-          {error && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-start gap-2.5 animate-in fade-in">
-              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                Full Name
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  placeholder="Alex Johnson"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE]"
-                />
-                <User className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        ) : (
+          <>
+            {/* Error Banner */}
+            {error && (
+              <div className="p-3.5 rounded-2xl bg-rose-50 border-2 border-rose-600 text-rose-900 text-xs font-heading font-bold flex items-start gap-2.5 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                <div className="flex-1">{error}</div>
               </div>
-            </div>
+            )}
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                Email Address
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="alex@university.edu"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE]"
-                />
-                <Mail className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                  Phone Number
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              
+              {/* Full Name */}
+              <div className="space-y-1">
+                <label className="block text-[11px] font-heading font-black text-[#1B1B2F] uppercase tracking-wider">
+                  Full Name
                 </label>
-                <span className="text-[10px] text-[#5E6573] font-medium">
-                  (Optional &bull; For 2FA Recovery)
-                </span>
-              </div>
-              <div className="relative">
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+91 98765 43210"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE]"
-                />
-                <Phone className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE]"
-                />
-                <Lock className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8F9CAE] hover:text-[#13141B] transition-colors cursor-pointer"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+                <div className="relative">
+                  <User className="w-4 h-4 text-[#7E7E9A] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Doe"
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-2xl text-[#1B1B2F] placeholder-[#7E7E9A] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] transition-all font-studio"
+                  />
+                </div>
               </div>
 
-              {/* Live Password Checklist */}
-              {password && (
-                <div className="pt-2 grid grid-cols-2 gap-1.5 text-[11px]">
-                  <div className={`flex items-center gap-1.5 ${hasMinLen ? "text-emerald-700 font-bold" : "text-[#5E6573]"}`}>
-                    {hasMinLen ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-rose-500" />}
-                    <span>8+ Characters</span>
+              {/* Email Address */}
+              <div className="space-y-1">
+                <label className="block text-[11px] font-heading font-black text-[#1B1B2F] uppercase tracking-wider">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-[#7E7E9A] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="name@example.com"
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-2xl text-[#1B1B2F] placeholder-[#7E7E9A] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] transition-all font-studio"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="space-y-1">
+                <label className="block text-[11px] font-heading font-black text-[#1B1B2F] uppercase tracking-wider">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#7E7E9A] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="At least 8 characters"
+                    className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-2xl text-[#1B1B2F] placeholder-[#7E7E9A] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] transition-all font-studio"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7E7E9A] hover:text-[#1B1B2F] transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm Password */}
+              <div className="space-y-1">
+                <label className="block text-[11px] font-heading font-black text-[#1B1B2F] uppercase tracking-wider">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#7E7E9A] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter your password"
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-[#FFF8EE] border-2 border-[#1B1B2F] rounded-2xl text-[#1B1B2F] placeholder-[#7E7E9A] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] transition-all font-studio"
+                  />
+                </div>
+              </div>
+
+              {/* Password Quality Checklist */}
+              {password.length > 0 && (
+                <div className="p-2.5 rounded-2xl bg-[#FFF8EE] border-2 border-[#1B1B2F]/30 text-[11px] space-y-1 font-mono">
+                  <div className="flex items-center gap-1.5">
+                    {hasMinLen ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-neutral-400" />}
+                    <span className={hasMinLen ? "text-emerald-700 font-bold" : "text-neutral-500"}>At least 8 characters</span>
                   </div>
-                  <div className={`flex items-center gap-1.5 ${hasLetter ? "text-emerald-700 font-bold" : "text-[#5E6573]"}`}>
-                    {hasLetter ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-rose-500" />}
-                    <span>Letters</span>
+                  <div className="flex items-center gap-1.5">
+                    {hasLetter && hasNumber ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-neutral-400" />}
+                    <span className={hasLetter && hasNumber ? "text-emerald-700 font-bold" : "text-neutral-500"}>Letters and numbers</span>
                   </div>
-                  <div className={`flex items-center gap-1.5 ${hasNumber ? "text-emerald-700 font-bold" : "text-[#5E6573]"}`}>
-                    {hasNumber ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-rose-500" />}
-                    <span>Numbers</span>
-                  </div>
-                  <div className={`flex items-center gap-1.5 ${hasUppercase && hasLowercase ? "text-emerald-700 font-bold" : "text-[#5E6573]"}`}>
-                    {hasUppercase && hasLowercase ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-rose-500" />}
-                    <span>Case Variation</span>
-                  </div>
+                  {confirmPassword.length > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      {passwordsMatch ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-rose-500" />}
+                      <span className={passwordsMatch ? "text-emerald-700 font-bold" : "text-rose-600"}>Passwords match</span>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE]"
-                />
-                <Lock className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              </div>
-              {confirmPassword && (
-                <p className={`text-[11px] font-bold ${passwordsMatch ? "text-emerald-700" : "text-rose-600"}`}>
-                  {passwordsMatch ? "✓ Passwords match" : "✗ Passwords do not match"}
-                </p>
-              )}
-            </div>
+              {/* Terms & Age Eligibility Checkboxes */}
+              <div className="space-y-2 pt-1 font-studio">
+                <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#4A4A68]">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={termsAgreed}
+                    onChange={(e) => setTermsAgreed(e.target.checked)}
+                    className="mt-0.5 rounded border-2 border-[#1B1B2F] text-[#FF6B6B] focus:ring-[#FF6B6B] cursor-pointer"
+                  />
+                  <span>
+                    I agree to the{" "}
+                    <Link href="/terms" target="_blank" className="font-bold text-[#1B1B2F] underline">Terms of Service</Link>
+                    {" "}and{" "}
+                    <Link href="/privacy" target="_blank" className="font-bold text-[#1B1B2F] underline">Privacy Policy</Link>.
+                  </span>
+                </label>
 
-            <div className="space-y-1.5 pt-1">
-              <label className="block text-xs font-bold text-[#13141B] uppercase tracking-wider">
-                Referral / Campus Code (Optional)
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={referralCode}
-                  onChange={(e) => setReferralCode(e.target.value)}
-                  placeholder="e.g. EDW-CAMPUS-2026"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FCFCFB] border border-[#EBECEF] text-xs sm:text-sm text-[#13141B] focus:outline-none focus:ring-2 focus:ring-[#13141B] transition-all placeholder:text-[#8F9CAE] uppercase font-mono"
-                />
-                <Gift className="w-4 h-4 text-[#8F9CAE] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              </div>
-            </div>
-
-            <div className="space-y-2 pt-2">
-              <div className="flex items-start gap-2.5">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={termsAgreed}
-                  onChange={(e) => setTermsAgreed(e.target.checked)}
-                  className="mt-0.5 rounded border-[#EBECEF] text-[#13141B] focus:ring-[#13141B] cursor-pointer"
-                />
-                <label htmlFor="terms" className="text-xs text-[#5E6573] cursor-pointer leading-relaxed">
-                  I agree to the{" "}
-                  <Link href="/terms" className="text-[#13141B] font-bold underline" target="_blank">Terms of Service</Link>,{" "}
-                  <Link href="/privacy" className="text-[#13141B] font-bold underline" target="_blank">Privacy Policy</Link>, and{" "}
-                  <Link href="/refund" className="text-[#13141B] font-bold underline" target="_blank">Refund Policy</Link>.
+                <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#4A4A68]">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={ageConsent}
+                    onChange={(e) => setAgeConsent(e.target.checked)}
+                    className="mt-0.5 rounded border-2 border-[#1B1B2F] text-[#FF6B6B] focus:ring-[#FF6B6B] cursor-pointer"
+                  />
+                  <span>
+                    I confirm I am eligible or have parental/guardian consent to use EdWorld Co.
+                  </span>
                 </label>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <input
-                  type="checkbox"
-                  id="ageConsent"
-                  checked={ageConsent}
-                  onChange={(e) => setAgeConsent(e.target.checked)}
-                  className="mt-0.5 rounded border-[#EBECEF] text-[#13141B] focus:ring-[#13141B] cursor-pointer"
-                />
-                <label htmlFor="ageConsent" className="text-xs text-[#5E6573] cursor-pointer leading-relaxed">
-                  I confirm I am 18 years or older, or between 13–17 years old with verifiable parental/guardian consent (DPDP Act &amp; COPPA).
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-2 active:scale-[0.98]"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>{loadingStep}</span>
-                </>
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="pt-3 border-t border-[#EBECEF] text-center">
-            <p className="text-xs text-[#5E6573]">
-              Already have an account?{" "}
-              <Link
-                href="/auth/login"
-                className="font-bold text-[#13141B] hover:underline"
+              {/* Tactile Squishy Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-squishy w-full mt-2 py-3.5 px-6 rounded-2xl bg-[#FF6B6B] text-white font-heading font-extrabold text-xs sm:text-sm border-2 border-[#1B1B2F] shadow-[3px_3px_0px_#1B1B2F] flex items-center justify-center gap-2 select-none disabled:opacity-50 cursor-pointer"
               >
-                Sign In
-              </Link>
-            </p>
-          </div>
-        </div>
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>{loadingStep}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Create Free Student Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
 
-        <div className="mt-6 text-center text-xs text-[#5E6573] flex items-center justify-center gap-1.5">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          <span>Encrypted database credentials &bull; Zero spam</span>
-        </div>
+            </form>
+
+            {/* Bottom Switcher */}
+            <div className="pt-3 border-t-2 border-[#1B1B2F]/15 text-center">
+              <p className="text-xs font-studio text-[#4A4A68]">
+                Already have an account?{" "}
+                <Link
+                  href="/auth/login"
+                  className="font-heading font-black text-[#1B1B2F] hover:text-[#FF6B6B] underline"
+                >
+                  Sign in here
+                </Link>
+              </p>
+            </div>
+          </>
+        )}
+
       </div>
-    </div>
+    </FigmaAuthLayout>
+    <FloatingMyraSignupBuddy />
+  </>
   );
 }
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#FCFCFB]" />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-[#ebe9fc] via-[#e4e2f8] to-[#eeeafc] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-black" />
+        </div>
+      }
+    >
       <SignupForm />
     </Suspense>
   );

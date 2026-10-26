@@ -9,17 +9,19 @@ import {
   Mic, 
   Radio, 
   Brain, 
-  CheckCircle2,
-  Smile
+  CheckCircle2
 } from "lucide-react";
+import { VOICE_PROFILES, VoiceChoice } from "@/lib/interview/voice-profiles";
 
 export type MyraState = "idle" | "speaking" | "listening" | "thinking" | "feedback";
-export type TeddyState = MyraState; // Backward compatibility alias
+export type TeddyState = MyraState;
 
 interface MyraInterviewerAvatarProps {
   state: MyraState;
   questionText?: string;
   isAudioMuted?: boolean;
+  voiceChoice?: VoiceChoice;
+  speakingSpeed?: number;
   onToggleMute?: () => void;
   onSpeechEnd?: () => void;
 }
@@ -28,6 +30,8 @@ export default function MyraInterviewerAvatar({
   state,
   questionText = "",
   isAudioMuted = false,
+  voiceChoice = "myra-neutral",
+  speakingSpeed = 1.0,
   onToggleMute,
   onSpeechEnd,
 }: MyraInterviewerAvatarProps) {
@@ -49,24 +53,19 @@ export default function MyraInterviewerAvatar({
       synthRef.current.cancel(); // Stop any pending speech
 
       const utterance = new SpeechSynthesisUtterance(questionText);
-      utterance.rate = 0.95; // Clear pedagogical pacing
-      utterance.pitch = 1.05; // Friendly warm pitch
+      const profile = VOICE_PROFILES[voiceChoice] || VOICE_PROFILES["myra-neutral"];
+      
+      utterance.rate = Math.round((profile.defaultRate * speakingSpeed) * 100) / 100;
+      utterance.pitch = profile.defaultPitch;
 
-      // Attempt to find high quality natural voice
+      // Select matching voice
       const voices = synthRef.current.getVoices();
-      const friendlyVoice = voices.find(
+      const matchedVoice = voices.find(
         (v) =>
           v.lang.startsWith("en") &&
-          (v.name.includes("Natural") ||
-            v.name.includes("Google") ||
-            v.name.includes("Samantha") ||
-            v.name.includes("Daniel") ||
-            v.name.includes("Alex") ||
-            v.name.includes("Karen") ||
-            v.name.includes("Victoria") ||
-            v.name.includes("Zira"))
+          profile.voiceHints.some((hint) => v.name.toLowerCase().includes(hint.toLowerCase()))
       );
-      if (friendlyVoice) utterance.voice = friendlyVoice;
+      if (matchedVoice) utterance.voice = matchedVoice;
 
       utterance.onstart = () => setSpeechActive(true);
       utterance.onend = () => {
@@ -88,46 +87,46 @@ export default function MyraInterviewerAvatar({
     return () => {
       if (synthRef.current) synthRef.current.cancel();
     };
-  }, [state, questionText, isAudioMuted, onSpeechEnd]);
+  }, [state, questionText, isAudioMuted, voiceChoice, speakingSpeed, onSpeechEnd]);
 
-  // Status Badge Configuration
+  // Status Badge Configuration adhering to Feature 27 Black/White system
   const getStatusBadge = () => {
     switch (state) {
       case "speaking":
         return {
-          label: "Myra is Speaking...",
-          color: "bg-emerald-500/20 text-[#00D2B4] border-[#00D2B4]/40",
+          label: "Speaking Question",
+          color: "bg-black text-white border-black",
           icon: Radio,
-          dotColor: "bg-[#00D2B4] animate-ping",
+          dotColor: "bg-white animate-ping",
         };
       case "listening":
         return {
-          label: "Myra is Listening to You",
-          color: "bg-blue-500/20 text-blue-300 border-blue-400/40",
+          label: "Listening to You...",
+          color: "bg-neutral-100 text-black border-neutral-300",
           icon: Mic,
-          dotColor: "bg-blue-400 animate-pulse",
+          dotColor: "bg-black animate-pulse",
         };
       case "thinking":
         return {
-          label: "Myra is Analyzing Response...",
-          color: "bg-purple-500/20 text-purple-300 border-purple-400/40",
+          label: "Analyzing Response...",
+          color: "bg-neutral-100 text-black border-neutral-300",
           icon: Brain,
-          dotColor: "bg-purple-400 animate-pulse",
+          dotColor: "bg-neutral-500 animate-pulse",
         };
       case "feedback":
         return {
-          label: "Great Delivery! Analyzing...",
-          color: "bg-amber-500/20 text-amber-300 border-amber-400/40",
-          icon: Smile,
-          dotColor: "bg-amber-400",
+          label: "Processing Feedback",
+          color: "bg-neutral-100 text-black border-neutral-300",
+          icon: Sparkles,
+          dotColor: "bg-black",
         };
       case "idle":
       default:
         return {
-          label: "Myra • Lead AI Interviewer",
-          color: "bg-slate-800 text-slate-300 border-slate-700",
+          label: "Ready",
+          color: "bg-white text-neutral-800 border-neutral-200",
           icon: Sparkles,
-          dotColor: "bg-emerald-400",
+          dotColor: "bg-neutral-400",
         };
     }
   };
@@ -136,21 +135,11 @@ export default function MyraInterviewerAvatar({
   const IconComponent = badge.icon;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-between p-6 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
-      {/* Background Animated Glow Aura */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${
-          state === "speaking" 
-            ? "opacity-40 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00D2B4]/30 via-slate-950/0 to-transparent" 
-            : state === "listening"
-            ? "opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/30 via-slate-950/0 to-transparent"
-            : "opacity-15 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-slate-950/0 to-transparent"
-        }`} 
-      />
-
+    <div className="relative w-full h-full flex flex-col items-center justify-between p-5 sm:p-6 bg-white border border-neutral-200 rounded-3xl shadow-sm text-black select-none">
+      
       {/* Top Header: Badge + Audio Mute Controls */}
       <div className="w-full flex items-center justify-between z-10">
-        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md transition-all ${badge.color}`}>
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all ${badge.color}`}>
           <span className={`w-2 h-2 rounded-full ${badge.dotColor}`} />
           <IconComponent className="w-3.5 h-3.5" />
           <span>{badge.label}</span>
@@ -158,11 +147,12 @@ export default function MyraInterviewerAvatar({
 
         {onToggleMute && (
           <button
+            type="button"
             onClick={onToggleMute}
-            className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+            className={`p-2 rounded-xl border transition-all cursor-pointer ${
               isAudioMuted
-                ? "bg-rose-500/20 border-rose-500/40 text-rose-300 hover:bg-rose-500/30"
-                : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-700/80 hover:text-white"
+                ? "bg-neutral-100 border-neutral-300 text-neutral-600 hover:bg-neutral-200"
+                : "bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-50"
             }`}
             title={isAudioMuted ? "Unmute Myra Voice" : "Mute Myra Voice"}
             aria-label={isAudioMuted ? "Unmute Myra Voice" : "Mute Myra Voice"}
@@ -172,69 +162,64 @@ export default function MyraInterviewerAvatar({
         )}
       </div>
 
-      {/* Center 3D Myra Character View */}
+      {/* Center Avatar View with Monochrome Pulse Waveform */}
       <div className="relative flex flex-col items-center justify-center my-auto z-10">
-        {/* Animated Glow Rings during Speech */}
+        
+        {/* Subtle breathing ring during speech */}
         {state === "speaking" && (
-          <div className="absolute w-56 h-56 rounded-full border-2 border-[#00D2B4]/40 animate-ping pointer-events-none" />
-        )}
-        {state === "listening" && (
-          <div className="absolute w-52 h-52 rounded-full border-2 border-blue-400/40 animate-pulse pointer-events-none" />
+          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-3xl border-2 border-black/20 animate-ping pointer-events-none" />
         )}
 
-        {/* Myra Character Image Container with Dynamic Animations */}
+        {/* Avatar Image Frame */}
         <div
-          className={`relative w-44 h-44 sm:w-52 sm:h-52 rounded-3xl overflow-hidden border-2 transition-all duration-500 shadow-2xl bg-slate-950 ${
+          className={`relative w-36 h-36 sm:w-44 sm:h-44 rounded-3xl overflow-hidden border-2 transition-all duration-300 shadow-md bg-neutral-100 ${
             state === "speaking"
-              ? "border-[#00D2B4] shadow-[#00D2B4]/20 scale-105"
+              ? "border-black scale-105"
               : state === "listening"
-              ? "border-blue-400 shadow-blue-400/20 scale-100"
-              : state === "thinking"
-              ? "border-purple-400 shadow-purple-400/20 animate-pulse"
-              : "border-slate-700 hover:border-slate-500"
+              ? "border-neutral-400 scale-100"
+              : "border-neutral-200"
           }`}
         >
           <Image
-            src="/images/teddy-interviewer.png"
-            alt="Myra - AI Lead Interviewer & Academic Mentor"
+            src="/images/myra-avatar.png"
+            alt="Myra, AI interviewer"
             fill
             priority
-            className={`object-cover object-top transition-transform duration-500 ${
-              state === "speaking" ? "scale-110" : "scale-100"
-            }`}
+            className="object-cover object-top"
           />
 
-          {/* Interactive Overlay Waveform when speaking */}
+          {/* Monochrome Waveform when speaking */}
           {state === "speaking" && (
-            <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-slate-950/90 to-transparent flex items-end justify-center pb-2 gap-1 px-4">
-              <span className="w-1 bg-[#00D2B4] rounded-full h-3 animate-[bounce_0.6s_infinite_100ms]" />
-              <span className="w-1 bg-[#00D2B4] rounded-full h-6 animate-[bounce_0.6s_infinite_200ms]" />
-              <span className="w-1 bg-[#00D2B4] rounded-full h-4 animate-[bounce_0.6s_infinite_300ms]" />
-              <span className="w-1 bg-[#00D2B4] rounded-full h-7 animate-[bounce_0.6s_infinite_150ms]" />
-              <span className="w-1 bg-[#00D2B4] rounded-full h-5 animate-[bounce_0.6s_infinite_250ms]" />
+            <div className="absolute bottom-0 inset-x-0 h-9 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center pb-2 gap-1 px-4">
+              <span className="w-1 bg-white rounded-full h-3 animate-[bounce_0.6s_infinite_100ms]" />
+              <span className="w-1 bg-white rounded-full h-5 animate-[bounce_0.6s_infinite_200ms]" />
+              <span className="w-1 bg-white rounded-full h-3.5 animate-[bounce_0.6s_infinite_300ms]" />
+              <span className="w-1 bg-white rounded-full h-6 animate-[bounce_0.6s_infinite_150ms]" />
+              <span className="w-1 bg-white rounded-full h-4 animate-[bounce_0.6s_infinite_250ms]" />
             </div>
           )}
         </div>
 
-        {/* Name Tag */}
-        <div className="mt-3 flex items-center gap-1.5 bg-slate-950/80 border border-slate-800 px-3 py-1 rounded-full text-xs font-bold text-slate-200 shadow-md">
-          <span className="w-2 h-2 rounded-full bg-[#00D2B4]" />
-          <span>Myra &bull; AI Lead Interviewer</span>
+        {/* Permanent Required Transparent AI Identity Label */}
+        <div className="mt-3.5 flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full text-xs font-bold text-neutral-800 shadow-2xs">
+          <span className="w-2 h-2 rounded-full bg-black" />
+          <span>Myra, AI interviewer</span>
         </div>
       </div>
 
-      {/* Bottom Subtitle / Instruction Hint */}
-      <div className="w-full text-center z-10">
-        <p className="text-xs text-slate-400 font-medium tracking-wide">
+      {/* Bottom Context Hint */}
+      <div className="w-full text-center z-10 pt-2 border-t border-neutral-100">
+        <p className="text-[11px] text-neutral-500 font-medium tracking-wide">
           {state === "speaking"
-            ? "Listen carefully to Myra's question. Formulate your answer using the STAR method."
+            ? "Listen carefully to Myra's spoken question."
             : state === "listening"
-            ? "Speak clearly into your microphone. Myra is evaluating your technical depth & clarity."
+            ? "Microphone open — speak aloud. Live transcript will appear."
             : state === "thinking"
-            ? "Myra is computing your delivery metrics and technical accuracy..."
-            : "Myra is ready. Press Start to begin your calibrated session."}
+            ? "Evaluating your answer and preparing next turn..."
+            : "Live voice interview session active."}
         </p>
       </div>
+
     </div>
   );
 }

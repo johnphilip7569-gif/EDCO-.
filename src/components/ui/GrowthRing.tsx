@@ -50,13 +50,13 @@ export const GrowthRing: React.FC<GrowthRingProps> = ({
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (currentProgress / 100) * circumference;
 
-  // Level Colors
+  // Level Colors (Monochrome Hierarchy)
   const levelColors = {
-    0: { stroke: "#0d9488", text: "text-teal-600", bg: "stroke-teal-100", label: "Foundational" },
-    1: { stroke: "#7B57FF", text: "text-violet-600", bg: "stroke-violet-100", label: "Junior Explorer" },
-    2: { stroke: "#00D2B4", text: "text-emerald-600", bg: "stroke-emerald-100", label: "Student Applied" },
-    3: { stroke: "#D7FC51", text: "text-[#D7FC51]", bg: "stroke-amber-100/30", label: "Industry Master" }
-  }[level as 0 | 1 | 2 | 3] || { stroke: "#00D2B4", text: "text-[#00D2B4]", bg: "stroke-slate-100", label: "Master" };
+    0: { stroke: "#000000", text: "text-black", bg: "stroke-neutral-200", label: "Foundational" },
+    1: { stroke: "#000000", text: "text-black", bg: "stroke-neutral-200", label: "Junior Explorer" },
+    2: { stroke: "#000000", text: "text-black", bg: "stroke-neutral-200", label: "Student Applied" },
+    3: { stroke: "#000000", text: "text-black", bg: "stroke-neutral-200", label: "Industry Master" }
+  }[level as 0 | 1 | 2 | 3] || { stroke: "#000000", text: "text-black", bg: "stroke-neutral-200", label: "Master" };
 
   return (
     <div className={`relative inline-flex flex-col items-center justify-center ${className}`}>

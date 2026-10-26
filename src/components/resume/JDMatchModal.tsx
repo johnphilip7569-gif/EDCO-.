@@ -17,8 +17,11 @@ import {
   Percent,
   Plus,
   Loader2,
-  RotateCcw
+  RotateCcw,
+  Volume2,
+  Square
 } from "lucide-react";
+import { useTextToSpeech } from "./VoiceAssistModal";
 
 interface JDMatchModalProps {
   isOpen: boolean;
@@ -45,6 +48,18 @@ export default function JDMatchModal({
   const [error, setError] = useState<string | null>(null);
   const [addedKeywords, setAddedKeywords] = useState<Set<string>>(new Set());
   const [suggestionStatus, setSuggestionStatus] = useState<Record<number, "accepted" | "dismissed">>({});
+  const tts = useTextToSpeech();
+
+  const handleListenToAnalysis = () => {
+    if (!analysis) return;
+    if (tts.isPlaying) {
+      tts.stop();
+      return;
+    }
+    const missingSample = (analysis.missingKeywords || []).slice(0, 3).join(", ");
+    const summaryText = `Your resume currently matches ${analysis.matchScore} percent of the job description for ${targetRole}. You have ${analysis.presentKeywords?.length || 0} matching skills, and ${analysis.missingKeywords?.length || 0} missing keywords. Consider incorporating terms like ${missingSample || "the suggested competencies"}.`;
+    tts.speak(summaryText);
+  };
 
   if (!isOpen) return null;
 
@@ -184,6 +199,29 @@ export default function JDMatchModal({
           {/* Results Display */}
           {analysis && (
             <div className="space-y-6 pt-4 border-t border-slate-200 animate-in fade-in duration-300">
+              
+              {/* Header with Listen to Summary Button */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-800">Match Diagnostic</span>
+                <button
+                  type="button"
+                  onClick={handleListenToAnalysis}
+                  className="px-3 py-1.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95"
+                >
+                  {tts.isPlaying ? (
+                    <>
+                      <Square className="w-3.5 h-3.5 fill-current text-white animate-pulse" />
+                      <span>Stop Listening</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-3.5 h-3.5 text-white" />
+                      <span>Listen to Myra&apos;s Summary</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
               {/* Scores Grid */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-3">

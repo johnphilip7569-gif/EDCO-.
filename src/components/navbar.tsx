@@ -317,33 +317,6 @@ export default function Navbar() {
       category: "org"
     },
     {
-      href: "/employee",
-      label: "Employee Workspace",
-      shortLabel: "Employee",
-      icon: Briefcase,
-      desc: "Daily check-in, OKRs, tasks & internal tickets",
-      category: "org",
-      staffOnly: true
-    },
-    {
-      href: "/hr",
-      label: "HR Command Center",
-      shortLabel: "HR Center",
-      icon: Users,
-      desc: "Employee onboarding, provisioning & payroll",
-      category: "org",
-      staffOnly: true
-    },
-    {
-      href: "/founder",
-      label: "Founder Suite",
-      shortLabel: "Founder",
-      icon: Building2,
-      desc: "Valuation sandbox, burn rate & organizational metrics",
-      category: "org",
-      staffOnly: true
-    },
-    {
       href: "/admin",
       label: "Admin Operations Portal",
       shortLabel: "Admin OS",
@@ -482,10 +455,10 @@ export default function Navbar() {
                   );
                 }}
                 aria-label="Ask Myra AI Copilot"
-                className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 hover:from-emerald-800 hover:to-teal-900 text-white font-black text-xs transition-all shadow-xs cursor-pointer group active:scale-95 border border-emerald-500/30"
+                className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-black hover:bg-neutral-800 text-white font-black text-xs transition-all shadow-xs cursor-pointer group active:scale-95 border border-black"
                 title="Ask Myra AI Copilot"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300 transition-transform group-hover:rotate-12" />
+                <Sparkles className="w-3.5 h-3.5 text-white transition-transform group-hover:rotate-12" />
                 <span className="font-extrabold tracking-tight">Ask Myra</span>
               </button>
 
